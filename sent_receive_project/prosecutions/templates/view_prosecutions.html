@@ -1,7 +1,28 @@
 {% extends 'mainpage.html' %}
 
 {% block content %}
-<h1>this is from views_prosecutions</h1>
+
+
+<div class="container">
+  <h2>Prosecutions</h2>
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Prosecution Name</th>
+        <th>Location</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for prosecution in prosecutions %}
+      <tr>
+        <td>{{prosecution.name}}</td>
+        <td>{{prosecution.location}}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
 {% endblock %}
 
 

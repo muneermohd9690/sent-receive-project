@@ -9,7 +9,8 @@ def prosecutions(request):
 
 
 def view_prosecutions(request):
-    return render(request, 'view_prosecutions.html')
+    prosecutions = Prosecutions.objects.all()
+    return render(request,'view_prosecutions.html', {"prosecutions": prosecutions})
 
 
 def add_prosecutions(request):

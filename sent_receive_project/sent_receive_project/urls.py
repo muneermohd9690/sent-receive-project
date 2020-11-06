@@ -19,8 +19,6 @@ from django.urls import path,include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('prosecutions/',include('prosecutions.urls')),
-    #path('add_prosecutions_save/',include('prosecutions.urls')),
-    #path('add_prosecutions/',include('prosecutions.urls')),
     path('',include('mainpage.urls')),
     path('forms/',include('forms.urls')),
     path('items/',include('items.urls'))
