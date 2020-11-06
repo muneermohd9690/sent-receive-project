@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Sent Receive</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container-fluid p-3 my-3 bg-dark text-white">
+    <h1><a href="http://127.0.0.1:8000/">Sent Receive</a></h1>
+    <div class="btn-group">
+        <button type="button" class="btn btn-secondary">Prosecutions</button>
+        <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">
+        </button>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="http://127.0.0.1:8000/prosecutions/view_prosecutions/">View Prosecutions</a>
+            <a class="dropdown-item" href="http://127.0.0.1:8000/prosecutions/add_prosecutions/">Add Prosecutions</a>
+            <a class="dropdown-item" href="http://127.0.0.1:8000/prosecutions/edit_prosecutions/">Edit Prosecutions</a>
+        </div>
+    </div>
+    <div class="btn-group">
+        <button type="button" class="btn btn-secondary">Items</button>
+        <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">
+        </button>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="http://127.0.0.1:8000/items/view_items/">View Items</a>
+            <a class="dropdown-item" href="http://127.0.0.1:8000/items/add_items/">Add Items</a>
+            <a class="dropdown-item" href="http://127.0.0.1:8000/items/edit_items/">Edit Items</a>
+        </div>
+    </div>
+    <div class="btn-group">
+        <button type="button" class="btn btn-secondary">Forms</button>
+        <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">
+        </button>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="http://127.0.0.1:8000/forms/sent_items_invoice/">Sent Items Invoice</a>
+            <a class="dropdown-item" href="http://127.0.0.1:8000/forms/issue_vouchers/">Issue Vouchers</a>
+            <a class="dropdown-item" href="http://127.0.0.1:8000/forms/prosecution_printouts/">Prosecution Printouts</a>
+        </div>
+    </div>
+
+</div>
+<div>
+{% block content %}
+{% endblock %}
+</div>
+
+</body>
+</html>

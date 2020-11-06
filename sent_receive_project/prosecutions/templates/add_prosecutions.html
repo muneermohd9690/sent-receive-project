@@ -1,0 +1,26 @@
+{% extends 'mainpage.html' %}
+
+{% block content %}
+
+<div class="container">
+  <h2>Add Prosecutions</h2>
+  <p>Enter the new prosecution and location below:</p>
+  <form  role="form" action="add_prosecutions_save" method="post">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col">
+        <label>Prosecution Name</label>
+        <input type="text" class="form-control"  placeholder="Enter prosecution" name="name">
+      </div>
+      <div class="col">
+        <label>Prosecution Location</label>
+        <input type="text" class="form-control" placeholder="Enter location" name="location">
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary mt-3">Add Prosecution</button>
+  </form>
+</div>
+{% endblock %}
+
+
+
