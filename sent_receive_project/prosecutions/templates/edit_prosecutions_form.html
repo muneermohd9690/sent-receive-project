@@ -1,0 +1,29 @@
+{% extends 'mainpage.html' %}
+
+{% block content %}
+
+<div class="container">
+    <h2>Edit Prosecution | Prosecution ID :{{ prosecutions.id }}</h2>
+    <p>Edit the prosecution and location below:</p>
+    <form role="form" action="edit_prosecutions_save" method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col">
+                <label>Prosecution Name</label>
+                <input type="text" class="form-control" placeholder="Enter prosecution" name="name"
+                       value="{{prosecutions.name}}">
+                <input type="hidden" name="prosecutions_id" value="{{prosecutions.id}}">
+            </div>
+            <div class="col">
+                <label>Prosecution Location</label>
+                <input type="text" class="form-control" placeholder="Enter location" name="location"
+                       value="{{prosecutions.location}}">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Save Prosecution</button>
+    </form>
+</div>
+{% endblock %}
+
+
+

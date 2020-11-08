@@ -10,7 +10,7 @@ def prosecutions(request):
 
 def view_prosecutions(request):
     prosecutions = Prosecutions.objects.all()
-    return render(request,'view_prosecutions.html', {"prosecutions": prosecutions})
+    return render(request, 'view_prosecutions.html', {"prosecutions": prosecutions})
 
 
 def add_prosecutions(request):
@@ -29,4 +29,23 @@ def add_prosecutions_save(request):
 
 
 def edit_prosecutions(request):
-    return render(request, 'edit_prosecutions.html')
+    prosecutions = Prosecutions.objects.all()
+    return render(request, 'edit_prosecutions.html', {"prosecutions": prosecutions})
+
+
+def edit_prosecutions_form(request, prosecutions_id):
+    prosecutions = Prosecutions.objects.get(id=prosecutions_id)
+    return render(request, 'edit_prosecutions_form.html', {"prosecutions": prosecutions})
+
+
+def edit_prosecutions_save(request):
+    #prosecutions = Prosecutions.objects.all()
+    if request.method == "POST":
+        prosecutions_id = request.POST.get("prosecutions_id")
+        name = request.POST.get("name")
+        location = request.POST.get("location")
+        Prosecutions_model = Prosecutions(id=prosecutions_id, name=name, location=location)
+        Prosecutions_model.save()
+        return view_prosecutions(request)
+    else:
+        return view_prosecutions(request)

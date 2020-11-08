@@ -11,6 +11,7 @@
       <tr>
         <th>Prosecution Name</th>
         <th>Location</th>
+        <th>Action</th>
       </tr>
     </thead>
     <tbody>
@@ -18,6 +19,7 @@
       <tr>
         <td>{{prosecution.name}}</td>
         <td>{{prosecution.location}}</td>
+        <td><a href="/edit_prosecution/{{prosecution.id}}" class ="btn btn-success">Print</a></td>
       </tr>
     {% endfor %}
     </tbody>
