@@ -59,8 +59,8 @@ def edit_prosecutions_save(request):
     else:
         return view_prosecutions(request)
 
-def print_pdf(request,prosecutions_id):
-    prosecutions=Prosecutions.objects.get(id=prosecutions_id)
+def print_pdf(request,prosecutions_name):
+    prosecutions=Prosecutions.objects.get(name=prosecutions_name)
     data={'prosecutions':prosecutions}
     template=get_template("pdf_prosecutions.html")
     data_p=template.render(data)
