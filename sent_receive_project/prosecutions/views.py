@@ -4,14 +4,8 @@ from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from xhtml2pdf import pisa
-
 from .models import Prosecutions
-import datetime
-from django.conf import settings
 from django.template.loader import render_to_string, get_template
-import tempfile
-
-
 
 
 def prosecutions(request):
@@ -59,19 +53,22 @@ def edit_prosecutions_save(request):
     else:
         return view_prosecutions(request)
 
-def print_pdf(request,prosecutions_name):
-    prosecutions=Prosecutions.objects.get(name=prosecutions_name)
-    data={'prosecutions':prosecutions}
-    template=get_template("pdf_prosecutions.html")
-    data_p=template.render(data)
-    response=BytesIO()
 
-    pdfPage=pisa.pisaDocument(BytesIO(data_p.encode("UTF-8")),response)
+def edit_prosecutions_delete(request, prosecutions_id):
+    prosecutions = Prosecutions.objects.get(id=prosecutions_id)
+    prosecutions.delete()
+    return edit_prosecutions(request)
+
+
+def print_pdf(request, prosecutions_name):
+    prosecutions = Prosecutions.objects.get(name=prosecutions_name)
+    data = {'prosecutions': prosecutions}
+    template = get_template("pdf_prosecutions.html")
+    data_p = template.render(data)
+    response = BytesIO()
+
+    pdfPage = pisa.pisaDocument(BytesIO(data_p.encode("UTF-8")), response)
     if not pdfPage.err:
-        return HttpResponse(response.getvalue(),content_type="application/pdf")
+        return HttpResponse(response.getvalue(), content_type="application/pdf")
     else:
         return HttpResponse("Error")
-
-
-
-
