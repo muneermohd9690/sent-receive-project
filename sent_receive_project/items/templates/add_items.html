@@ -1,5 +1,43 @@
 {% extends 'mainpage.html' %}
 
 {% block content %}
-<h1>this is from add_items</h1>
+<div class="container">
+  <h2>Add Items</h2>
+  <p>Enter the item details below:</p>
+  <form role="form" action="add_items_save" method="post">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col">
+        <label>Serial Number</label>
+        <input type="text" class="form-control"  placeholder="Enter serial-number" name="serial_no">
+      </div>
+      <div class="col">
+        <label>Model Number</label>
+        <input type="text" class="form-control" placeholder="Enter model-number" name="model_no">
+      </div>
+      <div class="col">
+        <label>Item Description</label>
+        <input type="text" class="form-control" placeholder="Enter description" name="description">
+      </div>
+      <div class="col">
+        <label>Total Quantity</label>
+        <input type="text" class="form-control" placeholder="Enter total quantity" name="total_qty">
+      </div>
+      <div class="col">
+        <label>Remaining Quantity</label>
+        <input type="text" class="form-control" placeholder="Enter remaining quantity" name="rem_qty">
+      </div>
+      <div class="col">
+        <label>Status</label>
+        <select class="form-control"  name="status">
+
+          <option value="Male"></option>
+          <option value="Female"></option>
+
+        </select>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary mt-3">Add Item</button>
+  </form>
+</div>
 {% endblock %}
