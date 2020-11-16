@@ -30,9 +30,9 @@
       <div class="col">
         <label>Status</label>
         <select class="form-control"  name="status">
-
-          <option value="Male"></option>
-          <option value="Female"></option>
+          {% for x,y in status %}
+          <option> {{y}}</option>
+          {% endfor %}
 
         </select>
       </div>
