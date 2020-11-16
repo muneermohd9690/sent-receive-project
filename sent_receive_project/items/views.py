@@ -7,7 +7,8 @@ def items(request):
 
 
 def view_items(request):
-    return render(request,'view_items.html')
+    items=Items.objects.all()
+    return render(request,'view_items.html',{"items":items})
 
 
 def add_items(request):

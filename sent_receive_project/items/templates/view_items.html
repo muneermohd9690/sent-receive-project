@@ -1,5 +1,23 @@
 {% extends 'mainpage.html' %}
-
+{% load static %}
 {% block content %}
-<h1>this is from view_items</h1>
+
+<div class="card-deck" style="width: 50rem;">
+    {% for item in items %}
+
+    <div class="card" >
+        <img class="card-img-top" src="{% static 'images/surface pro 7 front.jpg' %}" alt="Card image cap">
+        <div class="card-body">
+            <h5 class="card-title">{{item.description}} {{item.model_no}}</h5>
+            <p class="card-text">Available quantity: {{item.total_qty}}</p>
+            <p class="card-text">Status: {{item.status}}</p>
+        </div>
+        <div class="card-footer">
+            <small class="text-muted">Last updated 3 mins ago</small>
+        </div>
+    </div>
+    
+    {% endfor %}
+</div>
+
 {% endblock %}
