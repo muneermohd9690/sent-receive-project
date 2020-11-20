@@ -4,7 +4,7 @@ from .import views
 urlpatterns=[
     path('',views.items),
     path('view_items_quantity/',views.view_items_quantity,name='view_items_quantity'),
-    path('view_items_details/',views.view_items_details,name='view_items_details'),
+    path('view_items_details/<int:id>',views.view_items_details,name='view_items_details'),
 
     path('add_items/',views.add_items,name='add_items'),
     path('add_items_quantity/',views.add_items_quantity,name='add_items_quantity'),

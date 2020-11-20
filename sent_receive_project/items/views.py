@@ -12,8 +12,8 @@ def view_items_quantity(request):
     items=Items.objects.all()
     return render(request,'view_items_quantity.html',{"items":items})
 
-def view_items_details(request):
-    itemdetails=ItemDetails.objects.all()
+def view_items_details(request,id):
+    itemdetails=ItemDetails.objects.filter(model_no=id)
     return render(request,'view_items_details.html',{"itemdetails":itemdetails})
 
 

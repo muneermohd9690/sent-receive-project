@@ -19,7 +19,7 @@
         <td>{{item.description}}</td>
         <td>{{item.model_no}}</td>
 	    <td>{{item.total_qty}}</td>
-        <td><a href="{% url 'view_items_details' %}" class ="btn btn-info">Details</a></td>
+        <td><a href="{% url 'view_items_details' item.id %}" class ="btn btn-info">Details</a></td>
       </tr>
     {% endfor %}
     </tbody>
