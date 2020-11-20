@@ -1,0 +1,32 @@
+{% extends 'mainpage.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container">
+  <h2>Item Details</h2>
+   <input type="hidden" name="items_id" value="{{items.id}}">
+<table class="table table-bordered">
+    <thead>
+      <tr>
+          <th>Model Number</th>
+          <th>Serial Number</th>
+          <th>Issued to</th>
+          <th>Employee Name</th>
+
+      </tr>
+    </thead>
+    <tbody>
+    {% for detail in itemdetails %}
+      <tr>
+        <td>{{detail.model_no.model_no}}</td>
+        <td>{{detail.serial_no}}</td>
+	    <td>{{detail.issued_to.name}}</td>
+        <td>{{detail.employee_name}}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+</div>
+
+{% endblock %}

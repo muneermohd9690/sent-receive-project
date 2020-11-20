@@ -1,0 +1,40 @@
+{% extends 'mainpage.html' %}
+
+{% block content %}
+<div class="container">
+  <h2>Add Items Details</h2>
+  <p>Enter the item details below:</p>
+  <form role="form" action="add_items_details_save" method="post">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col">
+        <label>Model Number</label>
+        <select class="form-control"  name="model_no" placeholder="">
+        {% for item in items %}
+          <option value="{{item.id}}">{{item.model_no}} </option>
+        {% endfor %}
+        </select>
+      </div>
+      <div class="col">
+        <label>Serial Number</label>
+        <input class="form-control" name="serial_no" placeholder="Enter serial-number" type="text">
+      </div>
+
+      <div class="col">
+        <label>Issued To</label>
+        <select class="form-control"  name="issued_to" placeholder="">
+        {% for prosecution in prosecutions %}
+          <option value="{{prosecution.id}}">{{prosecution.name}} </option>
+        {% endfor %}
+        </select>
+      </div>
+      <div class="col">
+        <label>Employee Name</label>
+        <input class="form-control" name="employee_name" placeholder="Enter employee name" type="text">
+      </div>
+
+    </div>
+<button type="submit" class="btn btn-primary mt-3">Add Details</button>
+</form>
+</div>
+{% endblock %}
