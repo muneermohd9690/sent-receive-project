@@ -8,9 +8,9 @@ def items(request):
     return HttpResponse("this is for the items page")
 
 
-def view_items_quantity(request):
+def view_items(request):
     items=Items.objects.all()
-    return render(request,'view_items_quantity.html',{"items":items})
+    return render(request,'view_items.html',{"items":items})
 
 def view_items_details(request,id):
     itemdetails=ItemDetails.objects.filter(model_no=id)
@@ -18,38 +18,21 @@ def view_items_details(request,id):
 
 
 
-
 def add_items(request):
-    #status=Items.objects.filter(status=Items.status)
-    return render(request,'add_items.html',{"status":Items.STATUS})
+    return render(request,'add_items.html')
 
-def add_items_quantity(request):
-    return render(request,'add_items_quantity.html')
-
-def add_items_quantity_save(request):
+def add_items_save(request):
     if request.method == "POST":
         model_no = request.POST.get("model_no")
         description = request.POST.get("description")
         total_qty = request.POST.get("total_qty")
         Items_model = Items(model_no=model_no,description=description,total_qty=total_qty)
         Items_model.save()
-        return redirect('add_items_quantity')
+        return redirect('add_items')
     else:
-        return redirect('add_items_quantity')
+        return redirect('add_items')
 
-def add_items_save(request):
-    if request.method == "POST":
-        serial_no = request.POST.get("serial_no")
-        model_no = request.POST.get("model_no")
-        description = request.POST.get("description")
-        total_qty = request.POST.get("total_qty")
-        rem_qty = request.POST.get("rem_qty")
-        status = request.POST.get("status")
-        Items_model = Items(serial_no=serial_no, model_no=model_no,description=description,total_qty=total_qty,rem_qty=rem_qty,status=status)
-        Items_model.save()
-        return redirect('add_items')
-    else:
-        return redirect('add_items')
+
 
 def add_items_details(request):
     prosecutions=Prosecutions .objects.all()
@@ -74,4 +57,27 @@ def add_items_details_save(request):
         return redirect('add_items_details')
 
 def edit_items(request):
-    return render(request,'edit_items.html')
+    items = Items.objects.all()
+    return render(request, 'edit_items.html', {"items": items})
+
+def edit_items_form(request,id):
+    items=Items.objects.get(id=id)
+    return render(request, 'edit_items_form.html', {"items":items})
+
+
+def edit_items_save(request):
+    if request.method == "POST":
+        items_id = request.POST.get("items_id")
+        model_no = request.POST.get("model_no")
+        description = request.POST.get("description")
+        total_qty = request.POST.get("total_qty")
+        Items_model = Items(id=items_id, model_no=model_no, description=description,total_qty=total_qty)
+        Items_model.save()
+        return redirect('view_items')
+    else:
+        return redirect('view_items')
+
+def edit_items_delete(request,id):
+    items = Items.objects.get(id=id)
+    items.delete()
+    return redirect('view_items')

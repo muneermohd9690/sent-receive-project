@@ -1,0 +1,32 @@
+{% extends 'mainpage.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Edit Items | Items ID :{{ items.id }}</h2>
+    <p>Edit the item below:</p>
+    <form role="form" action="edit_items_save" method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col">
+                <label>Model Number</label>
+                <input type="text" class="form-control" placeholder="Enter model number" name="model_no"
+                       value="{{items.model_no}}">
+                <input type="hidden" name="items_id" value="{{items.id}}">
+            </div>
+            <div class="col">
+                <label>Item Description</label>
+                <input type="text" class="form-control" placeholder="Enter description" name="description"
+                       value="{{items.description}}">
+            </div>
+            <div class="col">
+                <label>Item quantity</label>
+                <input type="text" class="form-control" placeholder="Enter quantity" name="total_qty"
+                       value="{{items.total_qty}}">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Save Item</button>
+        <a href="{% url 'edit_items_delete' items.id %}" class="btn btn-danger mt-3">Delete Item</a>
+
+    </form>
+</div>
+{% endblock %}

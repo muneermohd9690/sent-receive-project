@@ -8,36 +8,19 @@
     {% csrf_token %}
     <div class="row">
       <div class="col">
-        <label>Serial Number</label>
-        <input type="text" class="form-control"  placeholder="Enter serial-number" name="serial_no">
-      </div>
-      <div class="col">
         <label>Model Number</label>
-        <input type="text" class="form-control" placeholder="Enter model-number" name="model_no">
+        <input class="form-control" name="model_no" placeholder="Enter model-number" type="text">
       </div>
       <div class="col">
         <label>Item Description</label>
-        <input type="text" class="form-control" placeholder="Enter description" name="description">
+        <input class="form-control" name="description" placeholder="Enter description" type="text">
       </div>
       <div class="col">
         <label>Total Quantity</label>
-        <input type="text" class="form-control" placeholder="Enter total quantity" name="total_qty">
-      </div>
-      <div class="col">
-        <label>Remaining Quantity</label>
-        <input type="text" class="form-control" placeholder="Enter remaining quantity" name="rem_qty">
-      </div>
-      <div class="col">
-        <label>Status</label>
-        <select class="form-control"  name="status">
-          {% for x,y in status %}
-          <option> {{y}}</option>
-          {% endfor %}
-
-        </select>
+        <input class="form-control" name="total_qty" placeholder="Enter total quantity" type="text">
       </div>
     </div>
-    <button type="submit" class="btn btn-primary mt-3">Add Item</button>
-  </form>
+<button type="submit" class="btn btn-primary mt-3">Add Item</button>
+</form>
 </div>
 {% endblock %}
