@@ -1,0 +1,46 @@
+{% extends 'mainpage.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Edit Item Details | Item Details ID :{{ itemdetails.id }}</h2>
+    <p>Edit the item details below:</p>
+    <form role="form" action="edit_item_details_save" method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col">
+                <label>Model Number</label>
+                <select class="form-control" name="model_no">
+                {% for item in items %}
+                <option value="{{item.id}}" {% if item.id == itemdetails.model_no.id %} selected {%endif %}>
+                    {{item.model_no}}</option>
+                {% endfor %}
+                </select>
+            </div>
+            <div class="col">
+                <label>Serial Number</label>
+                <input type="text" class="form-control" placeholder="Enter serialnumber" name="serial_no"
+                       value="{{itemdetails.serial_no}}">
+                <input type="hidden" name="itemdetails_id" value="{{itemdetails.id}}">
+            </div>
+            <div class="col">
+                <label>Issued to</label>
+                <select class="form-control" name="issued_to">
+                {% for prosecution in prosecutions %}
+                <option value="{{prosecution.id}}" {% if prosecution.id == itemdetails.issued_to.id %} selected {%endif %}>
+                    {{prosecution.name}}</option>
+                {% endfor %}
+                </select>
+            </div>
+             <div class="col">
+                <label>Employee Name</label>
+                <input type="text" class="form-control" placeholder="enter employee name" name="employee_name"
+                       value="{{itemdetails.employee_name}}">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Save Item Details</button>
+        <a href="{% url 'edit_item_details_delete' itemdetails.id %}" class="btn btn-danger mt-3">Delete Item</a>
+
+
+    </form>
+</div>
+{% endblock %}

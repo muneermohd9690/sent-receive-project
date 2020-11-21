@@ -81,3 +81,38 @@ def edit_items_delete(request,id):
     items = Items.objects.get(id=id)
     items.delete()
     return redirect('view_items')
+
+def edit_item_details(request):
+    itemdetails=ItemDetails.objects.all()
+    return render(request,'edit_item_details.html',{"itemdetails":itemdetails})
+
+def edit_item_details_form(request,id):
+    prosecutions = Prosecutions.objects.all()
+    items = Items.objects.all()
+    itemdetails = ItemDetails.objects.get(id=id)
+    return render(request,'edit_item_details_form.html',{"itemdetails": itemdetails,"items":items,"prosecutions":prosecutions})
+
+
+def edit_item_details_save(request):
+    if request.method == "POST":
+        itemdetails_id = request.POST.get("itemdetails_id")
+        serial_no = request.POST.get("serial_no")
+        employee_name = request.POST.get("employee_name")
+
+        model_no_id = request.POST.get("model_no")
+        model_no=Items.objects.get(id=model_no_id)
+
+        issued_to_id = request.POST.get("issued_to")
+        issued_to = Prosecutions.objects.get(id=issued_to_id)
+
+        ItemDetails_model = ItemDetails(id= itemdetails_id ,serial_no=serial_no, model_no=model_no, issued_to=issued_to,
+                                        employee_name=employee_name)
+        ItemDetails_model.save()
+        return redirect('add_items_details')
+    else:
+        return redirect('add_items_details')
+
+def edit_item_details_delete(request,id):
+    itemdetails = ItemDetails.objects.get(id=id)
+    itemdetails.delete()
+    return redirect('view_items_details')
