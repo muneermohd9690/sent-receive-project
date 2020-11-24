@@ -122,4 +122,4 @@ def edit_item_details_save(request):
 def edit_item_details_delete(request,id):
     itemdetails = ItemDetails.objects.get(id=id)
     itemdetails.delete()
-    return redirect('view_items_details')
+    return redirect('edit_item_details')
