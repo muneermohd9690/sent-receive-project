@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from .models import Items,ItemDetails,Prosecutions
-
+from collections import Counter
 
 
 def items(request):
@@ -10,6 +10,13 @@ def items(request):
 
 def view_items(request):
     items=Items.objects.all()
+    itemdetails=ItemDetails.objects.all()
+    for x in items:
+        for y in itemdetails:
+            if x.id == y.model_no.id:
+                x.total_qty+=1
+
+
     return render(request,'view_items.html',{"items":items})
 
 def view_items_details(request,id):
@@ -73,14 +80,14 @@ def edit_items_save(request):
         total_qty = request.POST.get("total_qty")
         Items_model = Items(id=items_id, model_no=model_no, description=description,total_qty=total_qty)
         Items_model.save()
-        return redirect('view_items')
+        return redirect('edit_items')
     else:
-        return redirect('view_items')
+        return redirect('edit_items')
 
 def edit_items_delete(request,id):
     items = Items.objects.get(id=id)
     items.delete()
-    return redirect('view_items')
+    return redirect('edit_items')
 
 def edit_item_details(request):
     itemdetails=ItemDetails.objects.all()
