@@ -2,7 +2,18 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from .models import Items,ItemDetails,Prosecutions
 from collections import Counter
+from django.db.models import Count
+from django.db.models import F
 
+
+def calc_total_qty():
+    items=Items.objects.all()
+    itemdetails=ItemDetails.objects.all()
+    for x in items:
+        for y in itemdetails:
+            if x.id==y.model_no_id:
+                x.total_qty = y.model_no.itemdetails_set.all().count()
+                x.save(update_fields=['total_qty'])
 
 def items(request):
     return HttpResponse("this is for the items page")
@@ -11,12 +22,6 @@ def items(request):
 def view_items(request):
     items=Items.objects.all()
     itemdetails=ItemDetails.objects.all()
-    for x in items:
-        for y in itemdetails:
-            if x.id == y.model_no.id:
-                x.total_qty+=1
-
-
     return render(request,'view_items.html',{"items":items})
 
 def view_items_details(request,id):
@@ -28,12 +33,13 @@ def view_items_details(request,id):
 def add_items(request):
     return render(request,'add_items.html')
 
+#this is where items are added.modelmo,description,quantity should be calculated after item_details_save
 def add_items_save(request):
     if request.method == "POST":
         model_no = request.POST.get("model_no")
         description = request.POST.get("description")
-        total_qty = request.POST.get("total_qty")
-        Items_model = Items(model_no=model_no,description=description,total_qty=total_qty)
+        #total_qty = request.POST.get("total_qty"),total_qty=total_qty
+        Items_model = Items(model_no=model_no,description=description)
         Items_model.save()
         return redirect('add_items')
     else:
@@ -46,7 +52,9 @@ def add_items_details(request):
     items=Items.objects.all()
     return render(request,'add_items_details.html',{"prosecutions":prosecutions,"items":items})
 
+#this is where item details are added like modelno,serialno,department,empname
 def add_items_details_save(request):
+    items=Items.objects.all()
     if request.method == "POST":
         serial_no = request.POST.get("serial_no")
 
@@ -59,6 +67,8 @@ def add_items_details_save(request):
         employee_name=request.POST.get("employee_name")
         ItemDetails_model = ItemDetails(serial_no=serial_no, model_no=model_no,issued_to=issued_to,employee_name=employee_name)
         ItemDetails_model.save()
+        calc_total_qty()
+
         return redirect('add_items_details')
     else:
         return redirect('add_items_details')
@@ -122,4 +132,5 @@ def edit_item_details_save(request):
 def edit_item_details_delete(request,id):
     itemdetails = ItemDetails.objects.get(id=id)
     itemdetails.delete()
+    calc_total_qty()
     return redirect('edit_item_details')

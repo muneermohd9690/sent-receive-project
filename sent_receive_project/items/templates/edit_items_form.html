@@ -18,11 +18,7 @@
                 <input type="text" class="form-control" placeholder="Enter description" name="description"
                        value="{{items.description}}">
             </div>
-            <div class="col">
-                <label>Item quantity</label>
-                <input type="text" class="form-control" placeholder="Enter quantity" name="total_qty"
-                       value="{{items.total_qty}}">
-            </div>
+
         </div>
         <button type="submit" class="btn btn-primary mt-3">Save Item</button>
         <a href="{% url 'edit_items_delete' items.id %}" class="btn btn-danger mt-3">Delete Item</a>
