@@ -4,16 +4,14 @@ from .models import Items,ItemDetails,Prosecutions
 from collections import Counter
 from django.db.models import Count
 from django.db.models import F
+from django.db.models import Q
 
 
 def calc_total_qty():
-    items=Items.objects.all()
-    itemdetails=ItemDetails.objects.all()
-    for x in items:
-        for y in itemdetails:
-            if x.id==y.model_no_id:
-                x.total_qty = y.model_no.itemdetails_set.all().count()
-                x.save(update_fields=['total_qty'])
+    for item in Items.objects.annotate(itemdetails_count=Count('itemdetails')):
+        item.total_qty = item.itemdetails_count
+        item.save(update_fields=['total_qty'])
+
 
 def items(request):
     return HttpResponse("this is for the items page")
