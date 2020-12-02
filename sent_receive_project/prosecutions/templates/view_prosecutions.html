@@ -5,26 +5,40 @@
 
 <div class="container">
   <h2>Prosecutions</h2>
-
-  <table class="table table-bordered">
-    <thead>
+  <input class="form-control" id="myInput" type="text" placeholder="Search..">
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead>
       <tr>
         <th>Prosecution Name</th>
         <th>Location</th>
         <th>Action</th>
       </tr>
-    </thead>
-    <tbody>
-    {% for prosecution in prosecutions %}
+      </thead>
+      <tbody id="myTable">
+      {% for prosecution in prosecutions %}
       <tr>
         <td>{{prosecution.name}}</td>
         <td>{{prosecution.location}}</td>
-        <td><a href="{% url 'print_pdf' prosecution.name %}" target="_blank" class ="btn btn-success">Print</a></td>
+        <td><a href="{% url 'print_pdf' prosecution.name %}" target="_blank" class="btn btn-success">Print</a></td>
       </tr>
-    {% endfor %}
-    </tbody>
-  </table>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+<script>
+$(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myTable tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+
+</script>
 </div>
+
 {% endblock %}
 
 

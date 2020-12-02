@@ -9,7 +9,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
-<body>
+
 
 <div class="container-fluid p-3 my-3 bg-dark text-white">
     <h1><a href="{% url 'mainpage' %}" class="text-light">Sent Receive</a></h1>
@@ -27,14 +27,22 @@
         <button type="button" class="btn btn-secondary">Items</button>
         <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">
         </button>
-        <div class="dropdown-menu">
-            <a class="dropdown-item" href="{% url 'view_items' %}">View Items</a>
-            <a class="dropdown-item" href="{% url 'add_items' %}">Add Items</a>
-            <a class="dropdown-item" href="{% url 'add_items_details' %}">Add Items Details</a>
-            <a class="dropdown-item" href="{% url 'edit_items' %}">Edit Items</a>
-            <a class="dropdown-item" href="{% url 'edit_item_details' %}">Edit Item Details</a>
-        </div>
-    </div>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <li><a class="dropdown-item" href="{% url 'view_items' %}">View Items</a></li>
+                    <li class="dropdown-submenu dropright"><a class="dropdown-item dropdown-toggle" href="#">Add</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url 'add_items' %}">Add Items</a></li>
+                            <li><a class="dropdown-item" href="{% url 'add_items_details' %}">Add Items Details</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown-submenu dropright"><a class="dropdown-item dropdown-toggle" href="#">Edit</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{% url 'edit_items' %}">Edit Items</a></li>
+                            <li><a class="dropdown-item" href="{% url 'edit_item_details' %}">Edit Item Details</a></li>
+                        </ul>
+                    </li>
+                </ul>
+     </div>
     <div class="btn-group">
         <button type="button" class="btn btn-secondary">Forms</button>
         <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">
@@ -50,6 +58,24 @@
 {% block content %}
 {% endblock %}
 </div>
+<script >
+    $('.dropdown-menu a.dropdown-toggle').on('click', function(e) {
+  if (!$(this).next().hasClass('show')) {
+    $(this).parents('.dropdown-menu').first().find('.show').removeClass("show");
+  }
+  var $subMenu = $(this).next(".dropdown-menu");
+  $subMenu.toggleClass('show');
 
-</body>
+
+  $(this).parents('li.nav-item.dropdown.show').on('hidden.bs.dropdown', function(e) {
+    $('.dropdown-submenu .show').removeClass("show");
+  });
+
+
+  return false;
+});
+
+
+</script>
+
 </html>
