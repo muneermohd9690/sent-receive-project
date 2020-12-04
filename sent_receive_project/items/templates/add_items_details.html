@@ -32,6 +32,14 @@
         <label>Employee Name</label>
         <input class="form-control" name="employee_name" placeholder="Enter employee name" type="text">
       </div>
+      <div class="col">
+        <label>Status</label>
+          <select class="form-control" name="status">
+          {% for x,y in status %}
+            <option value="{{x}}">{{ y }}</option>
+          {% endfor %}
+          </select>
+      </div>
 
     </div>
 <button type="submit" class="btn btn-primary mt-3">Add Details</button>

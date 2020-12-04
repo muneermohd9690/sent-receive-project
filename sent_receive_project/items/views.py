@@ -48,7 +48,8 @@ def add_items_save(request):
 def add_items_details(request):
     prosecutions=Prosecutions .objects.all()
     items=Items.objects.all()
-    return render(request,'add_items_details.html',{"prosecutions":prosecutions,"items":items})
+    return render(request,'add_items_details.html',{"prosecutions":prosecutions,"items":items,
+                                                    "status":ItemDetails.STATUS })
 
 #this is where item details are added like modelno,serialno,department,empname
 def add_items_details_save(request):
@@ -63,7 +64,9 @@ def add_items_details_save(request):
         issued_to= Prosecutions.objects.get(id=name_id)
 
         employee_name=request.POST.get("employee_name")
-        ItemDetails_model = ItemDetails(serial_no=serial_no, model_no=model_no,issued_to=issued_to,employee_name=employee_name)
+        status=request.POST.get("status")
+        ItemDetails_model = ItemDetails(serial_no=serial_no, model_no=model_no,issued_to=issued_to,
+                                        employee_name=employee_name,status=status)
         ItemDetails_model.save()
         calc_total_qty()
 
@@ -105,7 +108,9 @@ def edit_item_details_form(request,id):
     prosecutions = Prosecutions.objects.all()
     items = Items.objects.all()
     itemdetails = ItemDetails.objects.get(id=id)
-    return render(request,'edit_item_details_form.html',{"itemdetails": itemdetails,"items":items,"prosecutions":prosecutions})
+    return render(request,'edit_item_details_form.html',{"itemdetails": itemdetails,"items":items,
+                                                         "prosecutions":prosecutions,"status":ItemDetails.STATUS})
+
 
 
 def edit_item_details_save(request):
@@ -113,6 +118,7 @@ def edit_item_details_save(request):
         itemdetails_id = request.POST.get("itemdetails_id")
         serial_no = request.POST.get("serial_no")
         employee_name = request.POST.get("employee_name")
+        status = request.POST.get("status")
 
         model_no_id = request.POST.get("model_no")
         model_no=Items.objects.get(id=model_no_id)
@@ -121,8 +127,9 @@ def edit_item_details_save(request):
         issued_to = Prosecutions.objects.get(id=issued_to_id)
 
         ItemDetails_model = ItemDetails(id= itemdetails_id ,serial_no=serial_no, model_no=model_no, issued_to=issued_to,
-                                        employee_name=employee_name)
+                                        employee_name=employee_name,status=status )
         ItemDetails_model.save()
+        calc_total_qty()
         return redirect('add_items_details')
     else:
         return redirect('add_items_details')

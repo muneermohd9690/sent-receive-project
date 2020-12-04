@@ -26,7 +26,7 @@
                 <label>Issued to</label>
                 <select class="form-control" name="issued_to">
                 {% for prosecution in prosecutions %}
-                <option value="{{prosecution.id}}" {% if prosecution.id == itemdetails.issued_to.id %} selected {%endif %}>
+                <option value="{{prosecution.id}}" {% if prosecution.id == itemdetails.issued_to.id %} selected {% endif %}>
                     {{prosecution.name}}</option>
                 {% endfor %}
                 </select>
@@ -36,6 +36,15 @@
                 <input type="text" class="form-control" placeholder="enter employee name" name="employee_name"
                        value="{{itemdetails.employee_name}}">
             </div>
+            <div class="col">
+                <label>Status</label>
+                <select class="form-control" name="status">
+                {% for x,y in status %}
+                    <option value="{{x}}" {% if x == itemdetails.status %} selected {% endif %}>{{ x }}</option>
+                {% endfor %}
+                </select>
+            </div>
+
         </div>
         <button type="submit" class="btn btn-primary mt-3">Save Item Details</button>
         <a href="{% url 'edit_item_details_delete' itemdetails.id %}" class="btn btn-danger mt-3">Delete Item</a>

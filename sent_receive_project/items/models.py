@@ -16,25 +16,20 @@ class Items(models.Model):
 
 
 class ItemDetails(models.Model):
-    STATUS = (
+    STATUS = [
         ('In-Stock', 'In-Stock'),
         ('Out-of-Stock', 'Out-of-Stock'),
         ('issued-to', 'issued-to')
-    )
+    ]
     serial_no = models.CharField(max_length=50,null=True)
     rem_qty = models.IntegerField(default=0)
-    status = models.CharField(max_length=30, default='in-stock', choices=STATUS)
+    status = models.CharField(max_length=30, default='In-stock', choices=STATUS)
     model_no=models.ForeignKey(Items,on_delete= models.CASCADE)
     issued_to =models.ForeignKey(Prosecutions,on_delete=models.CASCADE)
     employee_name=models.CharField(max_length=50,null=True)
     created = models.DateTimeField(default=datetime.now())
 
-    # newly added lines
-    # def save(self, *args, **kwargs):
-    #     if self.id is None:
-    #         self.item.total_qty += 1
-    #         self.item.save()
-    #         super().save(*args, **kwargs)
+
 
 
 
