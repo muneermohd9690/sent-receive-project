@@ -11,7 +11,7 @@
                 <label>Model Number</label>
                 <select class="form-control" name="model_no">
                 {% for item in items %}
-                <option value="{{item.id}}" {% if item.id == itemdetails.model_no.id %} selected {%endif %}>
+                <option value="{{item.id}}" {% if item.id == itemdetails.model_no.id %} selected {% endif %}>
                     {{item.model_no}}</option>
                 {% endfor %}
                 </select>

@@ -1,0 +1,158 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang='ar' xml:lang="ar" dir="rtl">
+<div>
+    <pdf:language name="arabic"/>
+
+</div>
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Title</title>
+
+    <style>
+
+        @font-face {
+        font-family: "Times New Roman";
+        src: url('C:\Windows\Fonts\timesbd.ttf');
+    }
+    @page {
+        size:a4 ;
+        @frame header_frame {           /* Static Frame */
+            -pdf-frame-content: header_logo;
+            left: 100pt; width: 512pt; top: 400pt; height: 40pt;
+
+        }
+        @frame header_frame {           /* Static Frame */
+            -pdf-frame-content: header_left1;
+            left: 50pt; width: 512pt; top: 50pt; height: 40pt;
+
+        }
+
+        @frame header_frame {           /* Static Frame */
+            -pdf-frame-content: header_left2;
+            left: 85pt; width: 512pt; top: 90pt; height: 40pt;
+
+        }
+         @frame header_frame {           /* Static Frame */
+            -pdf-frame-content: header_left3;
+            left: 65pt; width: 512pt; top: 110pt; height: 40pt;
+
+        }
+          @frame header_frame {           /* Static Frame */
+            -pdf-frame-content: header_left4;
+            left: 55pt; width: 512pt; top: 150pt; height: 40pt;
+
+        }
+        @frame header_frame {           /* Static Frame */
+            -pdf-frame-content: header_right1;
+            right: 320pt; width: 512pt; top: 50pt; height: 40pt;
+
+        }
+        @frame header_frame {           /* Static Frame */
+            -pdf-frame-content: header_right2;
+            right: 270pt; width: 512pt; top: 90pt; height: 40pt;
+
+        }
+        @frame header_frame {           /* Static Frame */
+            -pdf-frame-content: header_right3;
+            right: 280pt; width: 512pt; top: 110pt; height: 40pt;
+
+        }
+         @frame header_frame {           /* Static Frame */
+            -pdf-frame-content: header_right4;
+            right: 360pt; width: 512pt; top: 150pt; height: 40pt;
+
+        }
+         @frame header_frame {           /* Static Frame */
+            -pdf-frame-content: header_middle1;
+            right: 405pt; width: 512pt; top: 200pt; height: 40pt;
+
+        }
+        @frame header_frame {           /* Static Frame */
+            -pdf-frame-content: header_middle2;
+            left: 230pt; width: 512pt; top: 220pt; height: 40pt;
+
+        }
+
+        @frame content_frame {
+            left: 30pt;
+            width: 535pt;
+            top: 30pt;
+            height: 780pt;
+            -pdf-frame-border: 1;    /* for debugging the layout */
+        }
+    }
+    .logo{
+             text-align: center;
+     }
+    .left1{
+            font-size: 20px;
+     }
+     .left2{
+            font-size: 18px;
+     }
+     .left3{
+            font-size: 17px;
+     }
+     .left4{
+            font-size: 19px;
+     }
+     .right1{
+            font-size: 25px;
+     }
+     .right2{
+            font-size: 23px;
+     }
+     .right3{
+            font-size: 28px;
+     }
+     .right4{
+            font-size: 26px;
+     }
+     .right4{
+            font-size: 26px;
+     }
+     .middle1{
+            font-size: 18px;
+     }
+     .middle2{
+            font-size: 20px;
+     }
+    p:empty {
+            width: 100px;
+            height: 20px;
+            background: #ff0000;
+    }
+    body {
+    font-family: "Times New Roman";
+    }
+
+
+
+     </style>
+</head>
+<body>
+    <!-- Content for Static Frame 'header_frame' -->
+    <div id="frame_header_logo" class="logo">
+                    <img src="http://127.0.0.1:8000{% static 'images/pplogo.png' %}" alt="My image" width="150" height="150" />
+    </div>
+    <div id="header_left1" class="left1">UNITED ARAB EMIRATES</div>
+    <div id="header_left2" class="left2">Ministry of Justice</div>
+    <div id="header_left3" class="left3">PUBLIC PROSECUTION</div>
+    <div id="header_left4" class="left4">IT Department in Abu Dhabi</div>
+
+    <div id="header_right1" class="right1">دولـة الإمارات العربيـة المتحـدة</div>
+    <div id="header_right2" class="right2">وزارة العـدل </div>
+    <div id="header_right3" class="right3">النيابة العامة</div>
+    <div id="header_right4" class="right3">إدارة الحاســـــب الآلــــــــي أبوظبي</div>
+
+    <div id="header_middle1" class="middle1">نموذج عهــدة</div>
+    <div id="header_middle2" class="middle2">(ISSUE VOUCHER)</div>
+
+    <svg width="400" height="110">
+        <rect width="300" height="100" style="fill:rgb(0,0,255);stroke-width:3;stroke:rgb(0,0,0)" />
+    </svg>
+</body>
+</html>
