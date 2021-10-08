@@ -1,1 +1,1 @@
-web: gunicorn sent-receive.wsgi --log-file -
+web: gunicorn sent-receive.wsgi
