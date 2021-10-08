@@ -15,11 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-
+from django.views.static import serve
+from django.conf.urls import url
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('prosecutions/',include('prosecutions.urls')),
     path('',include('mainpage.urls')),
     path('forms/',include('forms.urls')),
-    path('items/',include('items.urls'))
+    path('items/',include('items.urls')),
+
+    url(r'^media/(?P<path>.*)$', serve,{'document_root':       settings.MEDIA_ROOT}),
+    url(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
 ]
