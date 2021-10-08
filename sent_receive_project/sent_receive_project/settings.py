@@ -25,7 +25,7 @@ SECRET_KEY = 'pp+xq#rxip@dq&e$qd(-mwm=hw04d2whla9qid_elo3mc&6=n&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['127.0.0.1','sent-receive.herokuapp.com']
 
 
 # Application definition
