@@ -18,6 +18,11 @@ def sent_items_invoice(request):
 def issue_vouchers(request):
     return render(request,'issue_vouchers.html')
 
+def test(request):
+    return render(request,'test.html')
+
+
+
 
 def link_callback(uri, rel):
     """
@@ -68,6 +73,19 @@ def print_issue_vouchers(request):
 
     data = {}
     template = get_template("print_issue_vouchers.html")
+    data_p = template.render(data)
+    response = BytesIO()
+
+    pdfPage = pisa.pisaDocument(BytesIO(data_p.encode("UTF-8")), response)
+    if not pdfPage.err:
+        return HttpResponse(response.getvalue(), content_type="application/pdf")
+    else:
+        return HttpResponse("Error")
+
+def print_test(request):
+
+    data = {}
+    template = get_template("print_test.html")
     data_p = template.render(data)
     response = BytesIO()
 
