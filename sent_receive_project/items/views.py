@@ -5,6 +5,7 @@ from collections import Counter
 from django.db.models import Count
 from django.db.models import F
 from django.db.models import Q
+import forms
 
 
 def calc_total_qty():

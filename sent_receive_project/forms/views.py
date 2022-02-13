@@ -6,6 +6,7 @@ from django.template.loader import render_to_string, get_template
 import os
 from django.conf import settings
 from django.contrib.staticfiles import finders
+from .models import Items,ItemDetails,Prosecutions
 
 
 def forms(request):
@@ -69,9 +70,10 @@ def print_sent_items_invoice(request):
     else:
         return HttpResponse("Error")
 
-def print_issue_vouchers(request):
-
-    data = {}
+#this is to print the issue vouchers from item details page
+def print_issue_vouchers(request,id):
+    itemdetails = ItemDetails.objects.filter(id=id)
+    data = {'itemdetails':itemdetails}
     template = get_template("print_issue_vouchers.html")
     data_p = template.render(data)
     response = BytesIO()
@@ -94,3 +96,7 @@ def print_test(request):
         return HttpResponse(response.getvalue(), content_type="application/pdf")
     else:
         return HttpResponse("Error")
+
+#def find_description(id):
+
+    #description=Items.objecst.filter

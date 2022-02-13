@@ -267,6 +267,7 @@
 
      </style>
 
+  <input class="form-control" id="myInput" type="text" placeholder="Search..">
 </head>
 <body>
 
@@ -299,19 +300,23 @@
 
      <div  class="table1">
         <table>
+
             <tr>
                 <th>S.No</th>
                 <th>Brand</th>
                 <th>Description</th>
+                <th>Model No.</th>
                 <th>Serial No.</th>
-                <th>Remarks</th>
             </tr>
+            {% for detail in itemdetails %}
             <tr>
                 <td>1</td>
-                <td>Dell</td>
-                <td>Latitude 7490</td>
-                <td>2werf56y</td>
+                <td>{{detail.model_no.model_no}}</td>
+                <td>{{detail.model_no.model_no}}</td>
+                <td>{{detail.model_no.model_no}}</td>
+                <td>{{detail.serial_no}}</td>
             </tr>
+            {% endfor %}
         </table>
     </div>
 
