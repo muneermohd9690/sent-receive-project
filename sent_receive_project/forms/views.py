@@ -22,7 +22,13 @@ def issue_vouchers(request):
 def test(request):
     return render(request,'test.html')
 
+def find_description(model_id):
 
+    description=Items.objects.filter(id=model_id)
+    for desc in description:
+        detail=desc.description
+    text=detail.split(" ",1)
+    return text
 
 
 def link_callback(uri, rel):
@@ -73,7 +79,14 @@ def print_sent_items_invoice(request):
 #this is to print the issue vouchers from item details page
 def print_issue_vouchers(request,id):
     itemdetails = ItemDetails.objects.filter(id=id)
-    data = {'itemdetails':itemdetails}
+    for detail in itemdetails:
+        model_id=detail.model_no_id
+        print(model_id)
+    #model_id=ItemDetails.objects.get()
+    text=find_description(model_id)
+    brand=text[0]
+    device=text[1]
+    data = {'itemdetails':itemdetails,'brand':brand,'device':device}
     template = get_template("print_issue_vouchers.html")
     data_p = template.render(data)
     response = BytesIO()
@@ -83,6 +96,7 @@ def print_issue_vouchers(request,id):
         return HttpResponse(response.getvalue(), content_type="application/pdf")
     else:
         return HttpResponse("Error")
+
 
 def print_test(request):
 
@@ -97,6 +111,3 @@ def print_test(request):
     else:
         return HttpResponse("Error")
 
-#def find_description(id):
-
-    #description=Items.objecst.filter
