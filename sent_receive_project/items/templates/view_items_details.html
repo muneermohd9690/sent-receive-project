@@ -12,8 +12,10 @@
           <tr>
               <th>Model Number</th>
               <th>Serial Number</th>
+              <th>Tag Number</th>
               <th>Issued to</th>
               <th>Employee Name</th>
+              <th>Employee Designation</th>
               <th>Status</th>
               <th>Action</th>
 
@@ -24,8 +26,10 @@
           <tr>
               <td>{{detail.model_no.model_no}}</td>
               <td>{{detail.serial_no}}</td>
+              <td>{{detail.tag_no}}</td>
               <td>{{detail.issued_to.name}}</td>
               <td>{{detail.employee_name}}</td>
+              <td>{{detail.employee_designation}}</td>
               <td>{{detail.status}}</td>
               <td><a href="{% url 'print_issue_vouchers' detail.id %}" target="_blank" class="btn btn-info">Print Issue Voucher</a></td>
           </tr>

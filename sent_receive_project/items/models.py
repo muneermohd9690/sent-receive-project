@@ -22,11 +22,13 @@ class ItemDetails(models.Model):
         ('issued-to', 'issued-to')
     ]
     serial_no = models.CharField(max_length=50,null=True)
+    tag_no = models.CharField(max_length=50, null=True)
     rem_qty = models.IntegerField(default=0)
     status = models.CharField(max_length=30, default='In-stock', choices=STATUS)
     model_no=models.ForeignKey(Items,on_delete= models.CASCADE)
     issued_to =models.ForeignKey(Prosecutions,on_delete=models.CASCADE)
     employee_name=models.CharField(max_length=50,null=True)
+    employee_designation = models.CharField(max_length=50, null=True)
     created = models.DateTimeField(default=datetime.now())
 
 

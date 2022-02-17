@@ -61,13 +61,19 @@ def add_items_details_save(request):
         model_no_id = request.POST.get("model_no")
         model_no=Items.objects.get(id=model_no_id)
 
+        tag_no = request.POST.get("tag_no")
+
         name_id = request.POST.get("issued_to")
         issued_to= Prosecutions.objects.get(id=name_id)
 
         employee_name=request.POST.get("employee_name")
+
+        employee_designation = request.POST.get("employee_designation")
+
         status=request.POST.get("status")
-        ItemDetails_model = ItemDetails(serial_no=serial_no, model_no=model_no,issued_to=issued_to,
-                                        employee_name=employee_name,status=status)
+
+        ItemDetails_model = ItemDetails(serial_no=serial_no, model_no=model_no, tag_no=tag_no,issued_to=issued_to,
+                                        employee_name=employee_name,employee_designation=employee_designation,status=status)
         ItemDetails_model.save()
         calc_total_qty()
 
@@ -118,7 +124,9 @@ def edit_item_details_save(request):
     if request.method == "POST":
         itemdetails_id = request.POST.get("itemdetails_id")
         serial_no = request.POST.get("serial_no")
+        tag_no = request.POST.get("tag_no")
         employee_name = request.POST.get("employee_name")
+        employee_designation = request.POST.get("employee_designation")
         status = request.POST.get("status")
 
         model_no_id = request.POST.get("model_no")
@@ -127,8 +135,8 @@ def edit_item_details_save(request):
         issued_to_id = request.POST.get("issued_to")
         issued_to = Prosecutions.objects.get(id=issued_to_id)
 
-        ItemDetails_model = ItemDetails(id= itemdetails_id ,serial_no=serial_no, model_no=model_no, issued_to=issued_to,
-                                        employee_name=employee_name,status=status )
+        ItemDetails_model = ItemDetails(id= itemdetails_id ,serial_no=serial_no, model_no=model_no, tag_no=tag_no,issued_to=issued_to,
+                                        employee_name=employee_name,employee_designation=employee_designation,status=status )
         ItemDetails_model.save()
         calc_total_qty()
         return redirect('add_items_details')

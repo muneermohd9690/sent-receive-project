@@ -12,8 +12,10 @@
           <tr>
               <th>Model Number</th>
               <th>Serial Number</th>
+              <th>Tag Number</th>
               <th>Issued to</th>
               <th>Employee Name</th>
+              <th>Employee Designation</th>
               <th>Action</th>
 
           </tr>
@@ -23,8 +25,10 @@
           <tr>
               <td>{{detail.model_no.model_no}}</td>
               <td>{{detail.serial_no}}</td>
+              <td>{{detail.tag_no}}</td>
               <td>{{detail.issued_to.name}}</td>
               <td>{{detail.employee_name}}</td>
+              <td>{{detail.employee_designation}}</td>
               <td><a href="{% url 'edit_item_details_form' detail.id %}" class="btn btn-info">Edit</a></td>
           </tr>
           {% endfor %}

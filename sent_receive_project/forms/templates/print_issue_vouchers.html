@@ -303,7 +303,7 @@
     <div id="header_below_greybox1_1" class="below_greybox1_1">مستلم العهدة / {{detail.employee_name}} </div>
     <div id="header_below_greybox1_2" class="below_greybox1_2">القســـــــم / {{detail.issued_to.name}} </div>
 
-    <div id="header_below_greybox1_3" class="below_greybox1_3">الوظيفـــــــة /  </div>
+    <div id="header_below_greybox1_3" class="below_greybox1_3">الوظيفـــــــة / {{detail.employee_designation}} </div>
     <div id="header_below_greybox1_4" class="below_greybox1_4">التاريخ /{{detail.created}}  </div>
     {% endfor %}
     <div id="header_greybox2">
@@ -319,6 +319,7 @@
                 <th>Description</th>
                 <th>Model No.</th>
                 <th>Serial No.</th>
+                <th>Tag No.</th>
             </tr>
             {% for detail in itemdetails %}
             <tr>
@@ -327,6 +328,7 @@
                 <td>{{device}}</td>
                 <td>{{detail.model_no.model_no}}</td>
                 <td>{{detail.serial_no}}</td>
+                <td>{{detail.tag_no}}</td>
             </tr>
             {% endfor %}
         </table>
