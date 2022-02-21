@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'prosecutions.apps.ProsecutionsConfig',
     'items.apps.ItemsConfig',
     'forms.apps.FormsConfig',
-    'mainpage.apps.MainpageConfig'
+    'mainpage.apps.MainpageConfig',
+    'toners.apps.TonersConfig'
 ]
 
 MIDDLEWARE = [

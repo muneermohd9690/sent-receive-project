@@ -1,0 +1,47 @@
+{% extends 'mainpage.html' %}
+
+{% block content %}
+<div class="container">
+  <h2>Add Toner Details</h2>
+  <p>Enter the Toner details below:</p>
+  <form role="form" action="add_tonerdetails_save" method="post">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col">
+        <label>Toner Number</label>
+        <select class="form-control"  name="toner_model" placeholder="">
+        {% for toner in toners %}
+          <option value="{{toner.id}}">{{toner.toner_model}} </option>
+        {% endfor %}
+        </select>
+      </div>
+      <div class="col">
+        <label>Issued To</label>
+        <select class="form-control"  name="issued_to" placeholder="">
+        {% for prosecution in prosecutions %}
+          <option value="{{prosecution.id}}">{{prosecution.name}} </option>
+        {% endfor %}
+        </select>
+      </div>
+      <div class="col">
+        <label>Employee Name</label>
+        <input class="form-control" name="employee_name" placeholder="Enter employee name" type="text">
+      </div>
+      <div class="col">
+        <label>Employee Designation</label>
+        <input class="form-control" name="employee_designation" placeholder="Enter employee designation" type="text">
+      </div>
+      <div class="col">
+        <label>Status</label>
+          <select class="form-control" name="status">
+          {% for x,y in status %}
+            <option value="{{x}}">{{ y }}</option>
+          {% endfor %}
+          </select>
+      </div>
+
+    </div>
+<button type="submit" class="btn btn-primary mt-3">Add Toner</button>
+</form>
+</div>
+{% endblock %}

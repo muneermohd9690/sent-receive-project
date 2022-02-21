@@ -6,7 +6,7 @@ from django.template.loader import render_to_string, get_template
 import os
 from django.conf import settings
 from django.contrib.staticfiles import finders
-from .models import Items,ItemDetails,Prosecutions
+from .models import Items,ItemDetails,Prosecutions,Toners,TonerDetails
 
 
 def forms(request):
@@ -28,6 +28,18 @@ def find_description(model_id):
     for desc in description:
         detail=desc.description
     text=detail.split(" ",1)
+    return text
+
+def find_toner_description(model_id):
+    toner= Toners.objects.filter(id=model_id)
+    for details in toner:
+        printer=details.toner_printer_id
+    description=Items.objects.filter(id=printer)
+    for desc in description:
+        detail=desc.description
+        printer_model=desc.model_no
+    desc_model=detail + " " +printer_model
+    text=desc_model.split(" ",1)
     return text
 
 
@@ -111,3 +123,20 @@ def print_test(request):
     else:
         return HttpResponse("Error")
 
+def print_toner_issue_vouchers(request,id):
+    tonerdetails = TonerDetails.objects.filter(id=id)
+    for detail in tonerdetails:
+        model_id=detail.toner_model_id
+    text=find_toner_description(model_id)
+    brand=text[0]
+    device=text[1]
+    data = {'tonerdetails':tonerdetails,'brand':brand,'device':device}
+    template = get_template("print_toner_issue_vouchers.html")
+    data_p = template.render(data)
+    response = BytesIO()
+
+    pdfPage = pisa.pisaDocument(BytesIO(data_p.encode("UTF-8")), response)
+    if not pdfPage.err:
+        return HttpResponse(response.getvalue(), content_type="application/pdf")
+    else:
+        return HttpResponse("Error")

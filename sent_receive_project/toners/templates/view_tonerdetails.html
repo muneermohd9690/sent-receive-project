@@ -1,0 +1,50 @@
+{% extends 'mainpage.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container">
+  <h2>Toner Details</h2>
+
+  <input class="form-control" id="myInput" type="text" placeholder="Search..">
+  <div class="table-responsive">
+      <table class="table table-bordered">
+          <thead>
+          <tr>
+              <th>Toner Model</th>
+              <th>Issued to</th>
+              <th>Employee Name</th>
+              <th>Employee Designation</th>
+              <th>Status</th>
+              <th>Action</th>
+
+          </tr>
+          </thead>
+          <tbody id="myTable">
+          {% for detail in tonerdetails %}
+          <tr>
+              <td>{{detail.toner_model.toner_model}}</td>
+              <td>{{detail.issued_to.name}}</td>
+              <td>{{detail.employee_name}}</td>
+              <td>{{detail.employee_designation}}</td>
+              <td>{{detail.status}}</td>
+              <td><a href="{% url 'print_toner_issue_vouchers' detail.id %}" target="_blank" class="btn btn-info">Print Issue Voucher</a></td>
+          </tr>
+          {% endfor %}
+          </tbody>
+      </table>
+
+    </div>
+<script>
+$(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myTable tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+
+</script>
+</div>
+
+{% endblock %}

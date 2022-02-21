@@ -1,0 +1,32 @@
+{% extends 'mainpage.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Edit Toners | Toner ID :{{ toners.id }}</h2>
+    <p>Edit the toner below:</p>
+    <form role="form" action="edit_toners_save" method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col">
+                <label>Model Number</label>
+                <input type="text" class="form-control" placeholder="Enter toner model" name="toner_model"
+                       value="{{toners.toner_model}}">
+                <input type="hidden" name="toner_id" value="{{toners.id}}">
+            </div>
+            <div class="col">
+                <label>Toner Description</label>
+                <select class="form-control" name="toner_printer">
+                {% for item in items %}
+                    <option value="{{item.id}}" {% if item.id == toners.toner_printer.id %} selected {% endif %}>
+                        {{item.description}} {{item.model_no}}</option>
+                {% endfor %}
+                </select>
+            </div>
+
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Save Toner</button>
+        <a href="{% url 'edit_toners_delete' toners.id %}" class="btn btn-danger mt-3">Delete Toner</a>
+
+    </form>
+</div>
+{% endblock %}

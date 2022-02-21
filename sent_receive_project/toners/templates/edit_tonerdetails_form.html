@@ -1,0 +1,55 @@
+{% extends 'mainpage.html' %}
+
+{% block content %}
+<div class="container">
+    <h2>Edit Toner Details | Toner Details ID :{{ tonerdetails.id }}</h2>
+    <p>Edit the toner details below:</p>
+    <form role="form" action="edit_tonerdetails_save" method="post">
+        <input type="hidden" name="tonerdetails_id" value="{{tonerdetails.id}}">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col">
+                <label>Toner Model</label>
+                <select class="form-control" name="toner_model">
+                {% for toner in toners %}
+                <option value="{{toner.id}}" {% if toner.id == tonerdetails.toner_model.id %} selected {% endif %}>
+                    {{toner.toner_model}}</option>
+                {% endfor %}
+                </select>
+            </div>
+            <div class="col">
+                <label>Issued to</label>
+                <select class="form-control" name="issued_to">
+                {% for prosecution in prosecutions %}
+                <option value="{{prosecution.id}}" {% if prosecution.id == tonerdetails.issued_to.id %} selected {% endif %}>
+                    {{prosecution.name}}</option>
+                {% endfor %}
+                </select>
+            </div>
+            <div class="col">
+                <label>Employee Name</label>
+                <input type="text" class="form-control" placeholder="enter employee name" name="employee_name"
+                       value="{{tonerdetails.employee_name}}">
+            </div>
+            <div class="col">
+                <label>Employee Designation</label>
+                <input type="text" class="form-control" placeholder="enter employee designation" name="employee_designation"
+                       value="{{tonerdetails.employee_designation}}">
+            </div>
+            <div class="col">
+                <label>Status</label>
+                <select class="form-control" name="status">
+                {% for x,y in status %}
+                    <option value="{{x}}" {% if x == tonerdetails.status %} selected {% endif %}>{{ x }}</option>
+                {% endfor %}
+                </select>
+            </div>
+
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Save Item Details</button>
+        <a href="{% url 'edit_tonerdetails_delete' tonerdetails.id %}" class="btn btn-danger mt-3">Delete Toner Details</a>
+
+
+    </form>
+</div>
+{% endblock %}

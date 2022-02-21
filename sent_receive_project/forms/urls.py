@@ -9,6 +9,7 @@ urlpatterns=[
 
     path('issue_vouchers/',views.issue_vouchers,name='issue_vouchers'),
     path('issue_vouchers/print_issue_vouchers/<int:id>',views.print_issue_vouchers,name='print_issue_vouchers'),
+    path('issue_vouchers/print_toner_issue_vouchers/<int:id>',views.print_toner_issue_vouchers,name='print_toner_issue_vouchers'),
 
 
     path('test/',views.test,name='test'),

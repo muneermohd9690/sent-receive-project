@@ -49,9 +49,29 @@
         </button>
         <div class="dropdown-menu">
             <a class="dropdown-item" href="{% url 'sent_items_invoice' %}">Sent Items Invoice</a>
-            <a class="dropdown-item" href="{% url 'issue_vouchers' %}">Issue Vouchers</a>
             <a class="dropdown-item" href="{% url 'test' %}">Test</a>
         </div>
+    </div>
+    <div class="btn-group">
+        <button type="button" class="btn btn-secondary">Toners</button>
+        <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">
+        </button>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <li><a class="dropdown-item" href="{% url 'view_toners' %}">View Toners</a></li>
+                        <li class="dropdown-submenu dropright"><a class="dropdown-item dropdown-toggle" href="#">Add</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'add_toners' %}">Add Toners</a></li>
+                                <li><a class="dropdown-item" href="{% url 'add_tonerdetails' %}">Add Toner Details</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown-submenu dropright"><a class="dropdown-item dropdown-toggle" href="#">Edit</a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{% url 'edit_toners' %}">Edit Toners</a></li>
+                                <li><a class="dropdown-item" href="{% url 'edit_tonerdetails' %}">Edit Toner Details</a></li>
+                            </ul>
+                        </li>
+                  </ul>
+
     </div>
 
 </div>

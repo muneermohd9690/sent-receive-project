@@ -98,6 +98,7 @@ def edit_items_save(request):
         total_qty = request.POST.get("total_qty")
         Items_model = Items(id=items_id, model_no=model_no, description=description,total_qty=total_qty)
         Items_model.save()
+        calc_total_qty()
         return redirect('edit_items')
     else:
         return redirect('edit_items')

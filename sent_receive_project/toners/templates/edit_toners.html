@@ -1,0 +1,43 @@
+{% extends 'mainpage.html' %}
+
+{% block content %}
+<div class="container">
+  <h2>Available Toners</h2>
+  <input class="form-control" id="myInput" type="text" placeholder="Search..">
+  <div class="table-responsive">
+      <table class="table table-bordered">
+          <thead>
+          <tr>
+              <th>Toner Description</th>
+              <th>Model Number</th>
+              <th>Quantity</th>
+              <th>Action</th>
+          </tr>
+          </thead>
+          <tbody id="myTable">
+          {% for toner in toners %}
+          <tr>
+              <td>{{toner.toner_printer.description}} {{toner.toner_printer.model_no}}</td>
+              <td>{{toner.toner_model}}</td>
+              <td>{{toner.total_qty}}</td>
+              <td><a href="{% url 'edit_toners_form' toner.id %}" class="btn btn-info">Edit</a></td>
+          </tr>
+          {% endfor %}
+          </tbody>
+      </table>
+
+    </div>
+<script>
+$(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myTable tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+
+</script>
+</div>
+
+{% endblock %}
