@@ -26,6 +26,7 @@ urlpatterns = [
     path('forms/',include('forms.urls')),
     path('items/',include('items.urls')),
     path('toners/',include('toners.urls')),
+    path('excel/',include('excel.urls')),
 
     url(r'^media/(?P<path>.*)$', serve,{'document_root':       settings.MEDIA_ROOT}),
     url(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),

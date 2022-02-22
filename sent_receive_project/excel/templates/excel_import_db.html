@@ -1,0 +1,12 @@
+{% extends 'mainpage.html' %}
+
+{% block content %}
+<h1>this is to import excel data to database</h1>
+<body>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+    <input type="file" required name="myfile">
+    <button type="submit">submit</button>
+    </form>
+</body>
+{% endblock %}

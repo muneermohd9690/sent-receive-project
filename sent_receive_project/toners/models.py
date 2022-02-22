@@ -12,6 +12,8 @@ class Toners(models.Model):
     remaining_qty = models.PositiveIntegerField(default=0,null=True)
     created=models.DateTimeField(default=datetime.now())
 
+    objects = models.Manager()
+
 class TonerDetails(models.Model):
     STATUS = [
         ('In-Stock', 'In-Stock'),

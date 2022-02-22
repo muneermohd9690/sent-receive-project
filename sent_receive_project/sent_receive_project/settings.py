@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'items.apps.ItemsConfig',
     'forms.apps.FormsConfig',
     'mainpage.apps.MainpageConfig',
-    'toners.apps.TonersConfig'
+    'toners.apps.TonersConfig',
+    'excel.apps.ExcelConfig'
 ]
 
 MIDDLEWARE = [
