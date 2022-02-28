@@ -3,11 +3,12 @@ from django.db.models import F
 
 from prosecutions.models import Prosecutions
 from datetime import datetime
+#from excel.models import ExcelFile
 
 # Create your models here.
 class Items(models.Model):
 
-    model_no= models.CharField(max_length=30,null= True )
+    model_no= models.CharField(max_length=30,null= True)
     description=models.CharField(max_length=50,null= True )
     total_qty=models.PositiveIntegerField(default=0,null=True)
     created = models.DateTimeField(default=datetime.now())

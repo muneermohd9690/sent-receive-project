@@ -3,32 +3,32 @@
 {% block content %}
 
 <div class="container">
-  <h2>Available Items</h2>
-  <input class="form-control" id="myInput" type="text" placeholder="Search..">
-  <div class="table-responsive">
-      <table class="table table-bordered">
-          <thead>
-          <tr>
-              <th>Item Description</th>
-              <th>Model Number</th>
-              <th>Quantity</th>
-              <th>Action</th>
-          </tr>
-          </thead>
-          <tbody id="myTable">
-          {% for item in items %}
-          <tr>
-              <td>{{item.description}}</td>
-              <td>{{item.model_no}}</td>
-              <td>{{item.total_qty}}</td>
-              <td><a href="{% url 'view_items_details' item.id %}" class="btn btn-info">Details</a></td>
-          </tr>
-          {% endfor %}
-          </tbody>
-      </table>
+    <h2>Available Items</h2>
+    <input class="form-control" id="myInput" type="text" placeholder="Search..">
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th>Item Description</th>
+                <th>Model Number</th>
+                <th>Quantity</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody id="myTable">
+            {% for item in items %}
+            <tr>
+                <td>{{item.description}}</td>
+                <td>{{item.model_no}}</td>
+                <td>{{item.total_qty}}</td>
+                <td><a href="{% url 'view_items_details' item.id %}" class="btn btn-info">Details</a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
     </div>
-<script>
+    <script>
 $(document).ready(function(){
   $("#myInput").on("keyup", function() {
     var value = $(this).val().toLowerCase();
@@ -38,7 +38,9 @@ $(document).ready(function(){
   });
 });
 
-</script>
+
+
+    </script>
 </div>
 
 {% endblock %}

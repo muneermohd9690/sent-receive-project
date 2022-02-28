@@ -1,23 +1,54 @@
 {% extends 'mainpage.html' %}
-
+{% load static %}
 {% block content %}
 <div class="container">
-  <h2>Add Items</h2>
-  <p>Enter the item details below:</p>
-  <form role="form" action="add_items_save" method="post">
-    {% csrf_token %}
-    <div class="row">
-      <div class="col">
-        <label>Model Number</label>
-        <input class="form-control" name="model_no" placeholder="Enter model-number" type="text">
-      </div>
-      <div class="col">
-        <label>Item Description</label>
-        <input class="form-control" name="description" placeholder="Enter description" type="text">
-      </div>
+    <h2>Add Items</h2>
+    <p>Enter the item details below:</p>
+    <form action="add_items_save" enctype="multipart/form-data" method="post" role="form">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col">
+                <label>Model Number</label>
+                <input class="form-control" name="model_no" placeholder="Enter model-number" type="text">
+            </div>
+            <div class="col">
+                <label>Item Description</label>
+                <input class="form-control" name="description" placeholder="Enter description" type="text">
+            </div>
 
+        </div>
+        <button class="btn btn-primary mt-3" type="submit">Save Items</button>
+    </form>
+    <p>
+    <fieldset style="border: 1px black solid">
+        <legend style="border: 1px black solid;margin-left: 1em; padding: 0.1em 0.1em ">Import From Excel Sheet</legend>
+        Please make sure that the excel sheet is in .csv format and has the below column titles for a successful import.<br/>
+        model_no<br/>
+        description (please follow how to write the description mentioned below)<br/>
+        <form action="excel_import_items_db" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input name="myfile" required type="file">
+
+            <button class="btn btn-primary mt-3" type="submit">SUBMIT</button>
+
+        </form>
+        {% for message in messages %}
+        {% if message.tags == 'success' %}
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script>
+                            var m="{{ message }};
+                            swal("Success", m, "success")
+
+        </script>
+        {% endif %}
+        {% endfor %}
+    </fieldset>
+    </p>
+    <div>
+        <h6><u>How to write the description</u><br/></h6>
+        Description has to be Brand name followed by any other details.<br/>
+        Example HP Laserjet Printer, Dell Optiplex AIO PC.</br>
+        In the above example HP and Dell are the brand names, the rest is any other details based on the item.</br>
     </div>
-<button type="submit" class="btn btn-primary mt-3">Add Item</button>
-</form>
 </div>
 {% endblock %}

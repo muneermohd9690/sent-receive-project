@@ -50,7 +50,37 @@
       </div>
 
     </div>
-<button type="submit" class="btn btn-primary mt-3">Add Details</button>
+<button type="submit" class="btn btn-primary mt-3">Save Details</button>
 </form>
+   <p>
+    <fieldset style="border: 1px black solid">
+        <legend style="border: 1px black solid;margin-left: 1em; padding: 0.1em 0.1em ">Import From Excel Sheet</legend>
+        Please make sure that the excel sheet is in .csv format and has the below column titles for a successful import.<br/>
+        serial_no<br/>
+        tag_no<br/>
+        status<br/>
+        model_no<br/>
+        issued_to<br/>
+        employee_name<br/>
+        employee_designation<br/>
+        <form action="excel_import_item_details_db" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input name="myfile" required type="file">
+
+            <button class="btn btn-primary mt-3" type="submit">SUBMIT</button>
+
+        </form>
+        {% for message in messages %}
+        {% if message.tags == 'success' %}
+        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+        <script>
+                            var m="{{ message }};
+                            swal("Success", m, "success")
+
+        </script>
+        {% endif %}
+        {% endfor %}
+    </fieldset>
+    </p>
 </div>
 {% endblock %}

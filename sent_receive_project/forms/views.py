@@ -93,7 +93,6 @@ def print_issue_vouchers(request,id):
     itemdetails = ItemDetails.objects.filter(id=id)
     for detail in itemdetails:
         model_id=detail.model_no_id
-        print(model_id)
     #model_id=ItemDetails.objects.get()
     text=find_description(model_id)
     brand=text[0]
