@@ -206,7 +206,8 @@ def excel_import_item_details_db(request):
                         messages.warning(request, dbframe.serial_no + "already exists in Database")
                     else:
                         obj = ItemDetails.objects.create(serial_no=dbframe.serial_no,tag_no=dbframe.tag_no,status=dbframe.status,
-                                                   Items_model_no=dbframe.model_no, Prosecutions_issued_to=dbframe.issued_to,
+                                                    model_no=Items.objects.get(model_no=dbframe.model_no),
+                                                    issued_to=Prosecutions.objects.get(name=dbframe.issued_to),
                                                     employee_name=dbframe.employee_name,employee_designation=dbframe.employee_designation)
                         obj.save()
             filename = fs.delete(myfile.name)
