@@ -95,7 +95,7 @@ def add_items_details_save(request):
 
 def edit_items(request):
     items = Items.objects.all()
-    return render(request, 'edit_items.html', {"items": items})
+    return render(request, 'view_items.html', {"items": items})
 
 
 def edit_items_form(request, id):
@@ -112,15 +112,15 @@ def edit_items_save(request):
         Items_model = Items(id=items_id, model_no=model_no, description=description, total_qty=total_qty)
         Items_model.save()
         calc_total_qty()
-        return redirect('edit_items')
+        return redirect('view_items')
     else:
-        return redirect('edit_items')
+        return redirect('view_items')
 
 
 def edit_items_delete(request, id):
     items = Items.objects.get(id=id)
     items.delete()
-    return redirect('edit_items')
+    return redirect('view_items')
 
 
 def edit_item_details(request):

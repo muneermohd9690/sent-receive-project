@@ -6,6 +6,7 @@ urlpatterns = [
     path('', views.items),
     path('view_items/', views.view_items, name='view_items'),
     path('view_items_details/<int:id>', views.view_items_details, name='view_items_details'),
+    #path('view_items_details/edit_items_delete/<int:id>', views.edit_items_delete, name='edit_items_delete'),
 
     path('add_items/', views.add_items, name='add_items'),
     path('add_items/excel_import_items_db', views.excel_import_items_db, name='excel_import_items_db'),

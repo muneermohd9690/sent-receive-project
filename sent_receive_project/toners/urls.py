@@ -5,6 +5,7 @@ urlpatterns = [
     path('', views.toners),
     path('view_toners/', views.view_toners, name='view_toners'),
     path('view_tonerdetails/<int:id>', views.view_tonerdetails, name='view_tonerdetails'),
+    #path('view_toners/edit_toners_form/<int:id>', views.edit_toners_form, name='edit_toners_form'),
 
     path('add_toners/', views.add_toners, name='add_toners'),
     path('add_toners/add_toners_save', views.add_toners_save, name='add_toners_save'),

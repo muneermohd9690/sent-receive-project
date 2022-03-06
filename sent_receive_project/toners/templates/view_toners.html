@@ -22,7 +22,10 @@
               <td>{{toner.toner_printer.description}} {{toner.toner_printer.model_no}}</td>
               <td>{{toner.toner_model}}</td>
               <td>{{toner.total_qty}}</td>
-              <td><a href="{% url 'view_tonerdetails' toner.id %}" class="btn btn-info">Details</a></td>
+              <td><a href="{% url 'view_tonerdetails' toner.id %}" class="btn btn-info">Details</a>
+                  <a href="{% url 'edit_toners_form' toner.id %}" class="btn btn-warning">Edit</a>
+                  <a href="{% url 'edit_toners_delete' toner.id %}" class="btn btn-danger">Delete</a></td>
+
           </tr>
           {% endfor %}
           </tbody>
