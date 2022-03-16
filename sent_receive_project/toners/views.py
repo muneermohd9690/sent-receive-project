@@ -6,6 +6,7 @@ from django.db.models import Count
 from django.db.models import F
 from django.db.models import Q
 import forms
+from django.contrib import messages
 
 
 # Create your views here.
@@ -44,6 +45,7 @@ def add_toners_save(request):
 
         Toners_model = Toners(toner_model=toner_model, toner_printer=toner_printer)
         Toners_model.save()
+        messages.success(request, "Toner added successfully")
         calc_total_qty()
         return redirect('add_toners')
     else:
@@ -71,6 +73,7 @@ def add_tonerdetails_save(request):
                                           employee_name=employee_name, employee_designation=employee_designation,
                                           status=status)
         TonerDetails_model.save()
+        messages.success(request, "Toner details added successfully")
         calc_total_qty()
         return redirect('add_tonerdetails')
     else:
@@ -103,14 +106,16 @@ def edit_toners_save(request):
         Toners_model = Toners(id=toner_id, toner_model=toner_model, toner_printer=toner_printer, total_qty=total_qty)
         Toners_model.save()
         calc_total_qty()
-        return redirect('add_toners')
+        messages.success(request, "Toner updated successfully")
+        return redirect('view_toners')
     else:
-        return redirect('add_toners')
+        return redirect('view_toners')
 
 
 def edit_toners_delete(request, id):
     toners = Toners.objects.get(id=id)
     toners.delete()
+    messages.success(request, "Toner deleted successfully")
     calc_total_qty()
     return redirect('edit_toners')
 
@@ -150,6 +155,7 @@ def edit_tonerdetails_save(request):
                                           employee_name=employee_name, employee_designation=employee_designation,
                                           status=status)
         TonerDetails_model.save()
+        messages.success(request, "Toner details updated successfully")
         calc_total_qty()
         return redirect('add_tonerdetails')
     else:
@@ -158,6 +164,7 @@ def edit_tonerdetails_save(request):
 def edit_tonerdetails_delete(request,id):
     tonerdetails = TonerDetails.objects.get(id=id)
     tonerdetails.delete()
+    messages.success(request, "Toner details deleted successfully")
     calc_total_qty()
     return redirect('edit_tonerdetails')
 

@@ -44,5 +44,16 @@ $(document).ready(function(){
 
 </script>
 </div>
+<!--- Messages after CRUD operations --->
+{% for message in messages %}
+    {% if message.tags == 'success' %}
+
+    <script>
+        var m= "{{ message }};
+        swal("Perfect !", m , "success")
+    </script>
+    {% endif %}
+{% endfor %}
+<!--- Messages after CRUD operations --->
 
 {% endblock %}

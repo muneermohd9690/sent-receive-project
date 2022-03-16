@@ -52,7 +52,8 @@ INSTALLED_APPS = [
     'forms.apps.FormsConfig',
     'mainpage.apps.MainpageConfig',
     'toners.apps.TonersConfig',
-    'excel.apps.ExcelConfig'
+    'excel.apps.ExcelConfig',
+    'django_forms_bootstrap',
 ]
 
 MIDDLEWARE = [
@@ -83,6 +84,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries': {
+                'staticfiles': 'django.templatetags.static',
+            },
         },
     },
 ]
@@ -139,6 +143,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 MEDIA_URL = '/images/'
+JS_SCRIPT_URL = '/js/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
