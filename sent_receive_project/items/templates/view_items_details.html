@@ -31,7 +31,7 @@
               <td>{{detail.employee_name}}</td>
               <td>{{detail.employee_designation}}</td>
               <td>{{detail.status}}</td>
-              <td><a href="{% url 'print_issue_vouchers' detail.id %}" target="_blank" class="btn btn-info">Print Issue Voucher</a></td>
+              <td><a href="{% url 'print_issue_vouchers' detail.id %}" target="_blank" rel="noopener noreferrer" class="btn btn-info">Print Issue Voucher</a></td>
           </tr>
           {% endfor %}
           </tbody>
