@@ -27,7 +27,9 @@
               <td>{{detail.employee_name}}</td>
               <td>{{detail.employee_designation}}</td>
               <td>{{detail.status}}</td>
-              <td><a href="{% url 'print_toner_issue_vouchers' detail.id %}" target="_blank" class="btn btn-info">Print Issue Voucher</a></td>
+              <td><a href="{% url 'print_toner_issue_vouchers' detail.id %}" target="_blank" class="btn btn-info">Print Issue Voucher</a>
+                  <a href="{% url 'edit_tonerdetails_form' detail.id %}" class="btn btn-warning">Edit</a>
+                  <a href="{% url 'edit_tonerdetails_delete' detail.id %}" class="btn btn-danger">Delete</a></td>
           </tr>
           {% endfor %}
           </tbody>
@@ -46,5 +48,4 @@ $(document).ready(function(){
 
 </script>
 </div>
-
 {% endblock %}

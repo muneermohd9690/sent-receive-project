@@ -144,6 +144,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_URL = '/images/'
 JS_SCRIPT_URL = '/js/'
+CSS_URL = '/css/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 

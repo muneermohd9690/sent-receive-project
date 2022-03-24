@@ -1,5 +1,6 @@
 {% extends 'mainpage.html' %}
 {% load static %}
+{% load static %}<script src="{% static 'css/style.css' %}"></script>
 {% block content %}
 
 <div class="container">
@@ -30,7 +31,6 @@
           {% endfor %}
           </tbody>
       </table>
-
     </div>
 <script>
 $(document).ready(function(){
@@ -41,19 +41,20 @@ $(document).ready(function(){
     });
   });
 });
-
 </script>
 </div>
 <!--- Messages after CRUD operations --->
-{% for message in messages %}
-    {% if message.tags == 'success' %}
-
-    <script>
-        var m= "{{ message }};
-        swal("Perfect !", m , "success")
-    </script>
-    {% endif %}
-{% endfor %}
+{% if messages %}
+    {% for message in messages %}
+        <script>
+                 var m= "{{ message }}";
+                 swal({
+                       title: "Good job!",
+                       text: m,
+                       icon: "success",
+                      });
+         </script>
+    {% endfor %}
+{% endif %}
 <!--- Messages after CRUD operations --->
-
 {% endblock %}

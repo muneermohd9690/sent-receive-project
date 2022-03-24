@@ -2,6 +2,16 @@ from django.db import models
 from prosecutions.models import Prosecutions
 from items.models import Items
 from datetime import datetime
+# from django.conf import settings
+from django.utils import timezone
+#import datetime
+from django.utils.timezone import get_current_timezone
+import pytz
+# naive_datetime = datetime.datetime.now()
+# naive_datetime.tzinfo
+# settings.TIME_ZONE  # 'UTC'
+# aware_datetime = make_aware(naive_datetime)
+#aware_datetime.tzinfo  # <UTC>
 
 # Create your models here.
 class Toners(models.Model):
@@ -11,7 +21,6 @@ class Toners(models.Model):
     total_qty = models.PositiveIntegerField(default=0,null=True)
     remaining_qty = models.PositiveIntegerField(default=0,null=True)
     created=models.DateTimeField(default=datetime.now())
-
     objects = models.Manager()
 
 class TonerDetails(models.Model):
@@ -24,4 +33,4 @@ class TonerDetails(models.Model):
     issued_to = models.ForeignKey(Prosecutions, on_delete=models.CASCADE)
     employee_name = models.CharField(max_length=30,null=True)
     employee_designation = models.CharField(max_length=30,null=True)
-    created = models.DateTimeField(default=datetime.now())
+    created=models.DateTimeField(default=datetime.now())

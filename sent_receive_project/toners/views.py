@@ -1,4 +1,6 @@
-from django.http import HttpResponse
+import datetime
+
+from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render, redirect
 from .models import Items, Prosecutions, Toners, TonerDetails
 from collections import Counter
@@ -7,6 +9,11 @@ from django.db.models import F
 from django.db.models import Q
 import forms
 from django.contrib import messages
+from django.contrib.messages import get_messages
+from django.utils import timezone
+from datetime import datetime
+
+
 
 
 # Create your views here.
@@ -47,9 +54,9 @@ def add_toners_save(request):
         Toners_model.save()
         messages.success(request, "Toner added successfully")
         calc_total_qty()
-        return redirect('add_toners')
+        return redirect('view_toners')
     else:
-        return redirect('add_toners')
+        return redirect('view_toners')
 
 
 def add_tonerdetails(request):
@@ -75,9 +82,9 @@ def add_tonerdetails_save(request):
         TonerDetails_model.save()
         messages.success(request, "Toner details added successfully")
         calc_total_qty()
-        return redirect('add_tonerdetails')
+        return redirect('view_toners')
     else:
-        return redirect('add_tonerdetails')
+        return redirect('view_toners')
 
 
 def edit_toners(request):
@@ -103,13 +110,14 @@ def edit_toners_save(request):
         # issued_to = Prosecutions.objects.get(id=issued_to_id)
 
         total_qty = request.POST.get("total_qty")
-        Toners_model = Toners(id=toner_id, toner_model=toner_model, toner_printer=toner_printer, total_qty=total_qty)
+        Toners_model = Toners(id=toner_id, toner_model=toner_model, toner_printer=toner_printer, total_qty=total_qty, created=datetime.now())
+
         Toners_model.save()
+        messages.success(request,"Toner edited successfully")
         calc_total_qty()
-        messages.success(request, "Toner updated successfully")
         return redirect('view_toners')
     else:
-        return redirect('view_toners')
+        return redirect('edit_toners')
 
 
 def edit_toners_delete(request, id):
@@ -117,7 +125,7 @@ def edit_toners_delete(request, id):
     toners.delete()
     messages.success(request, "Toner deleted successfully")
     calc_total_qty()
-    return redirect('edit_toners')
+    return redirect('view_toners')
 
 
 def edit_tonerdetails(request):
@@ -157,15 +165,15 @@ def edit_tonerdetails_save(request):
         TonerDetails_model.save()
         messages.success(request, "Toner details updated successfully")
         calc_total_qty()
-        return redirect('add_tonerdetails')
+        return redirect('view_toners')
     else:
-        return redirect('add_tonerdetails')
+        return redirect('view_toners')
 
 def edit_tonerdetails_delete(request,id):
     tonerdetails = TonerDetails.objects.get(id=id)
     tonerdetails.delete()
     messages.success(request, "Toner details deleted successfully")
     calc_total_qty()
-    return redirect('edit_tonerdetails')
+    return redirect('view_toners')
 
 

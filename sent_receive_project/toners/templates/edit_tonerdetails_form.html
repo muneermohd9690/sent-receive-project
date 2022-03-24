@@ -10,7 +10,7 @@
         <div class="row">
             <div class="col">
                 <label>Toner Model</label>
-                <select class="form-control" name="toner_model">
+                <select class="form-control" name="toner_model" >
                 {% for toner in toners %}
                 <option value="{{toner.id}}" {% if toner.id == tonerdetails.toner_model.id %} selected {% endif %}>
                     {{toner.toner_model}}</option>
@@ -19,7 +19,7 @@
             </div>
             <div class="col">
                 <label>Issued to</label>
-                <select class="form-control" name="issued_to">
+                <select class="form-control" name="issued_to" >
                 {% for prosecution in prosecutions %}
                 <option value="{{prosecution.id}}" {% if prosecution.id == tonerdetails.issued_to.id %} selected {% endif %}>
                     {{prosecution.name}}</option>
@@ -28,17 +28,17 @@
             </div>
             <div class="col">
                 <label>Employee Name</label>
-                <input type="text" class="form-control" placeholder="enter employee name" name="employee_name"
+                <input type="text" class="form-control" placeholder="enter employee name" name="employee_name" id="employee_name"
                        value="{{tonerdetails.employee_name}}">
             </div>
             <div class="col">
                 <label>Employee Designation</label>
-                <input type="text" class="form-control" placeholder="enter employee designation" name="employee_designation"
+                <input type="text" class="form-control" placeholder="enter employee designation" name="employee_designation" id="employee_designation"
                        value="{{tonerdetails.employee_designation}}">
             </div>
             <div class="col">
                 <label>Status</label>
-                <select class="form-control" name="status">
+                <select class="form-control" name="status" id="status">
                 {% for x,y in status %}
                     <option value="{{x}}" {% if x == tonerdetails.status %} selected {% endif %}>{{ x }}</option>
                 {% endfor %}
@@ -46,10 +46,39 @@
             </div>
 
         </div>
-        <button type="submit" class="btn btn-primary mt-3">Save Item Details</button>
-        <a href="{% url 'edit_tonerdetails_delete' tonerdetails.id %}" class="btn btn-danger mt-3">Delete Toner Details</a>
-
-
+        <button type="submit" class="btn btn-primary mt-3">Save</button>
+        <a href="{% url 'view_toners' %}" id="btn-back2" class="btn btn-primary mt-3">Back</a>
+        <!-- Button trigger modal -->
+        <button id="modal-confirm2" type="button" class="btn btn-primary" data-toggle="modal" data-target="#save-modal">
+        </button>
+        <!-- Button trigger modal -->
+        <!-- Modal -->
+        <div class="modal fade" id="save-modal" tabindex="-1" role="dialog" aria-labelledby="save-modal-label" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="save-modal-label">Save Changes</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Do you want to save changes ?
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{% url 'view_toners' %}" class="btn btn-secondary" >No</a>
+                        <button type="submit" class="btn btn-primary">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal -->
     </form>
 </div>
+
+<!--- Hidden data --->
+<div class="text-center mt-5">
+    <input id="employee_name2"  value="{{tonerdetails.employee_name}}">
+</div>
+<!--- Hidden data --->
 {% endblock %}
