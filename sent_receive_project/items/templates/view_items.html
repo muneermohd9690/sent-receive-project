@@ -21,9 +21,9 @@
                 <td>{{item.description}}</td>
                 <td>{{item.model_no}}</td>
                 <td>{{item.total_qty}}</td>
-                <td><a href="{% url 'view_items_details' item.id %}" class="btn btn-info mt-3">Details</a>
-                    <a href="{% url 'edit_items_form' item.id %}" class="btn btn-warning mt-3">Edit</a>
-                    <a href="{% url 'edit_items_delete' item.id %}" class="btn btn-danger mt-3">Delete</a></td>
+                <td><a href="{% url 'view_items_details' item.id %}" class="btn btn-info ">Details</a>
+                    <a href="{% url 'edit_items_form' item.id %}" class="btn btn-warning ">Edit</a>
+                    <a href="{% url 'edit_items_delete' item.id %}" class="btn btn-danger ">Delete</a></td>
             </tr>
             {% endfor %}
             </tbody>

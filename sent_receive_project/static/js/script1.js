@@ -1,19 +1,8 @@
-
-$(document).ready(function(){
-       $("#btn-back2").click(function(){
-        var employee_name = $("#employee_name").val()
-
-
-
-        var employee_name2 = $("#employee_name2").val()
-
-
-        if((employee_name != employee_name2))
-            {
-                $("#modal-confirm2").trigger('click');
-                return false;
-            }
-
-
-    });
+/**** to disbale save button if no changes in edit forms ****/
+$("#toner_model, #toner_model2").on("keyup",function(){
+    $(".btn-action1").prop("disabled",false);
+    if(($("#toner_model").val())==($("#toner_model2").val())){
+        $(".btn-action1").prop("disabled",true);
+    }
 });
+/**** to disbale save button if no changes in edit forms ****/

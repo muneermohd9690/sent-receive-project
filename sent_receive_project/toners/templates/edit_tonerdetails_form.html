@@ -10,7 +10,7 @@
         <div class="row">
             <div class="col">
                 <label>Toner Model</label>
-                <select class="form-control" name="toner_model" >
+                <select class="form-control" name="toner_model" id="toner_model">
                 {% for toner in toners %}
                 <option value="{{toner.id}}" {% if toner.id == tonerdetails.toner_model.id %} selected {% endif %}>
                     {{toner.toner_model}}</option>
@@ -19,7 +19,7 @@
             </div>
             <div class="col">
                 <label>Issued to</label>
-                <select class="form-control" name="issued_to" >
+                <select class="form-control" name="issued_to" id="issued_to">
                 {% for prosecution in prosecutions %}
                 <option value="{{prosecution.id}}" {% if prosecution.id == tonerdetails.issued_to.id %} selected {% endif %}>
                     {{prosecution.name}}</option>
@@ -46,10 +46,10 @@
             </div>
 
         </div>
-        <button type="submit" class="btn btn-primary mt-3">Save</button>
+        <button type="submit" class="btn btn-primary mt-3" >Save</button>
         <a href="{% url 'view_toners' %}" id="btn-back2" class="btn btn-primary mt-3">Back</a>
         <!-- Button trigger modal -->
-        <button id="modal-confirm2" type="button" class="btn btn-primary" data-toggle="modal" data-target="#save-modal">
+        <button id="modal-confirm2" type="button" style="display:none;" class="btn btn-primary" data-toggle="modal" data-target="#save-modal">
         </button>
         <!-- Button trigger modal -->
         <!-- Modal -->
@@ -77,8 +77,12 @@
 </div>
 
 <!--- Hidden data --->
-<div class="text-center mt-5">
+<div class="text-center mt-5" style="display :none;">
+    <input id="toner_model2" value="{{tonerdetails.toner_model.id}}">
+    <input id="issued_to2" value="{{tonerdetails.issued_to.id}}">
     <input id="employee_name2"  value="{{tonerdetails.employee_name}}">
+    <input id="employee_designation2" value="{{tonerdetails.employee_designation}}">
+    <input id="status2" value="{{tonerdetails.status}}">
 </div>
 <!--- Hidden data --->
 {% endblock %}
