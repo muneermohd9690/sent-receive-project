@@ -50,9 +50,9 @@ def add_items_save(request):
              items.description = request.POST.get("description")
              items.save()
              messages.success(request,"Item Added Successfully")
-             return redirect('add_items')
+             return redirect('view_items')
     else:
-        return redirect('add_items')
+        return redirect('view_items')
 
 
 def add_items_details(request):
@@ -86,6 +86,7 @@ def add_items_details_save(request):
                                         employee_name=employee_name, employee_designation=employee_designation,
                                         status=status)
         ItemDetails_model.save()
+        messages.success(request, "Item Details Added Successfully")
         calc_total_qty()
 
         return redirect('add_items_details')
@@ -111,6 +112,7 @@ def edit_items_save(request):
         total_qty = request.POST.get("total_qty")
         Items_model = Items(id=items_id, model_no=model_no, description=description, total_qty=total_qty)
         Items_model.save()
+        messages.success(request, "Item Edited Successfully")
         calc_total_qty()
         return redirect('view_items')
     else:
@@ -120,6 +122,7 @@ def edit_items_save(request):
 def edit_items_delete(request, id):
     items = Items.objects.get(id=id)
     items.delete()
+    messages.success(request, "Item Deleted Successfully")
     return redirect('view_items')
 
 
@@ -156,17 +159,19 @@ def edit_item_details_save(request):
                                         employee_name=employee_name, employee_designation=employee_designation,
                                         status=status)
         ItemDetails_model.save()
+        messages.success(request, "Item Details Edited Successfully")
         calc_total_qty()
-        return redirect('add_items_details')
+        return redirect('view_items')
     else:
-        return redirect('add_items_details')
+        return redirect('view_items')
 
 
 def edit_item_details_delete(request, id):
     itemdetails = ItemDetails.objects.get(id=id)
     itemdetails.delete()
+    messages.success(request, "Item Details Deleted Successfully")
     calc_total_qty()
-    return redirect('edit_item_details')
+    return redirect('view_items')
 
 
 def excel_import_items_db(request):

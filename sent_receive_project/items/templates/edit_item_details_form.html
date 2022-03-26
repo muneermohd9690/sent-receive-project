@@ -9,7 +9,7 @@
         <div class="row">
             <div class="col">
                 <label>Model Number</label>
-                <select class="form-control" name="model_no">
+                <select class="form-control" name="model_no" id="model_no">
                 {% for item in items %}
                 <option value="{{item.id}}" {% if item.id == itemdetails.model_no.id %} selected {% endif %}>
                     {{item.model_no}}</option>
@@ -18,18 +18,18 @@
             </div>
             <div class="col">
                 <label>Serial Number</label>
-                <input type="text" class="form-control" placeholder="Enter serialnumber" name="serial_no"
+                <input type="text" class="form-control" placeholder="Enter serialnumber" name="serial_no" id="serial_no"
                        value="{{itemdetails.serial_no}}">
                 <input type="hidden" name="itemdetails_id" value="{{itemdetails.id}}">
             </div>
             <div class="col">
                 <label>Tag Number</label>
-                <input type="text" class="form-control" placeholder="enter tag number" name="tag_no"
+                <input type="text" class="form-control" placeholder="enter tag number" name="tag_no" id="tag_no"
                        value="{{itemdetails.tag_no}}">
             </div>
             <div class="col">
                 <label>Issued to</label>
-                <select class="form-control" name="issued_to">
+                <select class="form-control" name="issued_to" id="issued_to">
                 {% for prosecution in prosecutions %}
                 <option value="{{prosecution.id}}" {% if prosecution.id == itemdetails.issued_to.id %} selected {% endif %}>
                     {{prosecution.name}}</option>
@@ -38,28 +38,59 @@
             </div>
              <div class="col">
                 <label>Employee Name</label>
-                <input type="text" class="form-control" placeholder="enter employee name" name="employee_name"
+                <input type="text" class="form-control" placeholder="enter employee name" name="employee_name" id="employee_name"
                        value="{{itemdetails.employee_name}}">
             </div>
             <div class="col">
                 <label>Employee Designation</label>
-                <input type="text" class="form-control" placeholder="enter employee designation" name="employee_designation"
+                <input type="text" class="form-control" placeholder="enter employee designation" name="employee_designation" id="employee_designation"
                        value="{{itemdetails.employee_designation}}">
             </div>
             <div class="col">
                 <label>Status</label>
-                <select class="form-control" name="status">
+                <select class="form-control" name="status" id="status">
                 {% for x,y in status %}
                     <option value="{{x}}" {% if x == itemdetails.status %} selected {% endif %}>{{ x }}</option>
                 {% endfor %}
                 </select>
             </div>
-
         </div>
-        <button type="submit" class="btn btn-primary mt-3">Save Item Details</button>
-        <a href="{% url 'edit_item_details_delete' itemdetails.id %}" class="btn btn-danger mt-3">Delete Item</a>
-
-
+        <button type="submit" class="btn btn-success mt-3">Save</button>
+        <a href="{% url 'view_items' %}" class="btn btn-primary mt-3" id="btn-back">Back</a>
+    <!-- Button trigger modal -->
+        <button id="modal-confirm" type="button" style="display:none;" class="btn btn-primary" data-toggle="modal" data-target="#save-modal">
+        </button>
+        <!-- Button trigger modal -->
+        <!-- Modal -->
+        <div class="modal fade" id="save-modal" tabindex="-1" role="dialog" aria-labelledby="save-modal-label" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="save-modal-label">Save Changes</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Do you want to save changes ?
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{% url 'view_items' %}" class="btn btn-secondary" >No</a>
+                        <button type="submit" class="btn btn-primary">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal -->
     </form>
+</div>
+<div class="text-center mt-5" style="display :none;">
+    <input id="model_no2" value="{{itemdetails.model_no.id}}">
+    <input id="serial_no2" value="{{itemdetails.serial_no}}">
+    <input id="tag_no2" value="{{itemdetails.tag_no}}">
+    <input id="issued_to2" value="{{itemdetails.issued_to.id}}">
+    <input id="employee_name2" value="{{itemdetails.employee_name}}">
+    <input id="employee_designation2" value="{{itemdetails.employee_designation}}">
+    <input id="status2" value="{{itemdetails.status}}">
 </div>
 {% endblock %}
