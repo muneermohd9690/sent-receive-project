@@ -1,5 +1,5 @@
 {% extends 'mainpage.html' %}
-{% load static %}
+
 {% block content %}
 
 <div class="container">
@@ -29,8 +29,35 @@
               <td>{{detail.status}}</td>
               <td><a href="{% url 'print_toner_issue_vouchers' detail.id %}" target="_blank" rel="noopener noreferrer" class="btn btn-info">Print Issue Voucher</a>
                   <a href="{% url 'edit_tonerdetails_form' detail.id %}" class="btn btn-warning">Edit</a>
-                  <a href="{% url 'edit_tonerdetails_delete' detail.id %}" class="btn btn-danger">Delete</a></td>
+                  <a data-toggle="modal" data-target="#delete-modal{{ toner.pk }}" class="btn btn-danger">Delete</a></td>
           </tr>
+          <!-- delete confirmation Modal -->
+          <div class="modal fade" id="delete-modal{{ tonerdetails.pk }}" tabindex="-1" role="dialog"
+               aria-labelledby="delete-modal-label"
+               aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title" id="delete-modal-label">Delete Toner Details</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                          </button>
+                      </div>
+                      <div class="modal-body">
+                          <div class="text-center text-danger">
+                              <span>Do you want to delete toner details ?</span>
+                              <div class="text-dark mt-3 mb-2">Toner: <strong>{{detail.toner_model.toner_model}}</strong></div>
+                          </div>
+                      </div>
+                      <div class="modal-footer">
+                          <a href="{% url 'view_toners' %}" class="btn btn-secondary">Cancel</a>
+                          <a href="{% url 'edit_tonerdetails_delete' detail.id %}" class="btn btn-danger"
+                             type="submit">Delete</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <!-- delete confirmation Modal -->
           {% endfor %}
           </tbody>
       </table>
