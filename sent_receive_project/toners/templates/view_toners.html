@@ -70,14 +70,14 @@ $(document).ready(function(){
 <!--- Messages after CRUD operations --->
 {% if messages %}
     {% for message in messages %}
-        <script>
+            <script>
                  var m= "{{ message }}";
                  swal({
                        title: "Good job!",
                        text: m,
                        icon: "success",
                       });
-         </script>
+            </script>
     {% endfor %}
 {% endif %}
 <!--- Messages after CRUD operations --->

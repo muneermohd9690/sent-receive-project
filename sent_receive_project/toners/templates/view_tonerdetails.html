@@ -28,6 +28,7 @@
               <td>{{detail.employee_designation}}</td>
               <td>{{detail.status}}</td>
               <td><a href="{% url 'print_toner_issue_vouchers' detail.id %}" target="_blank" rel="noopener noreferrer" class="btn btn-info">Print Issue Voucher</a>
+                  <a href="{% url 'print_toner_sent_invoice' detail.id %}" target="_blank" rel="noopener noreferrer" class="btn btn-info">Print Invoice</a>
                   <a href="{% url 'edit_tonerdetails_form' detail.id %}" class="btn btn-warning">Edit</a>
                   <a data-toggle="modal" data-target="#delete-modal{{ toner.pk }}" class="btn btn-danger">Delete</a></td>
           </tr>

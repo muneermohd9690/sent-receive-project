@@ -139,3 +139,21 @@ def print_toner_issue_vouchers(request,id):
         return HttpResponse(response.getvalue(), content_type="application/pdf")
     else:
         return HttpResponse("Error")
+
+def print_toner_sent_invoice(request,id):
+    tonerdetails = TonerDetails.objects.filter(id=id)
+    for detail in tonerdetails:
+        model_id=detail.toner_model_id
+    text=find_toner_description(model_id)
+    brand=text[0]
+    device=text[1]
+    data = {'tonerdetails':tonerdetails,'brand':brand,'device':device}
+    template = get_template("print_toner_sent_invoice.html")
+    data_p = template.render(data)
+    response = BytesIO()
+
+    pdfPage = pisa.pisaDocument(BytesIO(data_p.encode("UTF-8")), response)
+    if not pdfPage.err:
+        return HttpResponse(response.getvalue(), content_type="application/pdf")
+    else:
+        return HttpResponse("Error")

@@ -82,10 +82,10 @@
         width: 180px;
     }
     .w5{
-        width: 30px;
+        width: 90px;
     }
     .w6{
-        width: 90px;
+        width: 130px;
     }
     .w7{
         width: 90px;
@@ -113,26 +113,28 @@
                 <th class="w2">Send Date</th>
                 <th class="w3">No.of Items</th>
                 <th class="w4">Send To</th>
-                <th>Product</th>
+                <th class="w5">Product</th>
                 <th class="w6">Model No.</th>
                 <th class="w7">Serial No.</th>
                 <th>Received By</th>
             </tr>
+            {% for detail in tonerdetails %}
             <tr>
                 <td>10</td>
-                <td>December 27, 2022</td>
+                <td>{{detail.created}}</td>
                 <td>10</td>
-                <td>مكتب النائب العام - فريق الضبط القضائي</td>
-                <td>HP Color Laserjet Printer</td>
-                <td>477fdw</td>
-                <td>1234567890</td>
-                <td>Name : Mr.Yaser al naqbi<br>
+                <td> {{detail.issued_to.name}}</td>
+                <td>{{brand}} toner</td>
+                <td>{{device}} {{detail.toner_printer_id}}</td>
+                <td>{{detail.toner_model.toner_model}}</td>
+                <td>Name : {{detail.employee_name}}<br>
                     <br>
                     Sign &nbsp;&nbsp;&nbsp;:<br>
                     <br>
                     Date &nbsp;&nbsp;&nbsp;:
                 </td>
             </tr>
+            {% endfor %}
         </table>
      </div>
 </body>
