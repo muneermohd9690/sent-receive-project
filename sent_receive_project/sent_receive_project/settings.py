@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'mainpage.apps.MainpageConfig',
     'toners.apps.TonersConfig',
     'excel.apps.ExcelConfig',
+    'sent_items.apps.SentItemsConfig',
     'django_forms_bootstrap',
 ]
 
@@ -146,9 +147,14 @@ MEDIA_URL = '/images/'
 JS_SCRIPT_URL = '/js/'
 CSS_URL = '/css/'
 
+LOGIN_REDIRECT_URL = 'dashboard'
+LOGOUT_REDIRECT_URL= 'login'
+
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_DIRS=[
     os.path.join(BASE_DIR, 'static' )
 ]
 
+LOGIN_REDIRECT_URL = 'dashboard'
+LOGOUT_REDIRECT_URL = 'login'

@@ -1,0 +1,36 @@
+{% extends 'mainpage.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container">
+    <h2>Cart Items</h2>
+    <input class="form-control" id="myInput" type="text" placeholder="Search..">
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th class="w1">No</th>
+                <th class="w2">Send Date</th>
+                <th class="w3">No.of Items</th>
+                <th class="w4">Send To</th>
+                <th class="w5">Product</th>
+                <th class="w6">Model No.</th>
+                <th class="w7">Serial No.</th>
+                <th>Received By</th>
+            </tr>
+            </thead>
+        </table>
+
+    </div>
+    <script>
+        $(document).ready(function(){
+          $("#myInput").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            $("#myTable tr").filter(function() {
+              $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+          });
+        });
+    </script>
+</div>
+{% endblock %}

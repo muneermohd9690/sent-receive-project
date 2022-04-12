@@ -19,7 +19,7 @@
 
 
 <div class="container-fluid p-3 my-3 bg-dark text-white">
-    <h1><a href="{% url 'mainpage' %}" class="text-light">Sent Receive</a></h1>
+    <h1><a href="{% url 'mainpage' %}" class="text-light">IT Inventory Management</a></h1>
     <div class="btn-group">
         <button type="button" class="btn btn-secondary">Prosecutions</button>
         <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">
@@ -87,6 +87,15 @@
         <div class="dropdown-menu">
             <a class="dropdown-item" href="{% url 'excel_import_items_db' %}">Import</a>
         </div>
+    </div>
+        <div class="btn-group">
+        <button type="button" class="btn btn-secondary">Sent Items</button>
+        <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown">
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <li><a class="dropdown-item" href="{% url 'view_sent_items' %}">View Sent Items</a></li>
+                        <li><a class="dropdown-item" href="{% url 'view_cart_items' %}">View Cart Items</a></li>
+        </ul>
     </div>
 
 </div>

@@ -10,6 +10,8 @@ import pandas as pd
 import excel
 from django.core.files.storage import FileSystemStorage
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import cache_control
 
 
 def calc_total_qty():
@@ -17,27 +19,33 @@ def calc_total_qty():
         item.total_qty = item.itemdetails_count
         item.save(update_fields=['total_qty'])
 
-
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
 def items(request):
     return HttpResponse("this is for the items page")
 
-
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
 def view_items(request):
     items = Items.objects.all()
     itemdetails = ItemDetails.objects.all()
     return render(request, 'view_items.html', {"items": items})
 
-
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
 def view_items_details(request, id):
     itemdetails = ItemDetails.objects.filter(model_no=id)
     return render(request, 'view_items_details.html', {"itemdetails": itemdetails})
 
-
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
 def add_items(request):
     return render(request, 'add_items.html')
 
 
 # this is where items are added.modelmo,description,quantity should be calculated after item_details_save
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
 def add_items_save(request):
     if request.method == "POST":
         model_no = request.POST['model_no']
@@ -54,7 +62,8 @@ def add_items_save(request):
     else:
         return redirect('view_items')
 
-
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
 def add_items_details(request):
     prosecutions = Prosecutions.objects.all()
     items = Items.objects.all()
@@ -63,6 +72,8 @@ def add_items_details(request):
 
 
 # this is where item details are added like modelno,serialno,department,empname
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
 def add_items_details_save(request):
     items = Items.objects.all()
     if request.method == "POST":
@@ -94,16 +105,20 @@ def add_items_details_save(request):
         return redirect('add_items_details')
 
 
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
 def edit_items(request):
     items = Items.objects.all()
     return render(request, 'view_items.html', {"items": items})
 
-
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
 def edit_items_form(request, id):
     items = Items.objects.get(id=id)
     return render(request, 'edit_items_form.html', {"items": items})
 
-
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
 def edit_items_save(request):
     if request.method == "POST":
         items_id = request.POST.get("items_id")
@@ -118,19 +133,22 @@ def edit_items_save(request):
     else:
         return redirect('view_items')
 
-
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
 def edit_items_delete(request, id):
     items = Items.objects.get(id=id)
     items.delete()
     messages.success(request, "Item Deleted Successfully")
     return redirect('view_items')
 
-
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
 def edit_item_details(request):
     itemdetails = ItemDetails.objects.all()
     return render(request, 'edit_item_details.html', {"itemdetails": itemdetails})
 
-
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
 def edit_item_details_form(request, id):
     prosecutions = Prosecutions.objects.all()
     items = Items.objects.all()
@@ -138,7 +156,8 @@ def edit_item_details_form(request, id):
     return render(request, 'edit_item_details_form.html', {"itemdetails": itemdetails, "items": items,
                                                            "prosecutions": prosecutions, "status": ItemDetails.STATUS})
 
-
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
 def edit_item_details_save(request):
     if request.method == "POST":
         itemdetails_id = request.POST.get("itemdetails_id")
@@ -165,7 +184,8 @@ def edit_item_details_save(request):
     else:
         return redirect('view_items')
 
-
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
 def edit_item_details_delete(request, id):
     itemdetails = ItemDetails.objects.get(id=id)
     itemdetails.delete()
@@ -173,7 +193,8 @@ def edit_item_details_delete(request, id):
     calc_total_qty()
     return redirect('view_items')
 
-
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
 def excel_import_items_db(request):
     try:
         if request.method == 'POST' and request.FILES['myfile']:
@@ -197,6 +218,8 @@ def excel_import_items_db(request):
         print(identifier)
     return render(request, 'add_items.html', {})
 
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
 def excel_import_item_details_db(request):
     try:
         if request.method == 'POST' and request.FILES['myfile']:

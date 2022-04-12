@@ -323,7 +323,7 @@
             </tr>
             {% for detail in itemdetails %}
             <tr>
-                <td>1</td>
+                <td>{{ forloop.counter  }}</td>
                 <td>{{brand}}</td>
                 <td>{{device}}</td>
                 <td>{{detail.model_no.model_no}}</td>

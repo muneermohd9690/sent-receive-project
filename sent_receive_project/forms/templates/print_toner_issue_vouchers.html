@@ -321,7 +321,7 @@
             </tr>
             {% for detail in tonerdetails %}
             <tr>
-                <td>1</td>
+                <td>{{ forloop.counter  }}</td>
                 <td>{{brand}}</td>
                 <td>{{device}} {{detail.toner_printer_id}}</td>
                 <td>{{detail.toner_model.toner_model}}</td>
