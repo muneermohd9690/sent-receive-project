@@ -40,3 +40,12 @@ Sweetalert design
     color:  #fff;
     border: 1px solid #ffc107;
 }
+
+/*----------------------------------------------
+#Logout btn properties
+-----------------------------------------------*/
+#btn-logout {
+    width: 90px;
+    float: right;
+    margin-right: 25px;
+}

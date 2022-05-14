@@ -12,6 +12,8 @@ from django.contrib import messages
 from django.contrib.messages import get_messages
 from django.utils import timezone
 from datetime import datetime
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import cache_control
 
 
 
@@ -23,25 +25,35 @@ def calc_total_qty():
         toner.save(update_fields=['total_qty'])
 
 
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
 def toners(request):
     return HttpResponse("this is for the items page")
 
 
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
 def view_toners(request):
     toners = Toners.objects.all()
     return render(request, 'view_toners.html', {"toners": toners})
 
 
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
 def view_tonerdetails(request, id):
     tonerdetails = TonerDetails.objects.filter(toner_model=id)
     return render(request, 'view_tonerdetails.html', {"tonerdetails": tonerdetails})
 
 
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
 def add_toners(request):
     items = Items.objects.all()
     return render(request, 'add_toners.html', {"items": items})
 
 
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
 def add_toners_save(request):
     items = Items.objects.all()
     if request.method == "POST":
@@ -59,6 +71,8 @@ def add_toners_save(request):
         return redirect('view_toners')
 
 
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
 def add_tonerdetails(request):
     prosecutions = Prosecutions.objects.all()
     toners = Toners.objects.all()
@@ -66,6 +80,8 @@ def add_tonerdetails(request):
                                                      "status": TonerDetails.STATUS})
 
 
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
 def add_tonerdetails_save(request):
     toners = Toners.objects.all()
     if request.method == "POST":
@@ -87,17 +103,23 @@ def add_tonerdetails_save(request):
         return redirect('view_toners')
 
 
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
 def edit_toners(request):
     toners = Toners.objects.all()
     return render(request, 'edit_toners.html', {"toners": toners})
 
 
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
 def edit_toners_form(request, id):
     items = Items.objects.all()
     toners = Toners.objects.get(id=id)
     return render(request, 'edit_toners_form.html', {"toners": toners, "items": items})
 
 
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
 def edit_toners_save(request):
     if request.method == "POST":
         toner_id = request.POST.get("toner_id")
@@ -120,6 +142,8 @@ def edit_toners_save(request):
         return redirect('edit_toners')
 
 
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
 def edit_toners_delete(request, id):
     toners = Toners.objects.get(id=id)
     toners.delete()
@@ -128,11 +152,15 @@ def edit_toners_delete(request, id):
     return redirect('view_toners')
 
 
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
 def edit_tonerdetails(request):
     tonerdetails = TonerDetails.objects.all()
     return render(request, 'edit_tonerdetails.html', {"tonerdetails": tonerdetails})
 
 
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
 def edit_tonerdetails_form(request, id):
     prosecutions = Prosecutions.objects.all()
     toners = Toners.objects.all()
@@ -142,6 +170,8 @@ def edit_tonerdetails_form(request, id):
                    "status": TonerDetails.STATUS})
 
 
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
 def edit_tonerdetails_save(request):
     if request.method == "POST":
         tonerdetails_id = request.POST.get("tonerdetails_id")
@@ -169,6 +199,8 @@ def edit_tonerdetails_save(request):
     else:
         return redirect('view_toners')
 
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
 def edit_tonerdetails_delete(request,id):
     tonerdetails = TonerDetails.objects.get(id=id)
     tonerdetails.delete()
