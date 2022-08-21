@@ -6,6 +6,7 @@
   <h2>Toner Details</h2>
 
   <input class="form-control" id="myInput" type="text" placeholder="Search..">
+
   <div class="table-responsive">
       <table class="table table-bordered">
           <thead>
@@ -21,15 +22,18 @@
           </thead>
           <tbody id="myTable">
           {% for detail in tonerdetails %}
+
           <tr>
               <td>{{detail.toner_model.toner_model}}</td>
+
               <td>{{detail.issued_to.name}}</td>
               <td>{{detail.employee_name}}</td>
               <td>{{detail.employee_designation}}</td>
               <td>{{detail.status}}</td>
               <td><a href="{% url 'print_toner_issue_vouchers' detail.id %}" target="_blank" rel="noopener noreferrer" class="btn btn-info">Print Issue Voucher</a>
                   <a href="{% url 'print_toner_sent_invoice' detail.id %}" target="_blank" rel="noopener noreferrer" class="btn btn-info">Print Invoice</a>
-                  <a href="{% url 'view_cart_items' %}" class="btn btn-info">Add to Cart</a>
+
+                  <a onclick="getCartData('{{detail.id}}', 'add')" data-detail="{{detail.id}}" data-action="add" class="btn btn-outline-secondary addtocart">Add to Cart</a>
                   <a href="{% url 'edit_tonerdetails_form' detail.id %}" class="btn btn-warning">Edit</a>
                   <a data-toggle="modal" data-target="#delete-modal{{ toner.pk }}" class="btn btn-danger">Delete</a></td>
           </tr>

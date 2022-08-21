@@ -147,8 +147,7 @@ MEDIA_URL = '/images/'
 JS_SCRIPT_URL = '/js/'
 CSS_URL = '/css/'
 
-LOGIN_REDIRECT_URL = 'mainpage'
-LOGOUT_REDIRECT_URL= 'login'
+
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
@@ -156,4 +155,5 @@ STATICFILES_DIRS=[
     os.path.join(BASE_DIR, 'static' )
 ]
 
-
+LOGIN_REDIRECT_URL = 'mainpage'
+LOGOUT_REDIRECT_URL= 'login'

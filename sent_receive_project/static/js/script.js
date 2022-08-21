@@ -257,3 +257,5 @@ $(document).ready(function(){
    });
 
 /**** disable save button in edit_item_details_form(EIDF) ****/
+
+/**** add to cart ****/

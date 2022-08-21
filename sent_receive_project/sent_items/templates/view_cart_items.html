@@ -19,6 +19,18 @@
                 <th>Received By</th>
             </tr>
             </thead>
+            {% for item in items %}
+            <tr>
+                <td class="w1">No</td>
+                <td class="w2">Send Date</td>
+                <td class="w3">No.of Items</td>
+                <td class="w4">Send To</td>
+                <td class="w5">toner name</td>
+                <td class="w6">Model No.</td>
+                <td class="w7">Serial No.</td>
+                <td>{{item.employee_name}}</td>
+            </tr>
+            {% endfor %}
         </table>
 
     </div>
