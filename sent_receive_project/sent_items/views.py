@@ -3,6 +3,7 @@ from .models import SentItems
 from .models import *
 from django.http import JsonResponse
 import json
+from toners.models import TonerDetails,Toners
 
 # Create your views here.
 def view_sent_items(request):
@@ -26,12 +27,19 @@ def update_items(request):
     data = json.loads(request.body)
     detailId = data['detailId']
     action = data['action']
+
     print('detailId:',detailId)
     print('action:', action)
     customer=request.user.customer
     detail=TonerDetails.objects.get(id=detailId)
+
+    toner_printer_id=Toners.objects.get(id=detail.toner_model_id)
+    printdescription=Items.objects.get(id=toner_printer_id.toner_printer.id)
+    print_description=printdescription.description
+    print(print_description)
+
     cart, created = Cart.objects.get_or_create(customer=customer,complete=False)
-    cartitem,created =CartItem.objects.get_or_create(cart=cart,detail=detail)
+    cartitem,created =CartItem.objects.get_or_create(cart=cart,product=detail)
 
     if action=='add':
         cartitem.quantity=(cartitem.quantity+1)

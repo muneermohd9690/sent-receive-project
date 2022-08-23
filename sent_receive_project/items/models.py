@@ -37,3 +37,4 @@ class ItemDetails(models.Model):
 
 
 
+
