@@ -24,14 +24,9 @@
             <tr>
                 <td class="w1">{{forloop.counter}}</td>
                 <td class="w2">{{item.date_added.date}}</td>
-                <td class="w3">{{item.quantity}}</td>
+                <td class="w3">{{count}}</td>
                 <td class="w4">{{item.product.issued_to.name}}</td>
-                <td class="w5">{% if item.product_id == 9 %} ricoh {% endif %}
-                                {% if item.product_id == 10 %} hp {% endif %}
-                                {% if item.product_id == 11 %} ricoh {% endif %}
-
-
-                </td>
+                <td class="w5">{{ item.product.toner_model.toner_printer.description}} toner</td>
                 <td class="w6">{{item.product.toner_model.toner_printer.model_no}}</td>
                 <td class="w7">{{item.product.toner_model.toner_model}}</td>
                 <td class="w8">{{item.product.employee_name}}</td>
