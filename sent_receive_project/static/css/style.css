@@ -49,3 +49,10 @@ Sweetalert design
     float: right;
     margin-right: 25px;
 }
+
+
+#btn-dispatch {
+    width: 90px;
+    float: right;
+    margin-right: 10px;
+}

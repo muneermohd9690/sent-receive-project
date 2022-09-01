@@ -1,17 +1,23 @@
 {% extends 'mainpage.html' %}
 {% load static %}
+
 {% block content %}
 
 <div class="container">
-    <h2>Cart Items</h2>
+    <div style="clear: both">
+        <h2 style="float: left">Cart Items</h2>
+        <h4 style="float: right">No.of Items: {{total}}</h4>
+    </div>
+
     <input class="form-control" id="myInput" type="text" placeholder="Search..">
+    <form role="form" action="dispatch" method="post">
+     {% csrf_token %}
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
             <tr>
                 <th class="w1">No</th>
                 <th class="w2">Send Date</th>
-                <th class="w3">No.of Items</th>
                 <th class="w4">Send To</th>
                 <th class="w5">Product Description</th>
                 <th class="w6">Model No.</th>
@@ -24,18 +30,19 @@
             <tr>
                 <td class="w1">{{forloop.counter}}</td>
                 <td class="w2">{{item.date_added.date}}</td>
-                <td class="w3">{{count}}</td>
                 <td class="w4">{{item.product.issued_to.name}}</td>
-                <td class="w5">{{ item.product.toner_model.toner_printer.description}} toner</td>
+                <td class="w5">{{item.product.toner_model.toner_printer.description}} toner</td>
                 <td class="w6">{{item.product.toner_model.toner_printer.model_no}}</td>
                 <td class="w7">{{item.product.toner_model.toner_model}}</td>
-                <td class="w8">{{item.product.employee_name}}</td>
+                <td class="w8 name=employee_name">{{item.product.employee_name}}</td>
             </tr>
             {% endfor %}
             </tbody>
         </table>
+        <button type="submit" class="btn btn-info float-right" >Dispatch</button>
 
     </div>
+    </form>
     <script>
         $(document).ready(function(){
           $("#myInput").on("keyup", function() {
@@ -47,4 +54,5 @@
         });
     </script>
 </div>
+
 {% endblock %}
