@@ -1,4 +1,4 @@
-
+/***  for adding to cart ***/
 function getCartData(detailId, action){
   console.log(detailId)
   console.log(action)
@@ -30,3 +30,5 @@ function updateUserOrder(detailId,action){
         location.reload()
     })
 }
+/***  for adding to cart ***/
+

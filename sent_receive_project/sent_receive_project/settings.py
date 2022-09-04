@@ -87,6 +87,7 @@ TEMPLATES = [
             ],
             'libraries': {
                 'staticfiles': 'django.templatetags.static',
+                #'post_tags': 'sent_receive_app.templatetags.post_tags',
             },
         },
     },

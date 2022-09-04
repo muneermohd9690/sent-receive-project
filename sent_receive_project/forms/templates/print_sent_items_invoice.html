@@ -62,7 +62,7 @@
     }
     .table1 tr{
     text-align: left;
-    font: 12px "Times New Roman", Times New Roman;
+    font: 14px "Times New Roman", Times New Roman;
     padding-top: 5px;
     padding-right: 5px;
     padding-bottom: 1px;
@@ -70,10 +70,10 @@
     margin-top:20px;
     }
     .w1{
-        width: 30px;
+        width: 50px;
     }
     .w2{
-        width: 110px;
+        width: 100px;
     }
     .w3{
         width: 100px;
@@ -82,16 +82,16 @@
         width: 180px;
     }
     .w5{
-        width: 30px;
+        width: 100px;
     }
     .w6{
-        width: 90px;
+        width: 100px;
     }
     .w7{
-        width: 90px;
+        width: 100px;
     }
     .w8{
-        width: 30px;
+        width: 180px;
     }
     body {
 
@@ -104,7 +104,7 @@
 <div id="frame_header_logo" class="logo">
                     <img src="http://127.0.0.1:8000{% static 'media/pplogo.jpg' %}" alt="My image" width="100" height="100" />
 </div>
-<div id="header_left1" class="left1"><u>UAE Public Prosecution IT Department Send Item Details</u></div>
+<div id="header_left1" class="left1"><u>UAE Public Prosecution IT Department Sent Item Details</u></div>
      <div  class="table1">
         <table>
 
@@ -113,28 +113,30 @@
                 <th class="w2">Send Date</th>
                 <th class="w3">No.of Items</th>
                 <th class="w4">Send To</th>
-                <th>Product</th>
+                <th class="w5">Product</th>
                 <th class="w6">Model No.</th>
                 <th class="w7">Serial No.</th>
-                <th>Received By</th>
+                <th class="w8">Received By</th>
             </tr>
+            {% for item in cartitems %}
             <tr>
-                <td>10</td>
-                <td>December 27, 2022</td>
-                <td>10</td>
-                <td>مكتب النائب العام - فريق الضبط القضائي</td>
-                <td>HP Color Laserjet Printer</td>
-                <td>477fdw</td>
-                <td>1234567890</td>
-                <td>Name : Mr.Yaser al naqbi<br>
-                    <br>
-                    Sign &nbsp;&nbsp;&nbsp;:<br>
+                <td class="w1">{{forloop.counter}}</td>
+                <td class="w2">{{item.date_added.date}}</td>
+                <td class="w3">Test</td>
+                <td class="w4">{{item.product.issued_to.name}}</td>
+                <td class="w5">{{item.product.toner_model.toner_printer.description}} toner</td>
+                <td class="w6">{{item.product.toner_model.toner_printer.model_no}}</td>
+                <td class="w7">{{item.product.toner_model.toner_model}}</td>
+                <td class="w8">Name : {{item.product.employee_name}}<br>
+
+                    Sign &nbsp;&nbsp;&nbsp;:
                     <br>
                     Date &nbsp;&nbsp;&nbsp;:
                 </td>
             </tr>
+            {% endfor %}
+
         </table>
      </div>
 </body>
-
 </html>

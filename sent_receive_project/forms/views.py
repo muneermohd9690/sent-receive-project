@@ -6,7 +6,8 @@ from django.template.loader import render_to_string, get_template
 import os
 from django.conf import settings
 from django.contrib.staticfiles import finders
-from .models import Items,ItemDetails,Prosecutions,Toners,TonerDetails
+from .models import Items,ItemDetails,Prosecutions,Toners,TonerDetails,CartItem,Cart
+
 
 
 def forms(request):
@@ -74,14 +75,14 @@ def link_callback(uri, rel):
         )
     return path
 
-def print_sent_items_invoice(request):
-
-    data = {}
+def print_sent_items_invoice(request,id):
+    items = Cart.objects.filter(id=id)
+    cartitems=CartItem.objects.filter(cart=id)
+    #pisa.pisaDocument(StringIO.StringIO(html.encode("UTF-8")), dest=result, link_callback=links)
+    data = {'items': items,'cartitems':cartitems}
     template = get_template("print_sent_items_invoice.html")
     data_p = template.render(data)
     response = BytesIO()
-    #pisa.pisaDocument(StringIO.StringIO(html.encode("UTF-8")), dest=result, link_callback=links)
-
     pdfPage = pisa.pisaDocument(BytesIO(data_p.encode("UTF-8")), response)
     if not pdfPage.err:
         return HttpResponse(response.getvalue(), content_type="application/pdf")
@@ -157,3 +158,4 @@ def print_toner_sent_invoice(request,id):
         return HttpResponse(response.getvalue(), content_type="application/pdf")
     else:
         return HttpResponse("Error")
+

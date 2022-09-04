@@ -1,5 +1,5 @@
 {% extends 'mainpage.html' %}
-{% load static %}
+
 
 {% block content %}
 
@@ -8,21 +8,19 @@
         <h2 style="float: left">Cart Items</h2>
         <h4 style="float: right">No.of Items: {{total}}</h4>
     </div>
-
     <input class="form-control" id="myInput" type="text" placeholder="Search..">
-    <form role="form" action="dispatch" method="post">
-     {% csrf_token %}
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
             <tr>
                 <th class="w1">No</th>
                 <th class="w2">Send Date</th>
-                <th class="w4">Send To</th>
-                <th class="w5">Product Description</th>
-                <th class="w6">Model No.</th>
-                <th class="w7">Serial No.</th>
-                <th class="w8">Received By</th>
+                <th class="w3">Send To</th>
+                <th class="w4">Product Description</th>
+                <th class="w5">Model No.</th>
+                <th class="w6">Serial No.</th>
+                <th class="w7">Received By</th>
+                <th class="w8">Action</th>
             </tr>
             </thead>
             <tbody id="myTable">
@@ -30,19 +28,21 @@
             <tr>
                 <td class="w1">{{forloop.counter}}</td>
                 <td class="w2">{{item.date_added.date}}</td>
-                <td class="w4">{{item.product.issued_to.name}}</td>
-                <td class="w5">{{item.product.toner_model.toner_printer.description}} toner</td>
-                <td class="w6">{{item.product.toner_model.toner_printer.model_no}}</td>
-                <td class="w7">{{item.product.toner_model.toner_model}}</td>
-                <td class="w8 name=employee_name">{{item.product.employee_name}}</td>
+                <td class="w3">{{item.product.issued_to.name}}</td>
+                <td class="w4">{{item.product.toner_model.toner_printer.description}} toner</td>
+                <td class="w5">{{item.product.toner_model.toner_printer.model_no}}</td>
+                <td class="w6">{{item.product.toner_model.toner_model}}</td>
+                <td class="w7">{{item.product.employee_name}}</td>
+                <td class=" w8"><a href="{% url 'remove_from_cart' item.id %}" class="btn btn-danger" type="submit">Remove from Cart</a>
+
+                </td>
             </tr>
             {% endfor %}
             </tbody>
         </table>
-        <button type="submit" class="btn btn-info float-right" >Dispatch</button>
-
+        <a href="{% url 'dispatch' %}" class="btn btn-info dispatch">Dispatch</a>
+        <a href="{% url 'print_sent_items_invoice' itemsincart %}" target="_blank" rel="noopener noreferrer" class="btn btn-info">Print Invoice</a>
     </div>
-    </form>
     <script>
         $(document).ready(function(){
           $("#myInput").on("keyup", function() {

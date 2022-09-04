@@ -4,7 +4,7 @@ from .import views
 urlpatterns=[
     path('',views.forms),
     path('sent_items_invoice/',views.sent_items_invoice,name='sent_items_invoice'),
-    path('sent_items_invoice/print_sent_items_invoice',views.print_sent_items_invoice,name='print_sent_items_invoice'),
+    path('sent_items_invoice/print_sent_items_invoice<int:id>',views.print_sent_items_invoice,name='print_sent_items_invoice'),
     path('sent_items_invoice/print_toner_sent_invoice<int:id>',views.print_toner_sent_invoice,name='print_toner_sent_invoice'),
 
 
