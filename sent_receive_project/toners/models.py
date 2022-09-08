@@ -4,14 +4,12 @@ from items.models import Items
 from datetime import datetime
 # from django.conf import settings
 from django.utils import timezone
+from sent_items.models import CartItem
 #import datetime
-from django.utils.timezone import get_current_timezone
-import pytz
-# naive_datetime = datetime.datetime.now()
-# naive_datetime.tzinfo
-# settings.TIME_ZONE  # 'UTC'
-# aware_datetime = make_aware(naive_datetime)
-#aware_datetime.tzinfo  # <UTC>
+from django.contrib.contenttypes.fields import GenericRelation
+
+
+
 
 # Create your models here.
 class Toners(models.Model):
@@ -34,3 +32,4 @@ class TonerDetails(models.Model):
     employee_name = models.CharField(max_length=30,null=True)
     employee_designation = models.CharField(max_length=30,null=True)
     created=models.DateTimeField(default=datetime.now())
+    cartitem = GenericRelation(CartItem, related_query_name='tonerdetails')

@@ -1,8 +1,17 @@
 from django.db import models
 from django.db.models import F
+from django.apps import apps
 
+from sent_items.models import CartItem
 from prosecutions.models import Prosecutions
 from datetime import datetime
+from django.contrib.contenttypes.fields import GenericRelation
+
+
+
+
+#from sent_items.models import CartItem
+#import sent_items.models
 #from excel.models import ExcelFile
 
 # Create your models here.
@@ -31,6 +40,8 @@ class ItemDetails(models.Model):
     employee_name=models.CharField(max_length=50,null=True)
     employee_designation = models.CharField(max_length=50, null=True)
     created = models.DateTimeField(default=datetime.now())
+    cartitem = GenericRelation(CartItem, related_query_name='itemdetails')
+
 
 
 

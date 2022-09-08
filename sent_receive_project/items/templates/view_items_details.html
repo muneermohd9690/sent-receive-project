@@ -32,6 +32,7 @@
               <td>{{detail.employee_designation}}</td>
               <td>{{detail.status}}</td>
               <td><a href="{% url 'print_issue_vouchers' detail.id %}" target="_blank" rel="noopener noreferrer" class="btn btn-info">Print Issue Voucher</a>
+              <a onclick="getCartData('{{detail.id}}', 'add')" data-detail="{{detail.id}}" data-action="add" class="btn btn-info addtocart">Add to Cart</a>
               <a href="{% url 'edit_item_details_form' detail.id %}" class="btn btn-warning ">Edit</a>
               <a class="btn btn-danger" data-toggle="modal" data-target="#delete-modal{{ detail.pk }}">Delete</a></td>
           </tr>

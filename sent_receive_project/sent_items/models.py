@@ -1,9 +1,12 @@
 from django.db import models
 from datetime import datetime
-from prosecutions.models import Prosecutions
-from items.models import Items
-from toners.models import TonerDetails,Toners
+
+
+#from toners.models import TonerDetails
+
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 
 
 # Create your models here.
@@ -17,10 +20,18 @@ class Cart(models.Model):
     transaction_id = models.CharField(max_length=100, null=True)
 
 class CartItem(models.Model):
-    product = models.ForeignKey(TonerDetails, on_delete=models.SET_NULL, blank=True, null=True)
+    #product = models.IntegerField(default=0)
+    #tproduct = models.ForeignKey(TonerDetails, on_delete=models.SET_NULL, blank=True, null=True)
+    #iproduct = models.ForeignKey(ItemDetails, on_delete=models.SET_NULL, blank=True, null=True)
     cart = models.ForeignKey(Cart, on_delete=models.SET_NULL, blank=True, null=True)
     date_added = models.DateTimeField(auto_now_add=True)
     quantity = models.IntegerField(default=0)
+
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE,null=True)
+    object_id = models.PositiveIntegerField(null=True)
+    content_object = GenericForeignKey()
+
+
     #created1 = models.DateTimeField(default=datetime.date())
 
 class SentItems(models.Model):

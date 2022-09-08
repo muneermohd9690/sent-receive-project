@@ -7,10 +7,12 @@ from .models import SentItems,Cart,CartItem
 from django.http import JsonResponse
 import json
 from toners.models import TonerDetails, Toners
+from items.models import ItemDetails
 from django.db.models import Count
 from django.http import HttpResponse,HttpResponseRedirect
 
-
+ltid=[]
+liid=[]
 
 ###                         for adding to cart                                              ###
 def get_cart_items(itemsincart):
@@ -23,6 +25,18 @@ def listof_cartitemids():
     print(cartitem)
     return list(CartItem.objects.all().values_list('id', flat=True))
 
+def get_list_tonerdetailsid():
+    tonerdetails=TonerDetails.objects.all()
+    ltid=[s.id for s in tonerdetails]
+    return ltid
+
+def get_list_itemdetailsid():
+    itemdetails=ItemDetails.objects.all()
+    liid=[s.id for s in itemdetails]
+    return liid
+
+
+
 def view_cart_items(request):
 
     if request.user.is_authenticated:
@@ -31,11 +45,11 @@ def view_cart_items(request):
         itemsincart = cart.pk
         cart_total=get_cart_items(itemsincart)
         items = cart.cartitem_set.all()
-
+        ltid = get_list_tonerdetailsid()
+        liid = get_list_itemdetailsid()
     else:
         items = []
-
-    context = {'items': items,'total':cart_total,'itemsincart':itemsincart}
+    context = {'items': items,'total':cart_total,'itemsincart':itemsincart,'ltid':ltid,'liid':liid}
     return render(request, 'view_cart_items.html', context)
 
 def update_items(request):
@@ -45,17 +59,79 @@ def update_items(request):
     print('detailId:', detailId)
     print('action:', action)
     customer = request.user.customer
-    detail = TonerDetails.objects.get(id=detailId)
-    cart, created = Cart.objects.get_or_create(customer=customer, complete=False)
-    cartitem, created = CartItem.objects.get_or_create(cart=cart, product=detail)
+    print(isinstance(detailId ,str))
 
-    if action == 'add':
-        cartitem.quantity = (cartitem.quantity + 1)
-    elif action == 'remove':
-        cartitem.quantity = (cartitem.quantity - 1)
-    cartitem.save()
-    if cartitem.quantity <= 0:
-        cartitem.delete()
+    # detail = TonerDetails.objects.get(id=detailId)
+    # cart, created = Cart.objects.get_or_create(customer=customer, complete=False)
+    # cartitem,created =CartItem.objects.create(cart=cart,product=detail)
+    #cartitem, created = CartItem.objects.get_or_create(cart=cart, product=detail )original
+    ltid=get_list_tonerdetailsid()
+    liid=get_list_itemdetailsid()
+    print(liid )
+    print(ltid )
+    # if int(detailId) in ltid:
+    #     print("reached ltid if")
+    # elif int(detailId) in liid:
+    #     print("reached liid elif")
+    # else:
+    #     print("cannot be found")
+
+    cartitem = CartItem.objects.all()
+    print(cartitem)
+    if int(detailId) in ltid :
+        print("reached ltid if")
+        detail = TonerDetails.objects.get(id=detailId)
+        cart, created = Cart.objects.get_or_create(customer=customer, complete=False)
+        # if int(detailId) in content_object_id:
+        #     messages.success(request, "Item already in cart")
+        # else:
+
+        if detailId in cartitem.content_object.object_id:
+            messages.success(request, "Item already in cart")
+        else:
+            p1 = CartItem.objects.create(content_object=detail, cart=cart)
+
+
+        # if action == 'add':
+        #     p1.quantity = (p1.quantity + 1)
+        # elif action == 'remove':
+        #     p1.quantity = (p1.quantity - 1)
+
+        p1.save()
+        # if p1.quantity <= 0:
+        #     p1.delete()
+    elif int(detailId) in liid:
+        print("reached liid elif")
+        detail = ItemDetails.objects.get(id=detailId)
+        cart, created = Cart.objects.get_or_create(customer=customer, complete=False)
+        # if int(detailId) in CartItem.content_object:
+        #     messages.success(request, "Item already in cart")
+        # else:
+
+        if detailId in cartitem.content_object.object_id:
+            messages.success(request, "Item already in cart")
+        else:
+            p1 = CartItem.objects.create(content_object=detail, cart=cart)
+
+        # if action == 'add':
+        #     p1.quantity = (p1.quantity + 1)
+        # elif action == 'remove':
+        #     p1.quantity = (p1.quantity - 1)
+
+        p1.save()
+        # if p1.quantity <= 0:
+        #     p1.delete()
+
+
+
+
+    # if action == 'add':
+    #     cartitem.quantity = (cartitem.quantity + 1)
+    # elif action == 'remove':
+    #     cartitem.quantity = (cartitem.quantity - 1)
+    # cartitem.save()
+    # if cartitem.quantity <= 0:
+    #     cartitem.delete()
     return JsonResponse('Item was added', safe=False)
 
 ###                         for adding to cart                                              ###
