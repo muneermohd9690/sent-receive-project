@@ -44,6 +44,7 @@ def find_toner_description(model_id):
     return text
 
 
+
 def link_callback(uri, rel):
     """
     Convert HTML URIs to absolute system paths so xhtml2pdf can access those
@@ -78,8 +79,9 @@ def link_callback(uri, rel):
 def print_sent_items_invoice(request,id):
     items = Cart.objects.filter(id=id)
     cartitems=CartItem.objects.filter(cart=id)
+    cartcount=cartitems.count()
     #pisa.pisaDocument(StringIO.StringIO(html.encode("UTF-8")), dest=result, link_callback=links)
-    data = {'items': items,'cartitems':cartitems}
+    data = {'items': items,'cartitems':cartitems,'cartcount':cartcount}
     template = get_template("print_sent_items_invoice.html")
     data_p = template.render(data)
     response = BytesIO()
