@@ -2,26 +2,98 @@
 
 {% block content %}
 <div class="container">
-  <h2>Add Toners</h2>
-  <p>Enter the toner details below:</p>
-  <form role="form" action="add_toners_save" method="post">
+  <div class="row">
+    <div class="card card-body border-dark mt-3">
+      <span class="text-center"><h2>Add Toners</h2></span>
+      <p class="text-center">Enter the toner details below:</p>
+    </div>
+  </div>
+  <form role="form" action="add_toners_save" method="post" class="card p-3 border-dark mt-3">
     {% csrf_token %}
-    <div class="row">
-      <div class="col">
-        <label>Toner Model</label>
-        <input class="form-control" name="toner_model" placeholder="Enter model-number" type="text">
-      </div>
-      <div class="col">
-        <label>Toner Description</label>
-        <select class="form-control"  name="toner_printer" placeholder="" >
-          {% for item in items %}
-          <option value="{{item.id}}">{{item.description}} {{item.model_no}} </option>
-          {% endfor %}
-        </select>
-      </div>
+    <div class="input-group input-group-sm mb-3">
+      <label class="input-group-text side-label">Toner Model</label>
+      <input class="form-control" name="toner_model" placeholder="Enter model-number" type="text">
+    </div>
+    <div class="input-group input-group-sm mb-3">
+      <label class="input-group-text side-label">Toner Description</label>
+      <select class="form-control selectpicker show-tick"  name="toner_printer" placeholder="" data-live-search="true"  data-dropup-auto="false">
+        {% for item in items %}
+        <option value="{{item.id}}">{{item.description}} {{item.model_no}} </option>
+        {% endfor %}
+      </select>
     </div>
     <button type="submit" class="btn btn-primary mt-3">Add Toner</button>
+    <a data-bs-toggle="modal" data-bs-target="#bulk-modal" class="btn btn-primary mt-3" id="bulk-modal3">Add bulk</a>
     <a href="{% url 'view_toners' %}" class="btn btn-primary mt-3">Back</a>
   </form>
 </div>
+<!-- Modal for bulk quantity -->
+<div class="modal fade" id="bulk-modal" tabindex="-1" role="dialog"
+     aria-labelledby="bulk-modal-label" data-bs-backdrop="static" data-bs-keyboard="false"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="bulk-modal-label">Toner Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form role="form" action="generate_bulk_add_toners" method="post">
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="text-center text-danger form-group">
+                        <span>Please enter the Toner Model:</span>
+                        <input class="form-control" name="toner_model" placeholder="Enter Toner Model" type="text">
+                    </div>
+                    <div class="text-center text-danger form-group">
+                      <span>Please enter the Toner Description:</span>
+                      <select class="form-control selectpicker show-tick"  name="toner_printer" placeholder="" data-live-search="true"  data-dropup-auto="false">
+                        {% for item in items %}
+                        <option value="{{item.id}}">{{item.description}} {{item.model_no}} </option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <div class="text-center text-danger form-group">
+                        <span>Please enter the quantity:</span>
+                        <input class="form-control" name="quantity" placeholder="Enter quantity" type="text" >
+                    </div>
+                    <div class="modal-body">
+                        Please make sure that:
+                        <li>only non-existing or new toners are added here</li>
+                        <li>to add existing toners in bulk use Add Tonerdetails option</li>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a href="{% url 'add_toners' %}" class="btn btn-secondary">Cancel</a>
+                    <button href="{% url 'generate_bulk_add_toners' %}" class="btn btn-secondary" type="submit">create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Modal for bulk quantity -->
+<!--- Messages after CRUD operations --->
+{% if messages %}
+    {% for message in messages %}
+        {% if message.tags == 'alert-success' %}
+            <script>
+                 var m= "{{ message }}";
+                 swal({
+                       title: "Good job!",
+                       text: m,
+                       icon: "success",
+                      });
+            </script>
+        {% elif message.tags == 'alert-danger' %}
+            <script>
+                 var m= "{{ message }}";
+                 swal({
+                       title: "Error!",
+                       text: m,
+                       icon: "error",
+                      });
+            </script>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+<!--- Messages after CRUD operations --->
 {% endblock %}

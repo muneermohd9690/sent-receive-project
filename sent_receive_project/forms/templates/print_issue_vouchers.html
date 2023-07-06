@@ -1,4 +1,6 @@
+
 <!DOCTYPE html>
+{% load sent_receive_project_tags %}
 <html xmlns="http://www.w3.org/1999/xhtml" lang='ar' xml:lang="ar" dir="rtl">
 
 <div>
@@ -226,7 +228,7 @@
     .table2 tr{
     text-align: right;
     font: 20px "Times New Roman", Times New Roman;
-    padding-top: 10px;
+    padding-top: 15px;
     padding-right: 5px;
     padding-bottom: 1px;
     padding-left: 5px;
@@ -276,23 +278,23 @@
 
      </style>
 
-  <input class="form-control" id="myInput" type="text" placeholder="Search..">
+
 </head>
 <body>
 
  <!-- Content for Static Frame 'header_frame' -->
     <div id="frame_header_logo" class="logo">
-                    <img src="http://127.0.0.1:8000{% static 'media/pplogo.jpg' %}" alt="My image" width="150" height="150" />
+                    <img src="{% encode_static 'images/pplogo.jpg' %}" alt="My image" width="100" height="100" />
     </div>
     <div id="header_left1" class="left1">UNITED ARAB EMIRATES</div>
     <div id="header_left2" class="left2">Ministry of Justice</div>
     <div id="header_left3" class="left3">PUBLIC PROSECUTION</div>
-    <div id="header_left4" class="left4">IT Department in Abu Dhabi</div>
+    <div id="header_left4" class="left4">IT Department Abu Dhabi</div>
 
     <div id="header_right1" class="right1">دولـة الإمارات العربيـة المتحـدة</div>
     <div id="header_right2" class="right2">وزارة العـدل </div>
     <div id="header_right3" class="right3">النيابة العامة</div>
-    <div id="header_right4" class="right3">إدارة الحاســـــب الآلــــــــي أبوظبي</div>
+    <div id="header_right4" class="right3">إدارة تقنية المعلومات أبوظبي</div>
 
     <div id="header_middle1" class="middle1">نموذج عهــدة</div>
     <div id="header_middle2" class="middle2">(ISSUE VOUCHER)</div>
@@ -304,7 +306,7 @@
     <div id="header_below_greybox1_2" class="below_greybox1_2">القســـــــم : {{detail.issued_to.name}} </div>
 
     <div id="header_below_greybox1_3" class="below_greybox1_3">الوظيفـــــــة : {{detail.employee_designation}} </div>
-    <div id="header_below_greybox1_4" class="below_greybox1_4">التاريخ : {{detail.created}}  </div>
+    <div id="header_below_greybox1_4" class="below_greybox1_4">التاريخ : {{detail.date_dispatched.date}}  </div>
     {% endfor %}
     <div id="header_greybox2">
         <div style="width: 300px; height: 300px; background-color: #808080">&nbsp;</div>
@@ -320,6 +322,7 @@
                 <th>Model No.</th>
                 <th>Serial No.</th>
                 <th>Tag No.</th>
+                <th>Room Tag</th>
             </tr>
             {% for detail in itemdetails %}
             <tr>
@@ -329,6 +332,7 @@
                 <td>{{detail.model_no.model_no}}</td>
                 <td>{{detail.serial_no}}</td>
                 <td>{{detail.tag_no}}</td>
+                <td>{{detail.room_tag}}</td>
             </tr>
             {% endfor %}
         </table>

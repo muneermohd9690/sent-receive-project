@@ -18,7 +18,7 @@ from django.urls import path,include
 from django.views.static import serve
 from django.conf import settings
 from django.conf.urls.static import static
-from django.conf.urls import url
+
 from sent_receive_app import views
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,11 +28,13 @@ urlpatterns = [
     path('items/',include('items.urls')),
     path('toners/',include('toners.urls')),
     path('excel/',include('excel.urls')),
+    path('export/',include('export.urls')),
+    path('report/',include('report.urls')),
     path('sent_items/',include('sent_items.urls')),
     path('login/', include('django.contrib.auth.urls')),
 
 
-    url(r'^media/(?P<path>.*)$', serve,{'document_root':       settings.MEDIA_ROOT}),
-    url(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
+    path(r'^media/(?P<path>.*)$', serve,{'document_root':       settings.MEDIA_ROOT}),
+    path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),
 ]
 urlpatterns=urlpatterns+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

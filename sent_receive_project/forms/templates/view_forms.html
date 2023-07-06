@@ -1,0 +1,45 @@
+{% extends 'mainpage.html' %}
+
+{% block content %}
+
+
+<div class="container">
+  <h2>Forms</h2>
+  <input class="form-control" id="myInput" type="text" placeholder="Search..">
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead>
+      <tr>
+        <th>Form Name</th>
+        <th>Location</th>
+
+      </tr>
+      </thead>
+      <tbody id="myTable">
+      {% for form in forms %}
+      <tr>
+        <td>{{form.name}}</td>
+        <td>{{form.location}}</td>
+
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+<script>
+$(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myTable tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+
+</script>
+</div>
+
+{% endblock %}
+
+
+

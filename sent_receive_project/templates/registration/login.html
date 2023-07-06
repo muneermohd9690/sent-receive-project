@@ -2,7 +2,7 @@
 
 {% block navbar-content %}
 <div class="container-fluid p-3 my-3 bg-dark text-white">
-    <h1 class ="text-center">IT Inventory Management</h1>
+    <h1 class ="text-center"><i class="fas fa-inventory-maintenance"></i>IT Inventory Management</h1>
 </div>
 {% endblock %}
 
@@ -14,16 +14,53 @@
             {% csrf_token %}
             <div class="input-group mb-3 mt-5">
                 <span class="input-group-text"><i class="fas fa-user-alt"></i></span>
-                <input class="form-control" name="username" placeholder="Username" type="text">
+                <input class="form-control" name="username" id="username" placeholder="Username" type="text" required>
             </div>
             <div class="input-group mb-3 mt-5">
                 <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                <input class="form-control" name="password" placeholder="Password" type="password">
+                <input class="form-control" name="password" id="password" placeholder="Password" type="password" required>
             </div>
 
-            <input class="btn btn-primary btn-sm mt-4 mb-3" type="submit" value="Enter">
-
+            <input class="btn btn-primary btn-sm mt-4 mb-3" type="submit" id="login" value="Login">
+            <a href="{% url 'register' %}" class="btn btn-primary btn-sm mt-4 mb-3">Register</a>
+<!--            <span class="error-msg"><strong>{{form.errors}}</strong></span>-->
         </form>
     </div>
 </div>
+<!--- Messages after new user registration  --->
+{% if messages %}
+    {% for message in messages %}
+            <script>
+                 var m= "{{ message }}";
+                 swal({
+                       title: "Good job!",
+                       text: m,
+                       icon: "success",
+                      });
+            </script>
+    {% endfor %}
+{% endif %}
+<!--- Messages after new user registration  --->
+
+<!--- Messages if username or password is empty --->
+<script>
+function validateAll() {
+    var username=$("#username").val();
+    var password=$("#password").val();
+
+    if (username==''){
+        swal("Verify !", "Username cannot be empty.","error");
+        return false;
+    }
+    else if (password==''){
+        swal("Verify !", "Password cannot be empty.","error");
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+$("#login").bind("click",validateAll);
+</script>
+<!--- Messages if username or password is empty --->
 {% endblock %}

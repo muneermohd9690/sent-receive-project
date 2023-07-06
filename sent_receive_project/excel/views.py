@@ -6,14 +6,19 @@ from django.shortcuts import render
 from django.conf import settings
 import os
 from django.core.files.storage import FileSystemStorage
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import cache_control
 from pathlib import Path
 
 
 # Create your views here.
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
 def excel(request):
     return HttpResponse("this is for the excel operations")
 
-
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
 def excel_import_items_db(request):
     try:
         if request.method == 'POST' and request.FILES['myfile']:
@@ -35,3 +40,4 @@ def excel_import_items_db(request):
     except Exception as identifier:
         print(identifier)
     return render(request, 'excel_import_db.html', {})
+

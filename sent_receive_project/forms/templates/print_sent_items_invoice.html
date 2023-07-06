@@ -1,10 +1,12 @@
-<html xmlns="http://www.w3.org/1999/xhtml" lang='ar' xml:lang="ar" dir="rtl">
+{% load static %}
+{% load sent_receive_project_tags %}
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:right="http://www.w3.org/1999/xhtml" lang='ar' xml:lang="ar" dir="ltr">
 <div>
     <pdf:language name="arabic"/>
 </div>
 
 <head>
-    {% load static %}
+<!--     {% load static %}-->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Title</title>
@@ -23,29 +25,26 @@
             @frame header_frame
             {           /* Static Frame */
                 -pdf-frame-content: header_logo;
+                -pdf-frame-content: header_left1;
 
 
-            }
-
-            @frame header_frame
-            {           /* Static Frame */
-            -pdf-frame-content: header_left1;
-            left: 100pt; width: 600pt; top: 125pt; height: 80pt;
             }
          }
      .logo
      {
              text-align: center;
+
      }
      .left1
             {
             font-size: 32px;
             text-align: center;
+            margin-top: 10px;
             }
 .table1{
     border:2px solid black;
-    margin-top:40px;
-    margin-left:1px;
+    margin-top:auto;
+    margin-left:3px;
     margin-right:auto;
     padding-left: 2px;
     table-layout: auto;
@@ -70,16 +69,16 @@
     margin-top:20px;
     }
     .w1{
-        width: 50px;
+        width: 30px;
     }
     .w2{
-        width: 100px;
+        width: 85px;
     }
     .w3{
         width: 100px;
     }
     .w4{
-        width: 180px;
+        width: 280px;
     }
     .w5{
         width: 100px;
@@ -88,10 +87,12 @@
         width: 100px;
     }
     .w7{
-        width: 100px;
+        width: 120px;
     }
     .w8{
         width: 180px;
+
+
     }
     body {
 
@@ -102,9 +103,9 @@
 </head>
 <body>
 <div id="frame_header_logo" class="logo">
-                    <img src="http://127.0.0.1:8000{% static 'media/pplogo.jpg' %}" alt="My image" width="100" height="100" />
+    <img src="{% encode_static 'images/pplogo.jpg' %}" alt="My image" width="100" height="100" />
 </div>
-<div id="header_left1" class="left1"><u>UAE Public Prosecution IT Department Sent Item Details</u></div>
+<div id="frame_header_left1" class="left1"><u>UAE Public Prosecution IT Department Sent Item Details</u></div>
      <div  class="table1">
         <table>
 
@@ -122,12 +123,19 @@
             <tr>
                 <td class="w1">{{forloop.counter}}</td>
                 <td class="w2">{{item.date_added.date}}</td>
-                <td class="w3">Test</td>
-                <td class="w4">{{item.product.issued_to.name}}</td>
-                <td class="w5">{{item.product.toner_model.toner_printer.description}} toner</td>
-                <td class="w6">{{item.product.toner_model.toner_printer.model_no}}</td>
-                <td class="w7">{{item.product.toner_model.toner_model}}</td>
-                <td class="w8">Name : {{item.product.employee_name}}<br>
+<!--                <td class="w3">Test</td>-->
+                <td class="w3">{% if forloop.first %}{{ cartcount }}{% endif %}</td>
+                <td class="w4">{{item.content_object.issued_to.name}}</td>
+                {% if item.content_type.id == tdcid %}
+                <td class="w5">{{item.content_object.toner_model.toner_printer.description}} toner</td>
+                <td class="w6">{{item.content_object.toner_model.toner_printer.model_no}}</td>
+                <td class="w7">{{item.content_object.toner_model.toner_model}}</td>
+                {% elif item.content_type.id == idcid %}
+                <td class="w5">{{item.content_object.model_no.description}}</td>
+                <td class="w6">{{item.content_object.model_no.model_no}}</td>
+                <td class="w7">{{item.content_object.serial_no}}</td>
+                {% endif %}
+                <td class="w8">Name : {{item.content_object.employee_name}}<br>
 
                     Sign &nbsp;&nbsp;&nbsp;:
                     <br>

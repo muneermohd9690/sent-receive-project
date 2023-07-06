@@ -47,12 +47,187 @@ Sweetalert design
 #btn-logout {
     width: 90px;
     float: right;
-    margin-right: 25px;
+    margin-right: 70px;
+    margin-top: -2px;
 }
 
-
+/*----------------------------------------------
+# Dispatch page dispatch btn properties
+-----------------------------------------------*/
 #btn-dispatch {
+
     width: 90px;
     float: right;
     margin-right: 10px;
 }
+
+/*----------------------------------------------
+# Navbar dispatch box properties
+-----------------------------------------------*/
+#dispatch-icon {
+    float: right;
+    margin-right: 50px;
+    margin-left: 5px;
+    margin-top:-15px;
+    display : flex;
+    font-size: 40px;
+
+}
+
+
+.fas[data-count]{
+    position:relative;
+}
+.fas[data-count]:after{
+    position: absolute;
+    right: -0.75em;
+    top: -.75em;
+    content: attr(data-count);
+    padding: .5em;
+    border-radius: 10em;
+    line-height: .9em;
+    color: white;
+    background: red;
+    text-align: center;
+    min-width: 2em;
+    font: bold .5em sans-serif;
+}
+
+.fas.fa-box{
+    color: white;
+}
+
+/*----------------------------------------------
+# Navbar restock bell notification properties (id # class .)
+-----------------------------------------------*/
+#bell-notification {
+    float: right;
+    margin-right: -140px;
+    margin-left: 30px;
+    margin-top:-15px;
+    font-size: 40px;
+    cursor:pointer;
+
+}
+
+
+.fas[data-tonerstockalert]{
+    position:relative;
+}
+.fas[data-tonerstockalert]:after{
+    position: absolute;
+    right: -0.75em;
+    top: -.75em;
+    content: attr(data-tonerstockalert);
+    padding: .5em;
+    border-radius: 10em;
+    line-height: .9em;
+    color: white;
+    background: red;
+    text-align: center;
+    min-width: 2em;
+    font: bold .5em sans-serif;
+}
+
+.fas.fa-bell{
+    color: white;
+}
+
+
+/*----------------------------------------------
+#Edit Item Details Form
+-----------------------------------------------*/
+.side-label {
+    width: 200px;
+
+}
+
+
+
+/*----------------------------------------------
+# pagination number color
+-----------------------------------------------*/
+.page-item.active.page-link{
+    columns: #fff;
+    background-color: #6c757d;
+    border: 1px solid #6c757d;
+
+}
+.pagination > li > a {
+    background-color: #fff;
+    color: #6c757d;
+
+}
+.pagination > li > a:focus,
+.pagination > li > a:hover,
+.pagination > span > a:focus,
+.pagination > span > a:hover{
+    color: #111;
+    background-color: #d3d3d3;
+    border: 1px solid #6c757d;
+    box-shadow: none;
+}
+
+/*----------------------------------------------
+# pagination hide search box
+-----------------------------------------------*/
+div.dataTables_wrapper div.dataTables_filter input {
+    margin-left: auto;
+    display: inline-block;
+    width: auto;
+    visibility: hidden;
+}
+
+/*----------------------------------------------
+# pagination hide search label
+-----------------------------------------------*/
+div.dataTables_wrapper div.dataTables_filter label {
+    font-weight: normal;
+    white-space: nowrap;
+    display: none;
+    text-align: left;
+
+}
+
+/*----------------------------------------------
+# user registration page error message
+-----------------------------------------------*/
+.error-msg{
+    font-size:  18px;
+    color:      #FF0000;
+
+}
+
+#btn-exporttopdf {
+
+    margin-top: -40px;
+    position: absolute;
+
+}
+#btn-exporttocsv{
+    margin-top: -40px;
+    margin-left: 40px;
+    position: absolute;
+}
+#btn-bulkdelete{
+    margin-top: -40px;
+    margin-left: 550px;
+    position: absolute;
+}
+
+
+div.dt-buttons {
+    margin-left: 40px;
+    position: absolute;
+}
+
+/*----------------------------------------------
+# selectpicker box border and background
+-----------------------------------------------*/
+.btn-light {
+    --bs-btn-bg: white;
+    --bs-btn-border-color: #ced4da;
+}
+/*----------------------------------------------
+# selectpicker box border and background
+-----------------------------------------------*/

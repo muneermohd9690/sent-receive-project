@@ -35,7 +35,7 @@ SECRET_KEY = 'pp+xq#rxip@dq&e$qd(-mwm=hw04d2whla9qid_elo3mc&6=n&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','sent-receive.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1','0.0.0.0','sent-receive.herokuapp.com']
 
 
 # Application definition
@@ -54,8 +54,17 @@ INSTALLED_APPS = [
     'toners.apps.TonersConfig',
     'excel.apps.ExcelConfig',
     'sent_items.apps.SentItemsConfig',
+    'export.apps.ExportConfig',
     'django_forms_bootstrap',
+    'dbbackup',
+    'simple_history',
+    'report.apps.ReportsConfig',
 ]
+
+DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
+DBBACKUP_STORAGE_OPTIONS = {'location': BASE_DIR/'backup'}
+
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -66,6 +75,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    #'simple_history.middleware.HistoryRequestMiddleware',
 
 ]
 
@@ -88,6 +98,7 @@ TEMPLATES = [
             'libraries': {
                 'staticfiles': 'django.templatetags.static',
                 #'post_tags': 'sent_receive_app.templatetags.post_tags',
+                'sent_receive_project_tags': 'sent_items.templatetags.sent_receive_project_tags',
             },
         },
     },
@@ -100,11 +111,25 @@ WSGI_APPLICATION = 'sent_receive_project.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+     'default': {
+         'ENGINE': 'django.db.backends.sqlite3',
+         'NAME': BASE_DIR / 'db.sqlite3',
+
+     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'sent_receive_project',
+#         'USER': 'postgres',
+#         'PASSWORD': 'noAccEss24@!@#$',
+#         'PORT': '5432',
+#         'HOST': 'localhost',
+#
+#
+#     }
+# }
 
 
 # Password validation
@@ -150,11 +175,15 @@ CSS_URL = '/css/'
 
 
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-STATICFILES_DIRS=[
-    os.path.join(BASE_DIR, 'static' )
-]
+# STATICFILES_DIRS=[
+#     os.path.join(BASE_DIR, 'static' )
+# ]
+STATICFILES_DIRS=[BASE_DIR / "static"]
+
+
+
 
 LOGIN_REDIRECT_URL = 'mainpage'
 LOGOUT_REDIRECT_URL= 'login'

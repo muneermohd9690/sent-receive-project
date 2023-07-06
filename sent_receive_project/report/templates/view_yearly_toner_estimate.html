@@ -1,0 +1,59 @@
+﻿{% extends 'mainpage.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="input-group input-group-sm mb-2">
+        <input class="form-control" id="search" type="text" placeholder="Search.." >
+        <a href="{% url 'view_yearly_toner_estimate' %}" class="btn btn-dark btn-sm"><i class="fas fa-sync-alt"></i></a>
+    </div>
+    <div class="container">
+        <div class="table-responsive" >
+            <table class="table table-bordered" id="myTable">
+                <thead>
+                <tr>
+                    <th>Printer Model</th>
+                    <th>Toner Model</th>
+                    <th>Yearly Consumption</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for toner_count in toner_counts %}
+                <tr>
+                    <td>{{toner_count.printer_description}} {{toner_count.printer_model}}</td>
+                    <td>{{toner_count.toner_model_id__toner_model}}</td>
+                    <td>{{toner_count.total_toner_count}}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<!--- Paginator --->
+<script>
+$(document).ready(function () {
+    $("#myTable").DataTable({
+        paging: true,
+        pageLength: 10,
+        lengthChange: false,
+        bInfo: false,
+        bSort: false,
+        order:[]
+    });
+});
+</script>
+<!--- Paginator --->
+<script>
+$(document).ready(function () {
+var table = $('#myTable').DataTable();
+
+// #myInput is a <input type="text"> element
+$('#search').on( 'keyup', function () {
+    table.search( this.value ).draw();
+} );
+});
+</script>
+{% endblock %}

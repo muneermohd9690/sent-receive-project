@@ -27,17 +27,16 @@
         <button type="submit" class="btn btn-success mt-3 btn-action-ETF" disabled>Save</button>
         <a href="{% url 'view_toners' %}" id="btn-back" class="btn btn-primary mt-3">Back</a>
         <!-- Button trigger modal -->
-        <button id="modal-confirm" type="button" style="display:none;" class="btn btn-primary" data-toggle="modal" data-target="#save-modal">
+        <button id="modal-confirm" type="button" style="display:none;" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#save-modal">
         </button>
         <!-- Button trigger modal -->
         <!-- Modal -->
-        <div class="modal fade" id="save-modal" tabindex="-1" role="dialog" aria-labelledby="save-modal-label" aria-hidden="true">
+        <div class="modal fade" id="save-modal" tabindex="-1" role="dialog" aria-labelledby="save-modal-label" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="save-modal-label">Save Changes</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                         </button>
                     </div>
                     <div class="modal-body">

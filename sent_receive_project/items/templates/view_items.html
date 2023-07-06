@@ -2,39 +2,43 @@
 {% load static %}
 {% block content %}
 
-<div class="container">
+<div class="container" >
     <h2>Available Items</h2>
-    <input class="form-control" id="myInput" type="text" placeholder="Search..">
+    <div class="input-group input-group-sm mb-2">
+        <input class="form-control" id="search" type="text" placeholder="Search.." >
+        <a href="{% url 'view_items' %}" class="btn btn-dark btn-sm"><i class="fas fa-sync-alt"></i></a>
+    </div>
     <div class="table-responsive">
-        <table class="table table-bordered">
-            <thead>
-            <tr>
+        <table class="table table-bordered" id="myTable">
+            <thead class="table-secondary">
+            <tr id="chk-th">
                 <th>Item Description</th>
                 <th>Model Number</th>
-                <th>Quantity</th>
+                <th>Total Quantity</th>
+                <th>Remaining Quantity</th>
                 <th>Action</th>
             </tr>
             </thead>
-            <tbody id="myTable">
+            <tbody>
             {% for item in items %}
             <tr>
                 <td>{{item.description}}</td>
                 <td>{{item.model_no}}</td>
                 <td>{{item.total_qty}}</td>
-                <td><a href="{% url 'view_items_details' item.id %}" class="btn btn-info ">Details</a>
-                    <a href="{% url 'edit_items_form' item.id %}" class="btn btn-warning ">Edit</a>
-                    <a class="btn btn-danger" data-toggle="modal" data-target="#delete-modal{{ item.pk }}">Delete</a></td>
+                <td>{{item.remaining_qty}}</td>
+                <td><a href="{% url 'view_items_details' item.id %}" class="btn btn-info " data-bs-toggle="tooltip" data-bs-placement="bottom" title="Details"><i class="fas fa-file-alt"></i></a>
+                    <a href="{% url 'edit_items_form' item.id %}" class="btn btn-warning " data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"><i class="fas fa-edit"></i></a>
+                    <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-modal{{ item.pk }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"><i class="fas fa-trash"></i></a></td>
             </tr>
             <!-- delete confirmation Modal -->
             <div class="modal fade" id="delete-modal{{ item.pk }}" tabindex="-1" role="dialog"
-                 aria-labelledby="delete-modal-label"
+                 aria-labelledby="delete-modal-label" data-bs-backdrop="static" data-bs-keyboard="false"
                  aria-hidden="true">
-                <div class="modal-dialog" role="document">
+                <div class="modal-dialog" >
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="delete-modal-label">Delete Item</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                             </button>
                         </div>
                         <div class="modal-body">
@@ -45,7 +49,7 @@
                         </div>
                         <div class="modal-footer">
                             <a href="{% url 'view_items' %}" class="btn btn-secondary">Cancel</a>
-                            <a href="{% url 'edit_items_delete' item.id %}" class="btn btn-danger" type="submit">Delete</a>
+                            <a href="{% url 'edit_items_delete' item.id %}" class="btn btn-danger" type="submit" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"><i class="fas fa-trash"></i></a>
                         </div>
                     </div>
                 </div>
@@ -54,32 +58,61 @@
             {% endfor %}
             </tbody>
         </table>
-
-    </div>
-    <script>
-        $(document).ready(function(){
-          $("#myInput").on("keyup", function() {
-            var value = $(this).val().toLowerCase();
-            $("#myTable tr").filter(function() {
-              $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-            });
-          });
-        });
-    </script>
 </div>
+
+<span class="text-danger" id="no-data"> </span>
 <!--- Messages after CRUD operations --->
 {% if messages %}
     {% for message in messages %}
-        <script>
+        {% if message.tags == 'alert-success' %}
+            <script>
                  var m= "{{ message }}";
                  swal({
                        title: "Good job!",
                        text: m,
                        icon: "success",
                       });
-         </script>
+            </script>
+        {% elif message.tags == 'alert-danger' %}
+            <script>
+                 var m= "{{ message }}";
+                 swal({
+                       title: "Error!",
+                       text: m,
+                       icon: "error",
+                      });
+            </script>
+        {% endif %}
     {% endfor %}
 {% endif %}
 <!--- Messages after CRUD operations --->
 
+
+
+<!--- Paginator --->
+<script>
+$(document).ready(function () {
+    $("#myTable").DataTable({
+        paging: true,
+        pageLength: 10,
+        lengthChange: false,
+        bInfo: false,
+        bSort: false,
+        order:[]
+    });
+});
+</script>
+
+<!--- Paginator --->
+<script>
+$(document).ready(function () {
+var table = $('#myTable').DataTable();
+
+// #myInput is a <input type="text"> element
+$('#search').on( 'keyup', function () {
+    table.search( this.value ).draw();
+} );
+});
+</script>
+</div>
 {% endblock %}

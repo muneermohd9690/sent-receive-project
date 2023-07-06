@@ -1,5 +1,13 @@
 {% extends 'mainpage.html' %}
 
 {% block content %}
-<h1>this is for dash board on load</h1>
+<h1>this is for dashboard on load</h1>
+    <div class="card m-4" style="width: 50%;">
+        <div class="card-body">
+            <div id="chart"> {{ fig | safe }}</div>
+        </div>
+    </div>
+
+
+
 {% endblock %}

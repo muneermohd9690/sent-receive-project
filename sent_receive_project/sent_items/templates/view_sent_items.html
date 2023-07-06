@@ -1,12 +1,16 @@
 {% extends 'mainpage.html' %}
 {% load static %}
+
 {% block content %}
 
-<div class="container">
+<div class="container" xmlns="">
     <h2>Sent Items</h2>
-    <input class="form-control" id="myInput" type="text" placeholder="Search..">
+     <div class="input-group input-group-sm mb-2">
+        <input class="form-control" id="search" type="text" placeholder="Search.." >
+        <a href="{% url 'view_sent_items' %}" class="btn btn-dark btn-sm"><i class="fas fa-sync-alt"></i></a>
+     </div>
     <div class="table-responsive">
-        <table class="table table-bordered">
+        <table class="table table-bordered" id="myTable">
             <thead>
             <tr>
                 <th class="w1">No</th>
@@ -18,31 +22,83 @@
                 <th class="w7">Received By</th>
             </tr>
             </thead>
-            <tbody id="myTable">
-            {% for item in items %}
+            <tbody>
+            {% for item in items|dictsortreversed:"content_object.date_dispatched" %}
             <tr>
-                 <td class="w1">{{forloop.counter}}</td>
-                <td class="w2">{{item.date_added.date}}</td>
-                <td class="w4">{{item.product.issued_to.name}}</td>
-                <td class="w5">{{item.product.toner_model.toner_printer.description}} toner</td>
-                <td class="w6">{{item.product.toner_model.toner_printer.model_no}}</td>
-                <td class="w7">{{item.product.toner_model.toner_model}}</td>
-                <td class="w8">{{item.product.employee_name}}</td>
-            <tr>
+                <td class="w1">{{forloop.counter}}</td>
+                <td class="w2">{{item.content_object.date_dispatched.date}}</td>
+                <td class="w3">{{item.content_object.issued_to.name}}</td>
+                {% if item.content_type.id == tdcid %}
+                    <td class="w4">{{item.content_object.toner_model.toner_printer.description}} toner</td>
+		            <td class="w5">{{item.content_object.toner_model.toner_printer.model_no}}</td>
+		            <td class="w6">{{item.content_object.toner_model.toner_model}}</td>
+                    <td class="w7">{{item.content_object.employee_name|upper}}</td>
+                {% elif item.content_type.id == idcid %}
+                    <td class="w4">{{item.content_object.model_no.description}}</td>
+		            <td class="w5">{{item.content_object.model_no.model_no}}</td>
+		            <td class="w6">{{item.content_object.serial_no}}</td>
+                    <td class="w7">{{item.content_object.employee_name}}</td>
+                {% endif %}
+            </tr>
             {% endfor %}
             </tbody>
         </table>
+<!--        <button type="button" class="btn btn-secondary" style="margin-top: -10px;">Close</button>-->
+        <a href="{% url 'sentitems_export_topdf' %}"  rel="noopener noreferrer"  class="btn btn-secondary" id="btn-exporttopdf" data-bs-toggle="tooltip" data-bs-placement="bottom" title="download as pdf"><i class="fas fa-file-pdf"></i></a>
 
     </div>
-    <script>
-        $(document).ready(function(){
-          $("#myInput").on("keyup", function() {
-            var value = $(this).val().toLowerCase();
-            $("#myTable tr").filter(function() {
-              $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-            });
-          });
-        });
-    </script>
+
+<!--- Paginator --->
+<script>
+$(document).ready(function () {
+    $("#myTable").DataTable({
+        paging: true,
+        pageLength: 10,
+        lengthChange: false,
+        bInfo: false,
+        bSort: false,
+        order: [],
+        dom: 'ltiBfrp',
+        buttons:[
+           {
+                extend: 'excel',
+                text:   '<i class="fas fa-file-excel"></i>',
+                className:  'btn-exporttocsv',
+                titleAttr:  'Excel',
+
+            },
+       ]
+    });
+});
+</script>
+<!--- Paginator --->
+
+<!--- Paginator Search--->
+<script>
+$(document).ready(function () {
+var table = $('#myTable').DataTable();
+
+// #myInput is a <input type="text"> element
+$('#search').on( 'keyup', function () {
+    table.search( this.value ).draw();
+} );
+});
+</script>
+<!--- Paginator Search--->
+
 </div>
+<!--- Messages after CRUD operations --->
+{% if messages %}
+    {% for message in messages %}
+            <script>
+                 var m= "{{ message }}";
+                 swal({
+                       title: "Good job!",
+                       text: m,
+                       icon: "success",
+                      });
+            </script>
+    {% endfor %}
+{% endif %}
+<!--- Messages after CRUD operations --->
 {% endblock %}

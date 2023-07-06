@@ -2,64 +2,74 @@
 
 {% block content %}
 <div class="container">
-    <h2>Edit Toner Details | Toner Details ID :{{ tonerdetails.id }}</h2>
-    <p>Edit the toner details below:</p>
-    <form role="form" action="edit_tonerdetails_save" method="post">
-        <input type="hidden" name="tonerdetails_id" value="{{tonerdetails.id}}">
+    <div class="row">
+        <div class="card card-body border-dark mt-3">
+            <span class="text-center"><h2>Edit Toner Details | Toner Details ID :{{ tonerdetails.id }} </h2></span>
+        </div>
+    </div>
+    <form role="form" action="edit_tonerdetails_save" method="post" class="card p-3 border-dark mt-3">
         {% csrf_token %}
-        <div class="row">
-            <div class="col">
-                <label>Toner Model</label>
-                <select class="form-control" name="toner_model" id="toner_model">
+        <input type="hidden" name="tonerdetails_id" value="{{tonerdetails.id}}">
+        <div class="input-group input-group-sm mb-3">
+        <label class="input-group-text side-label">Toner Model </label>
+            <select class="form-control selectpicker show-tick" name="toner_model" id="toner_model" data-live-search="true"  data-dropup-auto="false">
                 {% for toner in toners %}
                 <option value="{{toner.id}}" {% if toner.id == tonerdetails.toner_model.id %} selected {% endif %}>
                     {{toner.toner_model}}</option>
                 {% endfor %}
-                </select>
-            </div>
-            <div class="col">
-                <label>Issued to</label>
-                <select class="form-control" name="issued_to" id="issued_to">
+            </select>
+        </div>
+
+        <div class="input-group input-group-sm mb-3">
+          <label class="input-group-text side-label">Issued To </label>
+            <select class="form-control selectpicker show-tick" name="issued_to" id="issued_to" data-live-search="true"  data-dropup-auto="false">
                 {% for prosecution in prosecutions %}
                 <option value="{{prosecution.id}}" {% if prosecution.id == tonerdetails.issued_to.id %} selected {% endif %}>
                     {{prosecution.name}}</option>
                 {% endfor %}
-                </select>
-            </div>
-            <div class="col">
-                <label>Employee Name</label>
-                <input type="text" class="form-control" placeholder="enter employee name" name="employee_name" id="employee_name"
+            </select>
+        </div>
+
+        <div class="input-group input-group-sm mb-3">
+            <label class="input-group-text side-label">Employee Name </label>
+            <input type="text" class="form-control" placeholder="enter employee name" name="employee_name" id="employee_name"
                          value="{{tonerdetails.employee_name}}">
-            </div>
-            <div class="col">
-                <label>Employee Designation</label>
-                <input type="text" class="form-control" placeholder="enter employee designation" name="employee_designation" id="employee_designation"
+        </div>
+
+        <div class="input-group input-group-sm mb-3">
+            <label class="input-group-text side-label">Employee Designation </label>
+            <input type="text" class="form-control" placeholder="enter employee designation" name="employee_designation" id="employee_designation"
                        value="{{tonerdetails.employee_designation}}">
-            </div>
-            <div class="col">
-                <label>Status</label>
-                <select class="form-control" name="status" id="status">
+        </div>
+
+        <div class="input-group input-group-sm mb-3">
+            <label class="input-group-text side-label">Date Dispatched </label>
+            <input type="text" class="form-control" name="date_dispatched" id="date_dispatched"
+                       value="{{tonerdetails.date_dispatched.date|date:'Y-m-d'}}">
+        </div>
+
+
+        <div class="input-group input-group-sm mb-3">
+            <label class="input-group-text side-label">Status</label>
+               <select class="form-control" name="status" id="status">
                 {% for x,y in status %}
                     <option value="{{x}}" {% if x == tonerdetails.status %} selected {% endif %}>{{ x }}</option>
                 {% endfor %}
                 </select>
-            </div>
-
         </div>
-        <button type="submit" class="btn btn-success mt-3 btn-action-ETDF" disabled>Save</button>
-        <a href="{% url 'view_toners' %}" id="btn-back2" class="btn btn-primary mt-3">Back</a>
+         <button type="submit" class="btn btn-success mt-3 btn-action-ETDF" disabled data-bs-toggle="tooltip" data-bs-placement="bottom" title="Save"><i class="fas fa-save"></i></button>
+        <a href="{% url 'view_toners' %}" id="btn-back2" class="btn btn-primary mt-3" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Back"><i class="fas fa-angle-double-left"></i></a>
         <!-- Button trigger modal -->
-        <button id="modal-confirm2" type="button" style="display:none;" class="btn btn-primary" data-toggle="modal" data-target="#save-modal">
+        <button id="modal-confirm2" type="button" style="display:none;" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#save-modal">
         </button>
         <!-- Button trigger modal -->
         <!-- Modal -->
-        <div class="modal fade" id="save-modal" tabindex="-1" role="dialog" aria-labelledby="save-modal-label" aria-hidden="true">
+        <div class="modal fade" id="save-modal" tabindex="-1" role="dialog" aria-labelledby="save-modal-label" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="save-modal-label">Save Changes</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                         </button>
                     </div>
                     <div class="modal-body">
@@ -74,15 +84,25 @@
         </div>
         <!-- Modal -->
     </form>
+<!-- Date picker -->
+<script>
+    $(function(){
+        $("#date_dispatched").datepicker({
+      format: 'YYYY-MM-DD',
+        });
+     });
+</script>
+<!-- Date picker -->
 </div>
-
 <!--- Hidden data --->
-<div class="text-center mt-5" style="display :none;">
+<div class="text-center mt-5" style="display: none;" >
     <input id="toner_model2" value="{{tonerdetails.toner_model.id}}">
     <input id="issued_to2" value="{{tonerdetails.issued_to.id}}">
     <input id="employee_name2"  value="{{tonerdetails.employee_name}}">
     <input id="employee_designation2" value="{{tonerdetails.employee_designation}}">
+    <input id="date_dispatched2" value="{{tonerdetails.date_dispatched.date|date:'Y-m-d'}}">
     <input id="status2" value="{{tonerdetails.status}}">
 </div>
+
 <!--- Hidden data --->
 {% endblock %}

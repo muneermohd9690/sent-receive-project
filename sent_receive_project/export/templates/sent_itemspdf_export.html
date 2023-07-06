@@ -1,0 +1,125 @@
+﻿{% load static %}
+{% load sent_receive_project_tags %}
+<html xmlns="http://www.w3.org/1999/xhtml" lang='ar' xml:lang="ar" dir="ltr">
+<div>
+    <pdf:language name="arabic"/>
+</div>
+
+<head>
+<!--     {% load static %}-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sent Item Details Report:{% now "d/m/y" %}</title>
+
+    <style>
+
+        @font-face
+        {
+        font-family: "Times New Roman";
+        src: url('C:\Windows\Fonts\timesbd.ttf');
+        }
+        @page
+        {
+            size:a4 landscape;
+            margin: 60px 60px 60px 60px;
+            @frame header_frame
+            {           /* Static Frame */
+                -pdf-frame-content: header_logo;
+                -pdf-frame-content: header_left1;
+
+
+            }
+         }
+     .logo
+     {
+             text-align: center;
+
+     }
+     .left1
+            {
+            font-size: 32px;
+            text-align: center;
+            margin-top: 10px;
+            }
+.table1{
+    border:2px solid black;
+    margin-top:auto;
+    margin-left:3px;
+    margin-right:auto;
+    padding-left: 2px;
+    table-layout: auto;
+    }
+    .table1 th{
+    text-align: center;
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-bottom: 1px;
+    padding-left: 5px;
+    background-color: #EEE8AA;
+    font-weight: bold;
+    font: 14px "Times New Roman", Times New Roman;
+    }
+    .table1 tr{
+    text-align: left;
+    font: 14px "Times New Roman", Times New Roman;
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-bottom: 1px;
+    padding-left: 5px;
+    margin-top:20px;
+    }
+    .w1{
+        width: 50px;
+    }
+    .w2{
+        width: 190px;
+    }
+
+    body {
+
+    font-family: "Times New Roman";
+
+    }
+     </style>
+</head>
+<body>
+<div id="frame_header_logo" class="logo">
+    <img src="{% encode_static 'images/pplogo.jpg' %}" alt="My image" width="100" height="100" />
+</div>
+<div id="frame_header_left1" class="left1"><u>Sent Item Details: {% now "d/m/y" %}</u></div>
+    <div  class="table1">
+        <table>
+            <tr>
+                <th class="w1">No</th>
+                <th class="w2">Send Date</th>
+                <th class="w2">Send To</th>
+                <th class="w2">Product Description</th>
+                <th class="w2">Model No.</th>
+                <th class="w2">Serial No.</th>
+                <th class="w2">Received By</th>
+
+            </tr>
+            {% for item in items|dictsortreversed:"content_object.date_dispatched.date" %}
+            <tr>
+                <td class="w1">{{forloop.counter}}</td>
+                <td class="w2">{{item.content_object.date_dispatched.date}}</td>
+                <td class="w2">{{item.content_object.issued_to.name}}</td>
+                {% if item.content_type.id == tdcid %}
+                    <td class="w2">{{item.content_object.toner_model.toner_printer.description}} toner</td>
+		            <td class="w2">{{item.content_object.toner_model.toner_printer.model_no}}</td>
+		            <td class="w2">{{item.content_object.toner_model.toner_model}}</td>
+                    <td class="w2">{{item.content_object.employee_name|upper}}</td>
+                {% elif item.content_type.id == idcid %}
+                    <td class="w2">{{item.content_object.model_no.description}}</td>
+		            <td class="w2">{{item.content_object.model_no.model_no}}</td>
+		            <td class="w2">{{item.content_object.serial_no}}</td>
+                    <td class="w2">{{item.content_object.employee_name}}</td>
+                {% endif %}
+            </tr>
+
+            {% endfor %}
+
+        </table>
+    </div>
+</body>
+</html>

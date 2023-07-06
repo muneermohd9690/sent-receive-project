@@ -2,85 +2,123 @@
 
 {% block content %}
 <div class="container">
-  <h2>Add Items Details</h2>
-  <p>Enter the item details below:</p>
-  <form role="form" action="add_items_details_save" method="post">
-    {% csrf_token %}
     <div class="row">
-      <div class="col">
-        <label>Model Number</label>
-        <select class="form-control"  name="model_no" placeholder="">
-        {% for item in items %}
-          <option value="{{item.id}}">{{item.model_no}} </option>
-        {% endfor %}
-        </select>
-      </div>
-      <div class="col">
-        <label>Serial Number</label>
-        <input class="form-control" name="serial_no" placeholder="Enter serial-number" type="text">
-      </div>
-      <div class="col">
-        <label>Tag Number</label>
-        <input class="form-control" name="tag_no" placeholder="Enter tag-number" type="text">
-      </div>
-
-      <div class="col">
-        <label>Issued To</label>
-        <select class="form-control"  name="issued_to" placeholder="">
-        {% for prosecution in prosecutions %}
-          <option value="{{prosecution.id}}">{{prosecution.name}} </option>
-        {% endfor %}
-        </select>
-      </div>
-      <div class="col">
-        <label>Employee Name</label>
-        <input class="form-control" name="employee_name" placeholder="Enter employee name" type="text">
-      </div>
-      <div class="col">
-        <label>Employee Designation</label>
-        <input class="form-control" name="employee_designation" placeholder="Enter employee designation" type="text">
-      </div>
-      <div class="col">
-        <label>Status</label>
-          <select class="form-control" name="status">
-          {% for x,y in status %}
-            <option value="{{x}}">{{ y }}</option>
-          {% endfor %}
-          </select>
-      </div>
-
+        <div class="card card-body border-dark mt-3">
+            <span class="text-center"><h2>Add Items Details</h2></span>
+            <p class="text-center">Enter the item details below:</p>
+        </div>
     </div>
-<button type="submit" class="btn btn-primary mt-3">Save Details</button>
-</form>
-   <p>
-    <fieldset style="border: 1px black solid">
-        <legend style="border: 1px black solid;margin-left: 1em; padding: 0.1em 0.1em ">Import From Excel Sheet</legend>
-        Please make sure that the excel sheet is in .csv format and has the below column titles for a successful import.<br/>
-        serial_no<br/>
-        tag_no<br/>
-        status<br/>
-        model_no<br/>
-        issued_to<br/>
-        employee_name<br/>
-        employee_designation<br/>
-        <form action="excel_import_item_details_db" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <input name="myfile" required type="file">
+    <form role="form" action="add_items_details_save" method="post" class="card p-3 border-dark mt-3">
+        {% csrf_token %}
+        <div class="input-group input-group-sm mb-3">
+            <label class="input-group-text side-label">Model Number</label>
+            <select class="form-control selectpicker show-tick"  name="model_no" placeholder="" data-live-search="true"  data-dropup-auto="false">
+                {% for item in items %}
+                <option value="{{item.id}}">{{item.model_no}} </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="input-group input-group-sm mb-3">
+            <label class="input-group-text side-label">Serial Number</label>
+            <input class="form-control" name="serial_no" placeholder="Enter serial-number" type="text">
+        </div>
+        <div class="input-group input-group-sm mb-3">
+            <label class="input-group-text side-label">Tag Number</label>
+            <input class="form-control" name="tag_no" placeholder="Enter tag-number" type="text">
+        </div>
+        <div class="input-group input-group-sm mb-3">
+            <label class="input-group-text side-label">Room Tag</label>
+            <input class="form-control" name="room_tag" placeholder="Enter room-tag" type="text">
+        </div>
 
-            <button class="btn btn-primary mt-3" type="submit">SUBMIT</button>
+        <div class="input-group input-group-sm mb-3">
+            <label class="input-group-text side-label">Issued To</label>
+            <select class="form-control selectpicker show-tick"  name="issued_to" placeholder="" data-live-search="true"  data-dropup-auto="false">
+                {% for prosecution in prosecutions %}
+                <option value="{{prosecution.id}}">{{prosecution.name}} </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="input-group input-group-sm mb-3">
+            <label class="input-group-text side-label">Employee Name</label>
+            <input class="form-control" name="employee_name" placeholder="Enter employee name" type="text">
+        </div>
+        <div class="input-group input-group-sm mb-3">
+            <label class="input-group-text side-label">Employee Designation</label>
+            <input class="form-control" name="employee_designation" placeholder="Enter employee designation" type="text">
+        </div>
+        <div class="input-group input-group-sm mb-3">
+            <label class="input-group-text side-label">Status</label>
+            <select class="form-control" name="status">
+                {% for x,y in status %}
+                <option value="{{x}}">{{ y }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Save Details</button>
+        <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+            Import From Excel Sheet
+        </button>
+    </form>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Import from Excel Sheet</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Please make sure that the excel sheet is in
+                <li>.csv format</li>
+                <li>save as type is CSV UTF-8</li>
+                and has the below column titles for a successful import<br/>
+                <li>serial_no</li>
+                <li>tag_no</li>
+                <li>room_tag</li>
+                <li>status</li>
+                <li>model_no</li>
+                <li>issued_to</li>
+                <li>employee_name</li>
+                <li>employee_designation</li>
+            </div>
+            <div class="modal-footer">
+                <form role="form" action="excel_import_item_details_db" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input name="myfile" required type="file">
+                    <button type="button" class="btn btn-secondary mt-3" data-bs-dismiss="modal">Close</button>
+                    <button class="btn btn-primary mt-3" type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+<!-- Modal -->
 
-        </form>
-        {% for message in messages %}
-        {% if message.tags == 'success' %}
-        <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-        <script>
-                            var m="{{ message }};
-                            swal("Success", m, "success")
-
-        </script>
+<!--- Messages after CRUD operations --->
+{% if messages %}
+    {% for message in messages %}
+        {% if message.tags == 'alert-success' %}
+            <script>
+                 var m= "{{ message }}";
+                 swal({
+                       title: "Good job!",
+                       text: m,
+                       icon: "success",
+                      });
+            </script>
+        {% elif message.tags == 'alert-danger' %}
+            <script>
+                 var m= "{{ message }}";
+                 swal({
+                       title: "Error!",
+                       text: m,
+                       icon: "error",
+                      });
+            </script>
         {% endif %}
-        {% endfor %}
-    </fieldset>
-    </p>
+    {% endfor %}
+{% endif %}
+<!--- Messages after CRUD operations --->
 </div>
 {% endblock %}

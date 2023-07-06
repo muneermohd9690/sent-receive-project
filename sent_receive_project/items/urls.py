@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+#from .views import view_itemdetails_bulk_delete
 import excel
 
 urlpatterns = [
@@ -25,5 +26,6 @@ urlpatterns = [
     path('edit_item_details_form/<int:id>', views.edit_item_details_form, name='edit_item_details_form'),
     path('edit_item_details_form/edit_item_details_save', views.edit_item_details_save, name='edit_item_details_save'),
     path('edit_item_details_form/edit_item_details_delete/<int:id>', views.edit_item_details_delete,
-         name='edit_item_details_delete')
+         name='edit_item_details_delete'),
+    path('view_items_details/<int:id>/view_itemdetails_bulk_delete', views.view_itemdetails_bulk_delete , name='view_itemdetails_bulk_delete'),
 ]

@@ -1,0 +1,118 @@
+﻿{% load static %}
+{% load sent_receive_project_tags %}
+<html xmlns="http://www.w3.org/1999/xhtml" lang='ar' xml:lang="ar" dir="ltr">
+<div>
+    <pdf:language name="arabic"/>
+</div>
+
+<head>
+<!--     {% load static %}-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toner Report {{toner_model}}</title>
+
+    <style>
+
+        @font-face
+        {
+        font-family: "Times New Roman";
+        src: url('C:\Windows\Fonts\timesbd.ttf');
+        }
+        @page
+        {
+            size:a4 landscape;
+            margin: 60px 60px 60px 60px;
+            @frame header_frame
+            {           /* Static Frame */
+                -pdf-frame-content: header_logo;
+                -pdf-frame-content: header_left1;
+
+
+            }
+         }
+     .logo
+     {
+             text-align: center;
+
+     }
+     .left1
+            {
+            font-size: 32px;
+            text-align: center;
+            margin-top: 10px;
+            }
+.table1{
+    border:2px solid black;
+    margin-top:auto;
+    margin-left:3px;
+    margin-right:auto;
+    padding-left: 2px;
+    table-layout: auto;
+    }
+    .table1 th{
+    text-align: center;
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-bottom: 1px;
+    padding-left: 5px;
+    background-color: #EEE8AA;
+    font-weight: bold;
+    font: 14px "Times New Roman", Times New Roman;
+    }
+    .table1 tr{
+    text-align: left;
+    font: 14px "Times New Roman", Times New Roman;
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-bottom: 1px;
+    padding-left: 5px;
+    margin-top:20px;
+    }
+    .w1{
+        width: 50px;
+    }
+    .w2{
+        width: 190px;
+    }
+
+    body {
+
+    font-family: "Times New Roman";
+
+    }
+     </style>
+</head>
+<body>
+<div id="frame_header_logo" class="logo">
+    <img src="{% encode_static 'images/pplogo.jpg' %}" alt="My image" width="100" height="100" />
+</div>
+<div id="frame_header_left1" class="left1"><u>Toner Details : {{toner_model}}</u></div>
+    <div  class="table1">
+        <table>
+            <tr>
+                <th class="w1">SI.No</th>
+                <th class="w2">Toner Model</th>
+                <th class="w2">Issued to</th>
+                <th class="w2">Employee Name</th>
+                <th class="w2">Employee Designation</th>
+                <th class="w2">Date Dispatched</th>
+                <th class="w2">Status</th>
+
+            </tr>
+            {% for detail in tonerdetails %}
+            <tr>
+                <td class="w1">{{forloop.counter}}</td>
+                <td class="w2">{{detail.toner_model.toner_model}} {{detail.toner_model.toner_model.content_type}}</td>
+                <td class="w2">{{detail.issued_to.name}}</td>
+                <td class="w2">{{detail.employee_name}}</td>
+                <td class="w2">{{detail.employee_designation}}</td>
+                <td class="w2">{{detail.date_dispatched.date}}</td>
+                <td class="w2">{{detail.status}}</td>
+            </tr>
+
+            {% endfor %}
+
+        </table>
+    </div>
+</body>
+</html>

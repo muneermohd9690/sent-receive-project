@@ -5,9 +5,12 @@
 
 <div class="container">
   <h2>Prosecutions</h2>
-  <input class="form-control" id="myInput" type="text" placeholder="Search..">
-  <div class="table-responsive">
-    <table class="table table-bordered">
+  <div class="input-group input-group-sm mb-2">
+        <input class="form-control" id="search" type="text" placeholder="Search.." >
+        <a href="{% url 'view_prosecutions' %}" class="btn btn-dark btn-sm"><i class="fas fa-sync-alt"></i></a>
+  </div>
+  <div class="table-responsive" >
+    <table class="table table-bordered" id="myTable">
       <thead>
       <tr>
         <th>Prosecution Name</th>
@@ -15,29 +18,84 @@
         <th>Action</th>
       </tr>
       </thead>
-      <tbody id="myTable">
+      <tbody>
       {% for prosecution in prosecutions %}
       <tr>
         <td>{{prosecution.name}}</td>
         <td>{{prosecution.location}}</td>
-        <td><a href="{% url 'print_pdf' prosecution.name %}" target="_blank" rel="noopener noreferrer" class="btn btn-success">Print</a></td>
+        <td><a href="{% url 'print_pdf' prosecution.name %}" target="_blank" rel="noopener noreferrer" class="btn btn-success" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Print"><i class="fas fa-print"></i></a>
+          <a href="{% url 'edit_prosecutions_form' prosecution.id %}" class="btn btn-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"><i class="fas fa-edit"></i></a>
+          <a class="btn btn-danger"data-bs-toggle="modal" data-bs-target="#delete-modal{{ prosecution.pk }}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"><i class="fas fa-trash"></i></a></td>
       </tr>
+      <!-- delete confirmation Modal -->
+            <div class="modal fade" id="delete-modal{{ prosecution.pk }}" tabindex="-1" role="dialog"
+                 aria-labelledby="delete-modal-label" data-bs-backdrop="static" data-bs-keyboard="false"
+                 aria-hidden="true">
+                <div class="modal-dialog" >
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="delete-modal-label">Delete Prosecution</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="text-center text-danger">
+                                <span>Do you want to delete Prosecution ?</span>
+                                <div class="text-dark mt-3 mb-2">Prosecution: <strong>{{prosecution.name}} - {{prosecution.location}} </strong></div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="{% url 'view_prosecutions' %}" class="btn btn-secondary">Cancel</a>
+                            <a href="{% url 'edit_prosecutions_delete' prosecution.id %}" class="btn btn-danger" type="submit" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"><i class="fas fa-trash"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- delete confirmation Modal -->
       {% endfor %}
       </tbody>
     </table>
   </div>
+<!--- Paginator --->
 <script>
-$(document).ready(function(){
-  $("#myInput").on("keyup", function() {
-    var value = $(this).val().toLowerCase();
-    $("#myTable tr").filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+$(document).ready(function () {
+    $("#myTable").DataTable({
+        paging: true,
+        pageLength: 10,
+        lengthChange: false,
+        bInfo: false,
+        bSort: false,
+        order:[]
     });
-  });
 });
+</script>
 
+<!--- Paginator --->
+<script>
+$(document).ready(function () {
+var table = $('#myTable').DataTable();
+
+// #myInput is a <input type="text"> element
+$('#search').on( 'keyup', function () {
+    table.search( this.value ).draw();
+} );
+});
 </script>
 </div>
+<!--- Messages after CRUD operations --->
+{% if messages %}
+    {% for message in messages %}
+            <script>
+                 var m= "{{ message }}";
+                 swal({
+                       title: "Good job!",
+                       text: m,
+                       icon: "success",
+                      });
+            </script>
+    {% endfor %}
+{% endif %}
+<!--- Messages after CRUD operations --->
 
 {% endblock %}
 

@@ -2,82 +2,223 @@
 {% load static %}
 {% block content %}
 
-<div class="container">
+<div class="container" xmlns="">
   <h2>Toner Details</h2>
+  <div class="input-group input-group-sm mb-2">
+        <input class="form-control" id="search" type="text" placeholder="Search.." >
+        <a href="{% url 'view_tonerdetails' item_id %}" class="btn btn-dark btn-sm"><i class="fas fa-sync-alt"></i></a>
+  </div>
+    <div class="table-responsive">
+        {% csrf_token %}
+        <table class="table table-bordered" id="myTable">
+            <thead>
+            <tr>
+                <th>Toner Model</th>
+                <th>Issued to</th>
+                <th>Employee Name</th>
+                <th>Employee Designation</th>
+                <th>Date Dispatched</th>
+                <th>Status</th>
+                <th>Action</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
 
-  <input class="form-control" id="myInput" type="text" placeholder="Search..">
+            {% for detail in tonerdetails%}
 
-  <div class="table-responsive">
-      <table class="table table-bordered">
-          <thead>
-          <tr>
-              <th>Toner Model</th>
-              <th>Issued to</th>
-              <th>Employee Name</th>
-              <th>Employee Designation</th>
-              <th>Status</th>
-              <th>Action</th>
-          </tr>
-          </thead>
-          <tbody id="myTable">
-          {% for detail in tonerdetails %}
+            <tr id="{{detail.id}}" data-id="{{ detail.id }}">
+                <td>{{detail.toner_model.toner_model}} {{detail.toner_model.toner_model.content_type}}</td>
 
-          <tr>
-              <td>{{detail.toner_model.toner_model}}</td>
-
-              <td>{{detail.issued_to.name}}</td>
-              <td>{{detail.employee_name}}</td>
-              <td>{{detail.employee_designation}}</td>
-              <td>{{detail.status}}</td>
-              <td><a href="{% url 'print_toner_issue_vouchers' detail.id %}" target="_blank" rel="noopener noreferrer" class="btn btn-info">Print Issue Voucher</a>
-                  <a href="{% url 'print_toner_sent_invoice' detail.id %}" target="_blank" rel="noopener noreferrer" class="btn btn-info">Print Invoice</a>
-
-                  <a onclick="getCartData('{{detail.id}}', 'add')" data-detail="{{detail.id}}" data-action="add" class="btn btn-info addtocart">Add to Cart</a>
-                  <a href="{% url 'edit_tonerdetails_form' detail.id %}" class="btn btn-warning">Edit</a>
-                  <a data-toggle="modal" data-target="#delete-modal{{ toner.pk }}" class="btn btn-danger">Delete</a></td>
-          </tr>
-          <!-- delete confirmation Modal -->
-          <div class="modal fade" id="delete-modal{{ tonerdetails.pk }}" tabindex="-1" role="dialog"
-               aria-labelledby="delete-modal-label"
-               aria-hidden="true">
-              <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                      <div class="modal-header">
-                          <h5 class="modal-title" id="delete-modal-label">Delete Toner Details</h5>
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                          </button>
-                      </div>
-                      <div class="modal-body">
-                          <div class="text-center text-danger">
-                              <span>Do you want to delete toner details ?</span>
-                              <div class="text-dark mt-3 mb-2">Toner: <strong>{{detail.toner_model.toner_model}}</strong></div>
-                          </div>
-                      </div>
-                      <div class="modal-footer">
-                          <a href="{% url 'view_toners' %}" class="btn btn-secondary">Cancel</a>
-                          <a href="{% url 'edit_tonerdetails_delete' detail.id %}" class="btn btn-danger"
-                             type="submit">Delete</a>
-                      </div>
-                  </div>
-              </div>
-          </div>
-          <!-- delete confirmation Modal -->
-          {% endfor %}
-          </tbody>
-      </table>
-
+                <td>{{detail.issued_to.name}}</td>
+                <td>{{detail.employee_name}}</td>
+                <td>{{detail.employee_designation}}</td>
+                <td>{{detail.date_dispatched.date}}</td>
+                <td>{{detail.status}}</td>
+                <td><a href="{% url 'print_toner_issue_vouchers' detail.id %}" target="_blank" rel="noopener noreferrer" class="btn btn-info" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Print Issue Voucher"><i class="fas fa-print"></i></a>
+                    <a href="{% url 'print_toner_sent_invoice' detail.id %}" target="_blank" rel="noopener noreferrer" class="btn btn-info" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Print Invoice"><i class="fas fa-receipt"></i></a></a>
+                    <button onclick="getCartData('{{detail.id}}','add')" data-detail="{{detail.id}}" data-action="add" class="btn btn-secondary addtodispatch" enabled data-bs-toggle="tooltip" data-bs-placement="bottom" title="Add To Dispatch"><i class="fas fa-box"></i></button>
+                    <a href="{% url 'edit_tonerdetails_form' detail.id %}" class="btn btn-warning" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"><i class="fas fa-edit"></i></a>
+                    <a data-bs-toggle="modal" data-bs-target="#delete-modal{{ detail.pk }}" class="btn btn-danger" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"><i class="fas fa-trash"></i></a></a>
+                </td>
+                <td><input type="checkbox" name="detail_id[]" value="{{detail.id}}" id="bulk_delete_detail"></td>
+            </tr>
+            <!-- delete confirmation Modal -->
+            <div class="modal fade" id="delete-modal{{ detail.pk }}" tabindex="-1" role="dialog"
+                 aria-labelledby="delete-modal-label" data-bs-backdrop="static" data-bs-keyboard="false"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="delete-modal-label">Delete Toner Details</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="text-center text-danger">
+                                <span>Do you want to delete toner details ?</span>
+                                <div class="text-dark mt-3 mb-2">Toner: <strong>{{detail.toner_model.toner_model}}</strong></div>
+                                <div class="text-dark mt-3 mb-2">Employee Name: <strong>{{detail.employee_name}}</strong></div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <a href="{% url 'view_toners' %}" class="btn btn-secondary">Cancel</a>
+                            <a href="{% url 'edit_tonerdetails_delete' detail.id %}" class="btn btn-danger"
+                               type="submit" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"><i class="fas fa-trash"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- delete confirmation Modal -->
+            {% endfor %}
+            </tbody>
+        </table>
+        <a href="{% url 'tonerdetails_export_topdf' item_id %}"  rel="noopener noreferrer"  class="btn btn-secondary" id="btn-exporttopdf" data-bs-toggle="tooltip" data-bs-placement="bottom" title="export to pdf"><i class="fas fa-file-pdf"></i></a>
+        <a href="{% url 'tonerdetails_export_toexcel' item_id %}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" id="btn-exporttocsv" data-bs-toggle="tooltip" data-bs-placement="bottom" title="export to csv"><i class="fas fa-file-excel"></i></a>
+        <button type="submit" class="btn btn-danger bulk_delete" style="display: none;" id="btn-bulkdelete">Bulk Delete</button>
     </div>
+
+
+<!---------------------------- Ajax bulk delete --------------------------------------------->
 <script>
 $(document).ready(function(){
-  $("#myInput").on("keyup", function() {
-    var value = $(this).val().toLowerCase();
-    $("#myTable tr").filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        $('.bulk_delete').click(function(){
+            var id=[];
+            var item_id={{ item_id }}
+            var csrf=$('input[name=csrfmiddlewaretoken]').val();
+            $(':checkbox:checked').each(function(i){
+                    id[i]=$(this).val()
+             })
+                if(id.length===0){
+                       swal("Error!", "Please select the toners to Delete", "error");
+                }
+                else{ swal({
+                              title: "Are you sure?",
+                              text: "You will not be able to recover this record!",
+                              icon: "warning",
+                              buttons: [
+                                'No, cancel it!',
+                                'Yes, I am sure!'
+                              ],
+                              dangerMode: true,
+                            }).then(function(isConfirm) {
+                              if (isConfirm) {
+                                console.log(id)
+                                    $.ajax({
+                                    url:'' + item_id +'/view_tonerdetails_bulk_delete' ,
+                                    method:"POST",
+                                    data:{
+                                        id:id,
+                                        csrfmiddlewaretoken:csrf
+                                    },
+
+                                    success:function(response){
+                                        for(var i=0;i<id.length;i++){
+                                            $('tr#'+id[i]+'').css('background-color','#ccc');
+                                            $('tr#'+id[i]+'').fadeOut('slow');
+
+                                        }
+                                    }
+                                })
+                                swal({
+                                  title: 'Deleted!',
+                                  text: 'Records are successfully deleted!',
+                                  icon: 'success'
+                                })
+                              } else {
+                                swal("Cancelled", "Your records are safe", "error");
+                              }
+                            });
+
+                }
+        })
+})
+</script>
+<!---------------------------- Ajax bulk delete --------------------------------------------->
+
+<!---------------------------- disable addtodispatch button --------------------------------->
+<script>
+
+    $(document).ready(function(){
+    var java_content_type_id = {{content_type_id}}
+    var java_joined_ids = JSON.parse("{{joined_ids}}")
+    var buttons=$(".addtodispatch")
+    var java_detailId=[]
+    var java_detailId_content_type_id=[]
+    for(x=0;x<buttons.length;x++)
+    {
+    $('button.addtodispatch').each(function() {
+        java_detailId[x++]= parseInt($(this).attr("data-detail"));
     });
-  });
+    }
+    for(y=0;y<java_detailId.length;y++)
+    {
+        java_detailId_content_type_id[y]=[java_detailId[y],java_content_type_id]
+    }
+    for(let i = 0; i<java_detailId_content_type_id.length; i++)
+    {
+        for(let j = 0; j<java_joined_ids.length; j++)
+        {
+                if(JSON.stringify(java_detailId_content_type_id[i])==JSON.stringify(java_joined_ids[j]))
+                {
+                    $(`button[data-detail="${java_detailId_content_type_id[i][i-i]}"]`).attr("disabled", true)
+                    break;
+                } else
+                    {
+                            $(`button[data-detail="${java_detailId_content_type_id[i][i-i]}"]`).attr("disabled", false)
+                    }
+        }
+    }
 });
 
 </script>
+<!---------------------------- disable addtodispatch button --------------------------------->
+
+<!---------------------------- Messages after CRUD operations ------------------------------->
+{% if messages %}
+    {% for message in messages %}
+            <script>
+                 var m= "{{ message }}";
+                 swal({
+                       title: "Good job!",
+                       text: m,
+                       icon: "success",
+                      });
+            </script>
+    {% endfor %}
+{% endif %}
+<!---------------------------- Messages after CRUD operations ------------------------------->
+
+<!---------------------------- Paginator ---------------------------------------------------->
+<script>
+$(document).ready(function () {
+    $("#myTable").DataTable({
+        paging: true,
+        pageLength: 10,
+        lengthChange: false,
+        bInfo: false,
+        bSort: false,
+        order:[],
+
+    });
+});
+</script>
+<!---------------------------- Paginator ---------------------------------------------------->
+
+<!---------------------------- Search Function ---------------------------------------------->
+<script>
+$(document).ready(function () {
+var table = $('#myTable').DataTable();
+
+// #myInput is a <input type="text"> element
+$('#search').on( 'keyup', function () {
+    table.search( this.value ).draw();
+} );
+});
+</script>
+<!---------------------------- Search Function ---------------------------------------------->
+
+
 </div>
+
 {% endblock %}
