@@ -1,3 +1,4 @@
+import inspect
 
 from django.contrib.contenttypes.models import ContentType
 from django.http import HttpResponse,HttpResponseRedirect
@@ -114,6 +115,7 @@ def view_tonerdetails(request, id):
     content_type_id=tonerdetails_content_type.id
     #button_state=find_button_state(tonerdetails)
     joined_ids=json.dumps(joined_ids)
+
     context = {"tonerdetails": tonerdetails,"joined_ids":joined_ids,"total": cart_total,"content_type_id":content_type_id,"item_id":id,
                "toner_stock_alert":toner_stock_alert,"toner_under_fifteen":toner_under_fifteen}
     #send_tonerdetails(request)
@@ -317,46 +319,86 @@ def edit_tonerdetails(request):
 def edit_tonerdetails_form(request, id):
     prosecutions = Prosecutions.objects.all()
     toners = Toners.objects.all()
-    tonerdetails = TonerDetails.objects.get(id=id)
+    #tonerdetails = TonerDetails.objects.get(id=id)
+    detail = TonerDetails.objects.get(id=id)
     data_calc_cart_total = calc_cart_total(request)
     cart_total = data_calc_cart_total['cart_total']
     data_calc_toner_stock_alert = calc_toner_stock_alert(request)
     toner_stock_alert = data_calc_toner_stock_alert['toner_stock_alert_count']
     toner_under_fifteen = data_calc_toner_stock_alert['tonerstock']
-    context = {"total": cart_total,"tonerdetails": tonerdetails, "toners": toners, "prosecutions": prosecutions,
-                   "status": TonerDetails.STATUS,"toner_stock_alert":toner_stock_alert,"toner_under_fifteen":toner_under_fifteen}
+    cartitem = CartItem.objects.all()
+    joined_ids = [(o.object_id, o.content_type_id) for o in cartitem]
+    tonerdetails_content_type = ContentType.objects.get(app_label='toners', model='tonerdetails')
+    content_type_id = tonerdetails_content_type.id
+    joined_ids = json.dumps(joined_ids)
+    # context = {"total": cart_total,"tonerdetails": tonerdetails, "toners": toners, "prosecutions": prosecutions,
+    #                "status": TonerDetails.STATUS,"toner_stock_alert":toner_stock_alert,"toner_under_fifteen":toner_under_fifteen}
+    context = {"total": cart_total, "detail": detail, "toners": toners, "prosecutions": prosecutions,"joined_ids":joined_ids,
+                "status": TonerDetails.STATUS,"content_type_id":content_type_id,"toner_stock_alert":toner_stock_alert,"toner_under_fifteen":toner_under_fifteen}
     return render(request, 'edit_tonerdetails_form.html',context)
 
 
 @cache_control(no_cache=True, must_revalidate=True,no_store=True)
 @login_required(login_url="login")
 def edit_tonerdetails_save(request):
+    caller_frame = inspect.currentframe().f_back
+    caller_info = inspect.getframeinfo(caller_frame)
+    caller_module = inspect.getmodule(caller_frame)
     if request.method == "POST":
-        tonerdetails_id = request.POST.get("tonerdetails_id")
-        employee_name = request.POST.get("employee_name").strip()
-        employee_designation = request.POST.get("employee_designation").strip()
-        # date_dispatched=datetime.strptime(request.POST['date_dispatched'], '%m/%d/%Y')
-        # date_dispatched = datetime.strptime(request.POST['date_dispatched'], 'YYYY-MM-DD')
-        date_dispatched = request.POST.get("date_dispatched")
-        status = request.POST.get("status")
+        if caller_info.function != '<module>' and 'sent_items' in caller_module.__name__:
+            #tonerdetails_id = request.POST.get("tonerdetails_id")
+            tonerdetails_id = request.POST.get("detail_id")
+            employee_name = request.POST.get("employee_name").strip()
+            employee_designation = request.POST.get("employee_designation").strip()
+            # date_dispatched=datetime.strptime(request.POST['date_dispatched'], '%m/%d/%Y')
+            # date_dispatched = datetime.strptime(request.POST['date_dispatched'], 'YYYY-MM-DD')
+            date_dispatched = request.POST.get("date_dispatched")
+            status = request.POST.get("status")
 
-        toner_model_id = request.POST.get("toner_model")
-        toner_model = Toners.objects.get(id=toner_model_id)
+            toner_model_id = request.POST.get("toner_model")
+            toner_model = Toners.objects.get(id=toner_model_id)
 
-        issued_to_id = request.POST.get("issued_to")
-        issued_to = Prosecutions.objects.get(id=issued_to_id)
+            issued_to_id = request.POST.get("issued_to")
+            issued_to = Prosecutions.objects.get(id=issued_to_id)
 
-        TonerDetails_model = TonerDetails(id=tonerdetails_id, toner_model=toner_model, issued_to=issued_to,
-                                          employee_name=employee_name, employee_designation=employee_designation,
-                                          date_dispatched=date_dispatched,status=status)
+            TonerDetails_model = TonerDetails(id=tonerdetails_id, toner_model=toner_model, issued_to=issued_to,
+                                              employee_name=employee_name, employee_designation=employee_designation,
+                                              date_dispatched=date_dispatched,status=status)
 
-        TonerDetails_model.save()
-        toner_model_id=find_toner_model_id(tonerdetails_id)
-        #TonerDetails_model.save(update_fields=['id','toner_model','issued_to','employee_name','employee_designation','status'])
-        messages.success(request, "Toner details updated successfully")
-        calc_total_qty()
-        calc_remaining_qty()
-        return redirect('view_tonerdetails',toner_model_id)
+            TonerDetails_model.save()
+            toner_model_id=find_toner_model_id(tonerdetails_id)
+            #TonerDetails_model.save(update_fields=['id','toner_model','issued_to','employee_name','employee_designation','status'])
+            messages.success(request, "Toner details updated successfully and added to dispatch")
+            calc_total_qty()
+            calc_remaining_qty()
+            return redirect('view_tonerdetails',toner_model_id)
+        else:
+            # tonerdetails_id = request.POST.get("tonerdetails_id")
+            tonerdetails_id = request.POST.get("detail_id")
+            employee_name = request.POST.get("employee_name").strip()
+            employee_designation = request.POST.get("employee_designation").strip()
+            # date_dispatched=datetime.strptime(request.POST['date_dispatched'], '%m/%d/%Y')
+            # date_dispatched = datetime.strptime(request.POST['date_dispatched'], 'YYYY-MM-DD')
+            date_dispatched = request.POST.get("date_dispatched")
+            status = request.POST.get("status")
+
+            toner_model_id = request.POST.get("toner_model")
+            toner_model = Toners.objects.get(id=toner_model_id)
+
+            issued_to_id = request.POST.get("issued_to")
+            issued_to = Prosecutions.objects.get(id=issued_to_id)
+
+            TonerDetails_model = TonerDetails(id=tonerdetails_id, toner_model=toner_model, issued_to=issued_to,
+                                              employee_name=employee_name, employee_designation=employee_designation,
+                                              date_dispatched=date_dispatched, status=status)
+
+            TonerDetails_model.save()
+            toner_model_id = find_toner_model_id(tonerdetails_id)
+            # TonerDetails_model.save(update_fields=['id','toner_model','issued_to','employee_name','employee_designation','status'])
+            messages.success(request, "Toner details updated successfully")
+            calc_total_qty()
+            calc_remaining_qty()
+            return redirect('view_tonerdetails', toner_model_id)
         #return redirect('view_toners')
     else:
         return redirect('view_toners')

@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.template.defaultfilters import length
 from django.contrib.admin.options import get_content_type_for_model
 
+import toners.views
 from .models import SentItems, Cart, CartItem,Customer
 # from .models import *
 from django.http import JsonResponse
@@ -127,8 +128,21 @@ def update_items(request):
         else:
             p1 = CartItem.objects.create(object_id=detail.id, cart=cart,content_type_id=int(detail_q.id))
             p1.save()
-
             messages.success(request, "Toner added to Dispatch")
+
+    elif 'edit_tonerdetails_form' in urlObject :
+        detail = TonerDetails.objects.get(id=detailId)
+        urlid=detail.toner_model_id
+        detail_q=ContentType.objects.get_for_model(detail)
+        cart, created = Cart.objects.get_or_create(customer=customer, complete=False)
+        if (detail.id, detail_q.id) in joined_ids:
+            messages.success(request, "Toner already in Dispatch")
+        else:
+            p1 = CartItem.objects.create(object_id=detail.id, cart=cart,content_type_id=int(detail_q.id))
+            p1.save()
+            messages.success(request, "Toner added to Dispatch")
+            return redirect(toners.views.edit_tonerdetails_save)
+            #messages.success(request, "Toner added to Dispatch")
 
     elif 'view_items_details' in urlObject:
         detail = ItemDetails.objects.get(id=detailId)

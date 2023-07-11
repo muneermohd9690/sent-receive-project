@@ -4,17 +4,17 @@
 <div class="container">
     <div class="row">
         <div class="card card-body border-dark mt-3">
-            <span class="text-center"><h2>Edit Toner Details | Toner Details ID :{{ tonerdetails.id }} </h2></span>
+            <span class="text-center"><h2>Edit Toner detail | Toner detail ID :{{ detail.id }} </h2></span>
         </div>
     </div>
     <form role="form" action="edit_tonerdetails_save" method="post" class="card p-3 border-dark mt-3">
         {% csrf_token %}
-        <input type="hidden" name="tonerdetails_id" value="{{tonerdetails.id}}">
+        <input type="hidden" name="detail_id" value="{{detail.id}}">
         <div class="input-group input-group-sm mb-3">
         <label class="input-group-text side-label">Toner Model </label>
             <select class="form-control selectpicker show-tick" name="toner_model" id="toner_model" data-live-search="true"  data-dropup-auto="false">
                 {% for toner in toners %}
-                <option value="{{toner.id}}" {% if toner.id == tonerdetails.toner_model.id %} selected {% endif %}>
+                <option value="{{toner.id}}" {% if toner.id == detail.toner_model.id %} selected {% endif %}>
                     {{toner.toner_model}}</option>
                 {% endfor %}
             </select>
@@ -24,7 +24,7 @@
           <label class="input-group-text side-label">Issued To </label>
             <select class="form-control selectpicker show-tick" name="issued_to" id="issued_to" data-live-search="true"  data-dropup-auto="false">
                 {% for prosecution in prosecutions %}
-                <option value="{{prosecution.id}}" {% if prosecution.id == tonerdetails.issued_to.id %} selected {% endif %}>
+                <option value="{{prosecution.id}}" {% if prosecution.id == detail.issued_to.id %} selected {% endif %}>
                     {{prosecution.name}}</option>
                 {% endfor %}
             </select>
@@ -33,19 +33,19 @@
         <div class="input-group input-group-sm mb-3">
             <label class="input-group-text side-label">Employee Name </label>
             <input type="text" class="form-control" placeholder="enter employee name" name="employee_name" id="employee_name"
-                         value="{{tonerdetails.employee_name}}">
+                         value="{{detail.employee_name}}">
         </div>
 
         <div class="input-group input-group-sm mb-3">
             <label class="input-group-text side-label">Employee Designation </label>
             <input type="text" class="form-control" placeholder="enter employee designation" name="employee_designation" id="employee_designation"
-                       value="{{tonerdetails.employee_designation}}">
+                       value="{{detail.employee_designation}}">
         </div>
 
         <div class="input-group input-group-sm mb-3">
             <label class="input-group-text side-label">Date Dispatched </label>
             <input type="text" class="form-control" name="date_dispatched" id="date_dispatched"
-                       value="{{tonerdetails.date_dispatched.date|date:'Y-m-d'}}">
+                       value="{{detail.date_dispatched.date|date:'Y-m-d'}}">
         </div>
 
 
@@ -53,12 +53,15 @@
             <label class="input-group-text side-label">Status</label>
                <select class="form-control" name="status" id="status">
                 {% for x,y in status %}
-                    <option value="{{x}}" {% if x == tonerdetails.status %} selected {% endif %}>{{ x }}</option>
+                    <option value="{{x}}" {% if x == detail.status %} selected {% endif %}>{{ x }}</option>
                 {% endfor %}
                 </select>
         </div>
          <button type="submit" class="btn btn-success mt-3 btn-action-ETDF" disabled data-bs-toggle="tooltip" data-bs-placement="bottom" title="Save"><i class="fas fa-save"></i></button>
         <a href="{% url 'view_toners' %}" id="btn-back2" class="btn btn-primary mt-3" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Back"><i class="fas fa-angle-double-left"></i></a>
+        <button type="submit" onclick="getCartData('{{detail.id}}','add')" data-detail="{{detail.id}}" data-action="add" class="btn btn-secondary mt-3 addtodispatch" enabled data-bs-toggle="tooltip" data-bs-placement="bottom" title="Save and Add To Dispatch"><i class="fas fa-box"></i></button>
+
+
         <!-- Button trigger modal -->
         <button id="modal-confirm2" type="button" style="display:none;" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#save-modal">
         </button>
@@ -93,15 +96,74 @@
      });
 </script>
 <!-- Date picker -->
+
+<!---------------------------- Messages after CRUD operations ------------------------------->
+{% if messages %}
+    {% for message in messages %}
+            <script>
+                 var m= "{{ message }}";
+                 swal({
+                       title: "Good job!",
+                       text: m,
+                       icon: "success",
+                      });
+            </script>
+    {% endfor %}
+{% endif %}
+<!---------------------------- Messages after CRUD operations ------------------------------->
+
+<!---------------------------- disable addtodispatch button --------------------------------->
+<script>
+
+
+    $(document).ready(function(){
+    var java_content_type_id = {{content_type_id}}
+    var java_joined_ids = JSON.parse("{{joined_ids}}")
+    var buttons=$(".addtodispatch")
+    var java_detailId=[]
+    var java_detailId_content_type_id=[]
+
+    for(x=0;x<buttons.length;x++)
+    {
+    $('button.addtodispatch').each(function() {
+        java_detailId[x++]= parseInt($(this).attr("data-detail"));
+    });
+
+    }
+    for(y=0;y<java_detailId.length;y++)
+    {
+        java_detailId_content_type_id[y]=[java_detailId[y],java_content_type_id]
+    }
+    for(let i = 0; i<java_detailId_content_type_id.length; i++)
+    {
+        for(let j = 0; j<java_joined_ids.length; j++)
+        {
+                if(JSON.stringify(java_detailId_content_type_id[i])==JSON.stringify(java_joined_ids[j]))
+                {
+                    $(`button[data-detail="${java_detailId_content_type_id[i][i-i]}"]`).attr("disabled", true)
+                    break;
+                } else
+                    {
+                            $(`button[data-detail="${java_detailId_content_type_id[i][i-i]}"]`).attr("disabled", false)
+                    }
+        }
+    }
+});
+
+
+</script>
+<!---------------------------- disable addtodispatch button --------------------------------->
+
+
 </div>
 <!--- Hidden data --->
 <div class="text-center mt-5" style="display: none;" >
-    <input id="toner_model2" value="{{tonerdetails.toner_model.id}}">
-    <input id="issued_to2" value="{{tonerdetails.issued_to.id}}">
-    <input id="employee_name2"  value="{{tonerdetails.employee_name}}">
-    <input id="employee_designation2" value="{{tonerdetails.employee_designation}}">
-    <input id="date_dispatched2" value="{{tonerdetails.date_dispatched.date|date:'Y-m-d'}}">
-    <input id="status2" value="{{tonerdetails.status}}">
+    <input id="toner_model2" value="{{detail.toner_model.id}}">
+    <input id="issued_to2" value="{{detail.issued_to.id}}">
+    <input id="employee_name2"  value="{{detail.employee_name}}">
+    <input id="employee_designation2" value="{{detail.employee_designation}}">
+    <input id="date_dispatched2" value="{{detail.date_dispatched.date|date:'Y-m-d'}}">
+    <input id="status2" value="{{detail.status}}">
 </div>
 
 <!--- Hidden data --->
