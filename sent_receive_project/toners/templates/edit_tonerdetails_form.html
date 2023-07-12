@@ -57,7 +57,7 @@
                 {% endfor %}
                 </select>
         </div>
-         <button type="submit" class="btn btn-success mt-3 btn-action-ETDF" disabled data-bs-toggle="tooltip" data-bs-placement="bottom" title="Save"><i class="fas fa-save"></i></button>
+        <button type="submit" name="save" value="save" class="btn btn-success mt-3 btn-action-ETDF" disabled data-bs-toggle="tooltip" data-bs-placement="bottom" title="Save"><i class="fas fa-save"></i></button>
         <a href="{% url 'view_toners' %}" id="btn-back2" class="btn btn-primary mt-3" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Back"><i class="fas fa-angle-double-left"></i></a>
         <button type="submit" onclick="getCartData('{{detail.id}}','add')" data-detail="{{detail.id}}" data-action="add" class="btn btn-secondary mt-3 addtodispatch" enabled data-bs-toggle="tooltip" data-bs-placement="bottom" title="Save and Add To Dispatch"><i class="fas fa-box"></i></button>
 
@@ -115,20 +115,19 @@
 <!---------------------------- disable addtodispatch button --------------------------------->
 <script>
 
-
     $(document).ready(function(){
     var java_content_type_id = {{content_type_id}}
     var java_joined_ids = JSON.parse("{{joined_ids}}")
     var buttons=$(".addtodispatch")
     var java_detailId=[]
     var java_detailId_content_type_id=[]
-
+    console.log(java_detailId);
     for(x=0;x<buttons.length;x++)
     {
     $('button.addtodispatch').each(function() {
         java_detailId[x++]= parseInt($(this).attr("data-detail"));
     });
-
+    console.log(java_detailId_content_type_id);
     }
     for(y=0;y<java_detailId.length;y++)
     {

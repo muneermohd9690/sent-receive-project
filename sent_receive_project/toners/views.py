@@ -341,11 +341,10 @@ def edit_tonerdetails_form(request, id):
 @cache_control(no_cache=True, must_revalidate=True,no_store=True)
 @login_required(login_url="login")
 def edit_tonerdetails_save(request):
-    caller_frame = inspect.currentframe().f_back
-    caller_info = inspect.getframeinfo(caller_frame)
-    caller_module = inspect.getmodule(caller_frame)
+
     if request.method == "POST":
-        if caller_info.function != '<module>' and 'sent_items' in caller_module.__name__:
+        button_value = request.POST.get('save')
+        if button_value == 'save':
             #tonerdetails_id = request.POST.get("tonerdetails_id")
             tonerdetails_id = request.POST.get("detail_id")
             employee_name = request.POST.get("employee_name").strip()
@@ -368,7 +367,7 @@ def edit_tonerdetails_save(request):
             TonerDetails_model.save()
             toner_model_id=find_toner_model_id(tonerdetails_id)
             #TonerDetails_model.save(update_fields=['id','toner_model','issued_to','employee_name','employee_designation','status'])
-            messages.success(request, "Toner details updated successfully and added to dispatch")
+            messages.success(request, "Toner details updated successfully")
             calc_total_qty()
             calc_remaining_qty()
             return redirect('view_tonerdetails',toner_model_id)
@@ -395,7 +394,7 @@ def edit_tonerdetails_save(request):
             TonerDetails_model.save()
             toner_model_id = find_toner_model_id(tonerdetails_id)
             # TonerDetails_model.save(update_fields=['id','toner_model','issued_to','employee_name','employee_designation','status'])
-            messages.success(request, "Toner details updated successfully")
+            messages.success(request, "Toner details updated successfully and added to dispatch")
             calc_total_qty()
             calc_remaining_qty()
             return redirect('view_tonerdetails', toner_model_id)

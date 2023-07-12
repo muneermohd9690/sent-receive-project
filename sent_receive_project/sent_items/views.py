@@ -5,6 +5,7 @@ from django.template.defaultfilters import length
 from django.contrib.admin.options import get_content_type_for_model
 
 import toners.views
+import items.views
 from .models import SentItems, Cart, CartItem,Customer
 # from .models import *
 from django.http import JsonResponse
@@ -140,7 +141,6 @@ def update_items(request):
         else:
             p1 = CartItem.objects.create(object_id=detail.id, cart=cart,content_type_id=int(detail_q.id))
             p1.save()
-            messages.success(request, "Toner added to Dispatch")
             return redirect(toners.views.edit_tonerdetails_save)
             #messages.success(request, "Toner added to Dispatch")
 
@@ -154,6 +154,18 @@ def update_items(request):
             p1 = CartItem.objects.create(object_id=detail.id, cart=cart, content_type_id=int(detail_q.id))
             p1.save()
             messages.success(request, "Item added to Dispatch")
+
+    elif 'edit_item_details_form' in urlObject:
+        detail = ItemDetails.objects.get(id=detailId)
+        detail_q = ContentType.objects.get_for_model(detail)
+        cart, created = Cart.objects.get_or_create(customer=customer, complete=False)
+        if (detail.id, detail_q.id) in joined_ids:
+            messages.success(request, "Item already in Dispatch")
+        else:
+            p1 = CartItem.objects.create(object_id=detail.id, cart=cart, content_type_id=int(detail_q.id))
+            p1.save()
+            return redirect(items.views.edit_item_details_save)
+
     return JsonResponse('Item was added', safe=False)
 
 
