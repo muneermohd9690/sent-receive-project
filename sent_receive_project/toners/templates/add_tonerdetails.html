@@ -1,6 +1,7 @@
 {% extends 'mainpage.html' %}
 
 {% block content %}
+{% load toners_tags %}
 <div class="container">
     <div class="row">
         <div class="card card-body border-dark mt-3">
@@ -124,4 +125,30 @@
     </div>
 </div>
 <!-- Modal for bulk quantity -->
+
+<!--- Messages after CRUD operations --->
+{% if messages %}
+    {% for message in messages %}
+        {% if message.tags == 'alert-success' %}
+            <script>
+                 var m= "{{ message }}";
+                 swal({
+                       title: "Good job!",
+                       text: m,
+                       icon: "success",
+                      });
+            </script>
+        {% elif message.tags == 'alert-danger' %}
+            <script>
+                 var m= "{{ message  }}";
+                 swal({
+                       title: "Error!",
+                       text: m,
+                       icon: "error",
+                      });
+            </script>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+<!--- Messages after CRUD operations --->
 {% endblock %}

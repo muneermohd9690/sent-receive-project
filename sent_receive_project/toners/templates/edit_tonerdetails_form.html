@@ -58,7 +58,7 @@
                 </select>
         </div>
         <button type="submit" name="save" value="save" class="btn btn-success mt-3 btn-action-ETDF" disabled data-bs-toggle="tooltip" data-bs-placement="bottom" title="Save"><i class="fas fa-save"></i></button>
-        <a href="{% url 'view_toners' %}" id="btn-back2" class="btn btn-primary mt-3" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Back"><i class="fas fa-angle-double-left"></i></a>
+        <a href="{% url 'view_tonerdetails' id=detail.toner_model.id %}" id="btn-back2" class="btn btn-primary mt-3" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Back"><i class="fas fa-angle-double-left"></i></a>
         <button type="submit" onclick="getCartData('{{detail.id}}','add')" data-detail="{{detail.id}}" data-action="add" class="btn btn-secondary mt-3 addtodispatch" enabled data-bs-toggle="tooltip" data-bs-placement="bottom" title="Save and Add To Dispatch"><i class="fas fa-box"></i></button>
 
 
@@ -79,7 +79,7 @@
                         Do you want to save changes ?
                     </div>
                     <div class="modal-footer">
-                        <a href="{% url 'view_toners' %}" class="btn btn-secondary" >No</a>
+                        <a href="{% url 'view_tonerdetails' id=detail.toner_model.id %}" class="btn btn-secondary" >No</a>
                         <button type="submit" class="btn btn-primary">Yes</button>
                     </div>
                 </div>

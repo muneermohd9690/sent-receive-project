@@ -372,6 +372,7 @@ def excel_import_items_db(request):
 @cache_control(no_cache=True, must_revalidate=True,no_store=True)
 @login_required(login_url="login")
 def excel_import_item_details_db(request):
+    global serial_number_error, column_data
     try:
         if request.method == 'POST' and request.FILES['myfile']:
             myfile = request.FILES['myfile']
@@ -380,26 +381,41 @@ def excel_import_item_details_db(request):
             uploaded_file_url = fs.path(filename)
             itemdetailsexceldata = pd.read_csv(uploaded_file_url, sep=",", encoding='utf-8')
             dbframe = itemdetailsexceldata
+            rowcount=0
+            serial_number_count=0
             for dbframe in dbframe.itertuples():
-                    if ItemDetails.objects.filter(serial_no = dbframe.serial_no).exists():
-                        messages.warning(request, dbframe.serial_no + "already exists in Database")
-                    else:
-                        obj = ItemDetails.objects.create(serial_no=str(dbframe.serial_no).strip(),tag_no=str(dbframe.tag_no).strip(),room_tag=str(dbframe.room_tag).strip(),status=str(dbframe.status).strip(),
-                                                    model_no=Items.objects.get(model_no=str(dbframe.model_no).strip()),
-                                                    issued_to=Prosecutions.objects.get(name=str(dbframe.issued_to).strip()),
-                                                    employee_name=str(dbframe.employee_name).strip(),employee_designation=str(dbframe.employee_designation).strip())
-                        obj.save()
+                if ItemDetails.objects.filter(serial_no=dbframe.serial_no).exists():
+                    serial_number_count += 1
+                    # serial_number_error = f"{str(serial_number_count)} serial numbers already exists in Database."
+                    # messages.error(request,serial_number_error)
+                else:
+                    obj = ItemDetails.objects.create(serial_no=str(dbframe.serial_no).strip(),
+                                                     tag_no=str(dbframe.tag_no).strip(),
+                                                     room_tag=str(dbframe.room_tag).strip(),
+                                                     status=str(dbframe.status).strip(),
+                                                     model_no=Items.objects.get(model_no=str(dbframe.model_no).strip()),
+                                                     issued_to=Prosecutions.objects.get(
+                                                         name=str(dbframe.issued_to).strip()),
+                                                     employee_name=str(dbframe.employee_name).strip(),
+                                                     employee_designation=str(dbframe.employee_designation).strip())
+
+                    rowcount += 1
+                    obj.save()
+                serial_number_error = f"{str(serial_number_count)} serial numbers already exists in Database."
+                new_upload_message = f"{str(rowcount)} new items uploaded to database."
+                combined_message = f"{serial_number_error} {new_upload_message}"
+                messages.success(request, combined_message)
+
             fs.delete(myfile.name)
             calc_total_qty()
             calc_remaining_qty()
-            messages.success(request, "New Items uploaded to Database")
-            #return render(request, 'excel_import_db.html', {'uploaded_file_url': uploaded_file_url})
-            # return render(request, 'add_items_details.html', {})
             return redirect('view_items')
     except Exception as identifier:
+        error = f"{str(identifier)}"
+        additional_error_message = f"{str(rowcount)} new items uploaded to database."
+        combined_error_message = f"{error}. {additional_error_message}"
         fs.delete(myfile.name)
-        print(identifier)
-        messages.error(request, identifier)
+        messages.error(request, combined_error_message)
         # return redirect('view_items')
         return redirect('add_items_details')
     # return redirect('view_items')

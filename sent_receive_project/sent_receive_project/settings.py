@@ -99,6 +99,7 @@ TEMPLATES = [
                 'staticfiles': 'django.templatetags.static',
                 #'post_tags': 'sent_receive_app.templatetags.post_tags',
                 'sent_receive_project_tags': 'sent_items.templatetags.sent_receive_project_tags',
+                'toners_tags': 'toners.templatetags.toners_tags',
             },
         },
     },

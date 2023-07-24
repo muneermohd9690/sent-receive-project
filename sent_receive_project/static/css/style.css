@@ -228,6 +228,49 @@ div.dt-buttons {
     --bs-btn-bg: white;
     --bs-btn-border-color: #ced4da;
 }
+
+
 /*----------------------------------------------
-# selectpicker box border and background
+# put the buttons in actions coloumn in a single line
 -----------------------------------------------*/
+.button-container {
+  white-space: nowrap;
+}
+
+.button-container button {
+  display: inline-block;
+  margin-right: auto;/* Adjust as needed to add spacing between buttons */
+}
+
+
+.auto-width-table {
+  table-layout: auto;
+}
+
+/*----------------------------------------------
+# allign the arabic texts from right to left
+-----------------------------------------------*/
+.right-to-left-text{
+  direction: rtl;
+
+}
+
+
+/*----------------------------------------------
+# allign the btn-back-to-viewitems in view item details page
+-----------------------------------------------*/
+#btn-back-to-viewitems{
+    margin-top: -40px;
+    margin-left: 100px;
+    position: absolute;
+}
+
+
+/*----------------------------------------------
+# allign the btn-back-to-viewtoners in view toner details page
+-----------------------------------------------*/
+#btn-back-to-viewtoners{
+    margin-top: -40px;
+    margin-left: 100px;
+    position: absolute;
+}

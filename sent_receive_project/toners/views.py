@@ -446,6 +446,9 @@ def excel_import_tonerdetails_db(request):
             filename = fs.save(myfile.name, myfile)
             uploaded_file_url = fs.path(filename)
             tonerdetailsexceldata = pd.read_csv(uploaded_file_url, sep=",", encoding='utf-8')
+            #rowcount=len(tonerdetailsexceldata)
+            #print(rowcount)
+            rowcount=0
             dbframe = tonerdetailsexceldata
             for dbframe in dbframe.itertuples():
                     # if ItemDetails.objects.filter(serial_no = dbframe.serial_no).exists():
@@ -456,21 +459,31 @@ def excel_import_tonerdetails_db(request):
                                                     issued_to=Prosecutions.objects.get(name=str(dbframe.issued_to).strip()),
                                                     employee_name=str(dbframe.employee_name).strip(),
                                                     employee_designation=str(dbframe.employee_designation).strip(),
-                                                    date_dispatched=str(dbframe.date_dispatched).strip(),
                                                     status = str(dbframe.status).strip()
                                                     )
                         obj.save()
+                        rowcount += 1
             fs.delete(myfile.name)
             calc_total_qty()
             calc_remaining_qty()
-            messages.success(request, "New Items uploaded to Database")
+            messages.success(request,"%s new items uploaded to database." % rowcount)
             #return render(request, 'excel_import_db.html', {'uploaded_file_url': uploaded_file_url})
             # return render(request, 'add_items_details.html', {})
             return redirect('view_toners')
+    # except pd.errors.ParserError as e:
+    #     fs.delete(myfile.name)
+    #     print(e)
+    #     messages.error(request, e)
+    #     # return redirect('view_items')
+    #     return redirect('add_tonerdetails')
     except Exception as identifier:
+        error=f"{str(identifier)}"
+        additional_error_message = f"{str(rowcount)} new items uploaded to database."
         fs.delete(myfile.name)
-        print(identifier)
-        messages.error(request, identifier)
+        #print(error)
+        combined_error_message = f"{error} {additional_error_message}"
+        #messages.error(request, f"{str(identifier)}")
+        messages.error(request,combined_error_message)
         # return redirect('view_items')
         return redirect('add_tonerdetails')
-    # return redirect('view_items')
+    # return redirect('view_items'){

@@ -75,25 +75,25 @@
         width: 30px;
     }
     .w2{
-        width: 110px;
+        width: 85px;
     }
     .w3{
         width: 100px;
     }
     .w4{
-        width: 180px;
+        width: 280px;
     }
     .w5{
-        width: 90px;
+        width: 100px;
     }
     .w6{
-        width: 130px;
+        width: 100px;
     }
     .w7{
-        width: 90px;
+        width: 120px;
     }
     .w8{
-        width: 30px;
+
     }
     body {
 
@@ -123,15 +123,15 @@
             {% for detail in tonerdetails %}
             <tr>
                 <td>{{forloop.counter}}</td>
-                <td>{{detail.created}}</td>
+                <td>{{detail.date_dispatched.date}}</td>
                 <td>{% if forloop.first %}{{ forloop.counter }}{% endif %}</td>
                 <td> {{detail.issued_to.name}}</td>
                 <td>{{brand}} toner</td>
                 <td>{{device}} {{detail.toner_printer_id}}</td>
                 <td>{{detail.toner_model.toner_model}}</td>
-                <td>Name : {{detail.employee_name}}<br>
-                    <br>
-                    Sign &nbsp;&nbsp;&nbsp;:<br>
+                <td class="right-to-left-text">Name : {{detail.employee_name}}<br>
+
+                    Sign &nbsp;&nbsp;&nbsp;:
                     <br>
                     Date &nbsp;&nbsp;&nbsp;:
                 </td>

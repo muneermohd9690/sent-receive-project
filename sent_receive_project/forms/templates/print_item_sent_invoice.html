@@ -61,7 +61,7 @@
     font: 14px "Times New Roman", Times New Roman;
     }
     .table1 tr{
-    text-align: left;
+
     font: 14px "Times New Roman", Times New Roman;
     padding-top: 5px;
     padding-right: 5px;
@@ -73,26 +73,28 @@
         width: 30px;
     }
     .w2{
-        width: 110px;
+        width: 85px;
     }
     .w3{
         width: 100px;
     }
     .w4{
-        width: 180px;
+        width: 280px;
     }
     .w5{
-        width: 90px;
+        width: 100px;
     }
     .w6{
-        width: 130px;
+        width: 100px;
     }
     .w7{
         width: 120px;
     }
     .w8{
-        width: 30px;
+
+        direction: rtl;
     }
+
     body {
 
     font-family: "Times New Roman";
@@ -116,20 +118,20 @@
                 <th class="w5">Product</th>
                 <th class="w6">Model No.</th>
                 <th class="w7">Serial No.</th>
-                <th>Received By</th>
+                <th class="w8">Received By</th>
             </tr>
             {% for detail in itemdetails %}
             <tr>
                 <td>{{forloop.counter}}</td>
-                <td>{{detail.created.date}}</td>
+                <td>{{detail.date_dispatched.date}}</td>
                 <td>{% if forloop.first %}{{ forloop.counter }}{% endif %}</td>
                 <td>{{detail.issued_to.name}}</td>
                 <td>{{detail.model_no.description}}</td>
                 <td>{{detail.model_no.model_no}}</td>
                 <td>{{detail.serial_no}}</td>
-                <td>Name : {{detail.employee_name}}<br>
+                <td>Name :{{detail.employee_name}}
                     <br>
-                    Sign &nbsp;&nbsp;&nbsp;:<br>
+                    Sign &nbsp;&nbsp;&nbsp;:
                     <br>
                     Date &nbsp;&nbsp;&nbsp;:
                 </td>

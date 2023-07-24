@@ -1,6 +1,6 @@
 {% load static %}
 {% load sent_receive_project_tags %}
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:right="http://www.w3.org/1999/xhtml" lang='ar' xml:lang="ar" dir="ltr">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:right="http://www.w3.org/1999/xhtml" lang='ar' xml:lang="ar" dir="rtl">
 <div>
     <pdf:language name="arabic"/>
 </div>
@@ -90,13 +90,18 @@
         width: 120px;
     }
     .w8{
-        width: 180px;
 
+
+
+    }
+    .right-to-left-text{
+        direction: rtl;
 
     }
     body {
 
     font-family: "Times New Roman";
+
 
     }
      </style>
@@ -135,7 +140,7 @@
                 <td class="w6">{{item.content_object.model_no.model_no}}</td>
                 <td class="w7">{{item.content_object.serial_no}}</td>
                 {% endif %}
-                <td class="w8">Name : {{item.content_object.employee_name}}<br>
+                <td class="w8 right-to-left-text">Name :{{item.content_object.employee_name}}<br>
 
                     Sign &nbsp;&nbsp;&nbsp;:
                     <br>

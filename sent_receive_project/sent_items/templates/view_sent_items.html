@@ -10,7 +10,7 @@
         <a href="{% url 'view_sent_items' %}" class="btn btn-dark btn-sm"><i class="fas fa-sync-alt"></i></a>
      </div>
     <div class="table-responsive">
-        <table class="table table-bordered" id="myTable">
+        <table class="table table-bordered auto-width-table" id="myTable">
             <thead>
             <tr>
                 <th class="w1">No</th>
@@ -27,17 +27,17 @@
             <tr>
                 <td class="w1">{{forloop.counter}}</td>
                 <td class="w2">{{item.content_object.date_dispatched.date}}</td>
-                <td class="w3">{{item.content_object.issued_to.name}}</td>
+                <td class="w3 right-to-left-text">{{item.content_object.issued_to.name}}</td>
                 {% if item.content_type.id == tdcid %}
                     <td class="w4">{{item.content_object.toner_model.toner_printer.description}} toner</td>
 		            <td class="w5">{{item.content_object.toner_model.toner_printer.model_no}}</td>
 		            <td class="w6">{{item.content_object.toner_model.toner_model}}</td>
-                    <td class="w7">{{item.content_object.employee_name|upper}}</td>
+                    <td class="w7 right-to-left-text">{{item.content_object.employee_name}}</td>
                 {% elif item.content_type.id == idcid %}
                     <td class="w4">{{item.content_object.model_no.description}}</td>
 		            <td class="w5">{{item.content_object.model_no.model_no}}</td>
 		            <td class="w6">{{item.content_object.serial_no}}</td>
-                    <td class="w7">{{item.content_object.employee_name}}</td>
+                    <td class="w7 right-to-left-text">{{item.content_object.employee_name}}</td>
                 {% endif %}
             </tr>
             {% endfor %}
