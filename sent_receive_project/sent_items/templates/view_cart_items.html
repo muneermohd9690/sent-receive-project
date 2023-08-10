@@ -8,9 +8,9 @@
         <h2 style="float: left">Dispatch Items</h2>
         <h4 style="float: right">No.of Items: {{total}}</h4>
     </div>
-    <input class="form-control" id="myInput" type="text" placeholder="Search..">
+    <input class="form-control" id="search" type="text" placeholder="Search..">
     <div class="table-responsive">
-        <table class="table table-bordered">
+        <table class="table table-bordered" id="myTable">
             <thead>
             <tr>
                 <th class="w1">No</th>
@@ -24,7 +24,7 @@
                 <th class="w8">Action</th>
             </tr>
             </thead>
-            <tbody id="myTable">
+            <tbody >
             {% for item in items %}
             <tr>
                 <td class="w1">{{forloop.counter}}</td>
@@ -53,7 +53,7 @@
         <a href="{% url 'dispatch' %}" class="btn btn-info dispatch" id="btn-dispatch" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Dispatch"><i class="fas fa-shipping-fast"></i></a>
         <a href="{% url 'print_sent_items_invoice' itemsincart %}" target="_blank" rel="noopener noreferrer" class="btn btn-info" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Print Invoice"><i class="fas fa-receipt"></i></a>
     </div>
-    <script>
+<!--    <script>
         $(document).ready(function(){
           $("#myInput").on("keyup", function() {
             var value = $(this).val().toLowerCase();
@@ -62,7 +62,7 @@
             });
           });
         });
-    </script>
+    </script>-->
 </div>
 <!--- Messages after CRUD operations --->
 {% if messages %}

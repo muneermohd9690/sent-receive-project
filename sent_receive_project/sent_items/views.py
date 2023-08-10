@@ -228,3 +228,49 @@ def dispatch(request):
     return redirect('view_sent_items')
 
 ###                           for adding to dispatch                                       ###
+
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
+def bulk_update_items(request):
+    if request.method == 'POST':
+        detail_ids = request.POST.getlist('selected_ids[]', [])
+        urlObject = get_url_of_request(request)
+        customer, created = Customer.objects.get_or_create(user=request.user )
+        cartitem = CartItem.objects.all()
+        joined_ids = [(o.object_id, o.content_type_id) for o in cartitem]
+        itemcount=0
+        tonercount=0
+        if 'view_tonerdetails' in urlObject :
+            for detailId in detail_ids:
+                tonercount+= 1
+                detail = TonerDetails.objects.get(id=detailId)
+                urlid=detail.toner_model_id
+                detail_q=ContentType.objects.get_for_model(detail)
+                cart, created = Cart.objects.get_or_create(customer=customer, complete=False)
+                if (detail.id, detail_q.id) in joined_ids:
+                    messages.success(request, "Toner already in Dispatch")
+                else:
+                    p1 = CartItem.objects.create(object_id=detail.id, cart=cart,content_type_id=int(detail_q.id))
+                    p1.save()
+                    toner_count_message = f"{str(tonercount)} Toners added to Dispatch."
+                    messages.success(request, toner_count_message)
+
+
+        elif 'view_items_details' in urlObject:
+            for detailId in detail_ids:
+                itemcount+=1
+                detail = ItemDetails.objects.get(pk=detailId)
+                detail_q = ContentType.objects.get_for_model(detail)
+                cart, created = Cart.objects.get_or_create(customer=customer, complete=False)
+                if (detail.id, detail_q.id) in joined_ids:
+                    messages.success(request, "Item already in Dispatch")
+                else:
+                    p1 = CartItem.objects.create(object_id=detail.id, cart=cart, content_type_id=int(detail_q.id))
+                    p1.save()
+                    item_count_message = f"{str(itemcount)} Items added to Dispatch."
+                    messages.success(request, item_count_message)
+
+        return JsonResponse('Item was added', safe=False)
+
+
+###                         for bulk adding to dispatch                                              ###

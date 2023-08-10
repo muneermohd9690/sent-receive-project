@@ -215,6 +215,12 @@ div.dataTables_wrapper div.dataTables_filter label {
     position: absolute;
 }
 
+#btn-bulkdispatch{
+    margin-top: -40px;
+    margin-left: 420px;
+    position: absolute;
+}
+
 
 div.dt-buttons {
     margin-left: 40px;
@@ -273,4 +279,34 @@ div.dt-buttons {
     margin-top: -40px;
     margin-left: 100px;
     position: absolute;
+}
+
+/*----------------------------------------------------
+Dropdown submenu css
+-----------------------------------------------*/
+
+        .dropdown-menu li{
+            position:relative;
+        }
+
+        .dropdown-menu.submenu{
+            display:none;
+            position:absolute;
+            left:100%;
+            top:-7px;
+        }
+
+        .dropdown-menu>li:hover>.submenu{
+            display:block;
+        }
+/*----------------------------------------------------
+Dropdown submenu css
+-----------------------------------------------*/
+
+/*----------------------------------------------------
+# Datepicker dropdown
+-----------------------------------------------*/
+.datepicker {
+  transform: translate(0, 1em);
+
 }

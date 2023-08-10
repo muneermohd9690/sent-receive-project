@@ -347,8 +347,10 @@ $(document).ready(function() {
         $('input[type="checkbox"]').click(function() {
             if ($('input[type="checkbox"]:checked').length > 0) {
                 $('#btn-bulkdelete').show();
+                $('#btn-bulkdispatch').show();
             } else {
                 $('#btn-bulkdelete').hide();
+                $('#btn-bulkdispatch').hide();
             }
         });
 });
@@ -363,3 +365,47 @@ $(document ).ready(function (){
 
 })
 /**** select picker and search box ****/
+
+/**** Login verification and messages ****/
+ $(document).ready(function() {
+        $('#login-form').on('submit', function(event) {
+                event.preventDefault();
+                var form = $(this);
+            var username = $("#username").val();
+            var password = $("#password").val();
+            var redirectUrl = $('#login-redirect-url').data('url');
+            var csrf=$('input[name=csrfmiddlewaretoken]').val();
+            if (username==''){
+
+                swal("Verify !", "Username cannot be empty.","error");
+                return false;
+            }
+            else if (password==''){
+                swal("Verify !", "Password cannot be empty.","error");
+                return false;
+             }
+            // Make an AJAX request to check the credentials
+            $.ajax({
+                url: "/check_login/",
+                type: "POST",
+                data: {
+                    username: username,
+                    password: password,
+                    csrfmiddlewaretoken: csrf
+                },
+                success: function(response) {
+                    // Handle the response from the server
+                    if (response.is_valid) {
+                        window.location.href = redirectUrl;
+                    } else {
+                        swal("Error!",response.message, "error");
+
+                    }
+                },
+                error: function(xhr, errmsg, err) {
+                    swal("Error!",errmsg, "error");
+                }
+            });
+        });
+    });
+/**** Login verification and messages ****/

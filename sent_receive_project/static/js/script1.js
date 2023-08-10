@@ -36,45 +36,228 @@ function updateUserOrder(detailId,action){
 }
 /***  for adding to cart ***/
 
+<!---------------------------- disable addtodispatch button --------------------------------->
+$(document).ready(function(){
+    var java_content_type_id = $("#content_type_id").data("value");
+    var java_joined_ids = $("#joined_ids").data("value");
+    var buttons=$(".addtodispatch");
+    var java_detailId=[];
+    var java_detailId_content_type_id=[];
+    for(x=0;x<buttons.length;x++)
+    {
+    $('button.addtodispatch').each(function() {
+        java_detailId[x++]= parseInt($(this).attr("data-detail"));
+    });
 
-/***  for bulk delete ***/
-/*function getBulkDeleteids(item_id){
-        if(confirm("sure you want to delete?")){
-            var id=[];
-            $(':checkbox:checked').each(function(i)
-            {
-                id[i]=$(this).val()
-            })
-            if(id.length===0){
-                alert("please select an item")
-            }
-            else{
-                console.log(id)
-                console.log(item_id)
-                BulkDelete(id,item_id)
-            }
+    }
+    for(y=0;y<java_detailId.length;y++)
+    {
+        java_detailId_content_type_id[y]=[java_detailId[y],java_content_type_id]
+    }
+    for(let i = 0; i<java_detailId_content_type_id.length; i++)
+    {
+        for(let j = 0; j<java_joined_ids.length; j++)
+        {
+                if(JSON.stringify(java_detailId_content_type_id[i])==JSON.stringify(java_joined_ids[j]))
+                {
+                    $(`button[data-detail="${java_detailId_content_type_id[i][i-i]}"]`).attr("disabled", true)
+                    break;
+                } else
+                    {
+                            $(`button[data-detail="${java_detailId_content_type_id[i][i-i]}"]`).attr("disabled", false)
+                    }
         }
-}
+    }
+});
 
-function BulkDelete(id,item_id){
-    console.log('User is logged in,sending data')
-    var url= '' + item_id +'/view_tonerdetails_bulk_delete'
-    fetch(url,{
-        method:'POST',
-        headers:{
-            'Content-Type':'application/json',
-            'X-CSRFToken':csrftoken,
-        },
-        body:JSON.stringify({'id':id,'item_id':item_id})
-    })
-    .then((response)=>{
-        responseClone = response.clone();
-        return response.json()
-    })
-    .then((data)=>{
-        console.log('data:',data)
-        location.reload()
+<!---------------------------- Ajax bulk delete --------------------------------------------->
+
+    $(document).ready(function(){
+            $('.bulk_delete').click(function(){
+                var id=[];
+                var item_id=$("#item_id").data("value");
+                var currentURL = window.location.href;
+                var csrf=$('input[name=csrfmiddlewaretoken]').val();
+                $(':checkbox:checked').each(function(i){
+                        id[i]=$(this).val()
+                 })
+                    if(id.length===0){
+                           swal("Error!", "Please select the toners to Delete", "error");
+                    }
+                    else{ swal({
+                                  title: "Are you sure?",
+                                  text: "You will not be able to recover this record!",
+                                  icon: "warning",
+                                  buttons: [
+                                    'No, cancel it!',
+                                    'Yes, I am sure!'
+                                  ],
+                                  dangerMode: true,
+                                }).then(function(isConfirm) {
+                                  if (isConfirm) {
+                                    console.log(id)
+                                    console.log(currentURL)
+                                    if (currentURL.indexOf("view_tonerdetails") !== -1)
+                                       {
+                                            $.ajax({
+                                            url:'' + item_id +'/view_tonerdetails_bulk_delete' ,
+                                            method:"POST",
+                                            data:{
+                                                id:id,
+                                                csrfmiddlewaretoken:csrf
+                                            },
+
+                                            success:function(response){
+                                                for(var i=0;i<id.length;i++){
+                                                    $('tr#'+id[i]+'').css('background-color','#ccc');
+                                                    $('tr#'+id[i]+'').fadeOut('slow');
+
+                                                }
+
+                                            }
+                                            })
+                                       }
+                                    else
+                                        {
+                                            console.log(currentURL)
+                                            $.ajax({
+                                            url:'' + item_id +'/view_itemdetails_bulk_delete' ,
+                                            method:"POST",
+                                            data:{
+                                                id:id,
+                                                csrfmiddlewaretoken:csrf
+                                            },
+
+                                            success:function(response){
+                                                for(var i=0;i<id.length;i++){
+                                                    $('tr#'+id[i]+'').css('background-color','#ccc');
+                                                    $('tr#'+id[i]+'').fadeOut('slow');
+
+                                                }
+
+                                            }
+                                            })
+                                        }
+                                    swal({
+                                      title: 'Deleted!',
+                                      text: 'Records are successfully deleted!',
+                                      icon: 'success'
+                                    })
+
+                                  } else {
+                                    swal("Cancelled", "Your records are safe", "error");
+                                  }
+                                });
+
+                    }
+            })
     })
 
-}*/
-/***  for bulk delete ***/
+<!---------------------------- Ajax bulk delete --------------------------------------------->
+
+
+
+<!--------------------------------------- Paginator and keyup Search ----------------------------->
+
+$(document).ready(function ()
+    {
+            var currentURL = window.location.href;
+            if (currentURL.indexOf("view_sent_items") !== -1)
+                {
+                    var table = $('#myTable').DataTable
+                        ({
+                                paging: true,
+                                pageLength: 10,
+                                lengthChange: false,
+                                bInfo: false,
+                                bSort: false,
+                                order:[],
+                                dom: 'ltiBfrp',
+                                buttons:[
+                                   {
+                                        extend: 'excel',
+                                        text:   '<i class="fas fa-file-excel"></i>',
+                                        className:  'btn-exporttocsv',
+                                        titleAttr:  'Excel',
+
+                                    },
+                               ]
+                        });
+                }
+            else
+                {
+                     var table = $('#myTable').DataTable
+                        ({
+                                paging: true,
+                                pageLength: 10,
+                                lengthChange: false,
+                                bInfo: false,
+                                bSort: false,
+                                order:[]
+                        });
+
+                }
+            $('#search').on( 'keyup', function ()
+            {
+                table.search( this.value ).draw();
+            });
+    });
+
+<!---------------------------- Ajax bulk add to dispatch --------------------------------------------->
+
+        $(document).ready(function() {
+            $("#btn-bulkdispatch").click(function() {
+                var selectedIds = [];
+                var csrf=$('input[name=csrfmiddlewaretoken]').val();
+                $(':checkbox:checked').each(function() {
+                    selectedIds.push($(this).val());
+                });
+
+                $.ajax({
+                    type: "POST",
+                    url:'/sent_items/bulk_update_items/',
+                    data: { selected_ids: selectedIds,
+                            csrfmiddlewaretoken:csrf
+                     },
+                    success: function(response) {
+                        window.location.reload();
+                    },
+                    error: function(xhr, errmsg, err) {
+                        console.log(xhr.status + ": " + xhr.responseText);
+                    }
+                });
+            });
+        });
+
+<!------------------------------------------------- Date picker --------------------------------------------------------------->
+
+    $(document).ready(function(){
+        $("#date_dispatched").datepicker({
+
+            format: 'yyyy-mm-dd',
+            todayBtn : 'linked',
+            todayHighlight: true,
+            autoclose: true,
+            orientation: 'auto bottom'
+        });
+
+    });
+
+
+$(document).ready(function(){
+        $('.dropdown-menu a.dropdown-toggle').on('click', function(e) {
+          if (!$(this).next().hasClass('show')) {
+            $(this).parents('.dropdown-menu').first().find('.show').removeClass("show");
+          }
+          var $subMenu = $(this).next(".dropdown-menu");
+          $subMenu.toggleClass('show');
+
+
+          $(this).parents('li.nav-item.dropdown.show').on('hidden.bs.dropdown', function(e) {
+            $('.dropdown-submenu .show').removeClass("show");
+          });
+
+
+          return false;
+        });
+});

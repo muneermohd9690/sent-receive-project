@@ -1,6 +1,6 @@
 import pandas as pd
 from django.contrib.admin import forms
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, get_user_model, login
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -21,21 +21,35 @@ import plotly
 import plotly.express as px
 import json
 from django.db.models import Count
+from django.http import JsonResponse
 
 
-# def login(request):
-#     if request.method=='POST':
-#         username=request.POST.get('username')
-#         password=request.POST.get('password')
-#         user=authenticate(request,username=username,password=password)
-#         if user is not None:
-#             login(request,user)
-#             return render(request, 'dashboard.html')
-#         else:
-#             messages.info(request,'Username or password is incorrect')
-#             return redirect('login')
-#     context = {}
-#     return render(request, 'dashboard.html',context)
+User = get_user_model()
+def check_login(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        # Add your authentication logic here.
+        # For example, you can use Django's built-in authentication to check the credentials:
+
+        user = authenticate(request, username=username, password=password)
+
+        if user is not None:
+            # The username and password are correct.
+            login(request, user)
+            return JsonResponse({'is_valid': True})
+
+        else:
+            # The username and password are incorrect.
+            try:
+                User.objects.get(username=username)  # Check if the username exists
+                return JsonResponse({'status': 'error', 'message': 'Incorrect password.'})
+            except User.DoesNotExist:
+                return JsonResponse({'status': 'error', 'message': 'Username does not exist.'})
+
+
+    return JsonResponse({'is_valid': False})
 def register(request):
     form=CreateUserForm()
 

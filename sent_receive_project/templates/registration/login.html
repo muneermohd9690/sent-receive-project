@@ -10,7 +10,7 @@
 <div class="container mt-5">
     <div class="card p-3 border-dark">
         <a class="btn btn-outline-dark mt-3"><i class="fas fa-lock"></i>&nbsp;&nbsp;RESTRICTED ACCESS</a>
-        <form autocomplete="off" method="POST" novalidate>
+        <form autocomplete="off" method="POST" novalidate id="login-form">
             {% csrf_token %}
             <div class="input-group mb-3 mt-5">
                 <span class="input-group-text"><i class="fas fa-user-alt"></i></span>
@@ -21,7 +21,7 @@
                 <input class="form-control" name="password" id="password" placeholder="Password" type="password" required>
             </div>
 
-            <input class="btn btn-primary btn-sm mt-4 mb-3" type="submit" id="login" value="Login">
+            <button type="submit" class="login-btn btn btn-primary btn-sm mt-4 mb-3">Log In</button>
             <a href="{% url 'register' %}" class="btn btn-primary btn-sm mt-4 mb-3">Register</a>
 <!--            <span class="error-msg"><strong>{{form.errors}}</strong></span>-->
         </form>
@@ -43,7 +43,7 @@
 <!--- Messages after new user registration  --->
 
 <!--- Messages if username or password is empty --->
-<script>
+<!--<script>
 function validateAll() {
     var username=$("#username").val();
     var password=$("#password").val();
@@ -61,6 +61,9 @@ function validateAll() {
     }
 }
 $("#login").bind("click",validateAll);
-</script>
+</script>-->
 <!--- Messages if username or password is empty --->
+<div class="text-center mt-5" style="display: none;">
+<div id="login-redirect-url" data-url="{% url 'mainpage' %}"></div>
+</div>
 {% endblock %}

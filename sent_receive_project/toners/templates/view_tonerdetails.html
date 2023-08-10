@@ -6,7 +6,7 @@
   <h2>Toner Details</h2>
   <div class="input-group input-group-sm mb-2">
         <input class="form-control" id="search" type="text" placeholder="Search.." >
-        <a href="{% url 'view_tonerdetails' item_id %}" class="btn btn-dark btn-sm"><i class="fas fa-sync-alt"></i></a>
+        <a href="{% url 'view_tonerdetails' item_id %}" id="item_id" data-value="{{item_id}}" class="btn btn-dark btn-sm"><i class="fas fa-sync-alt"></i></a>
   </div>
     <div class="table-responsive">
         {% csrf_token %}
@@ -90,68 +90,14 @@
         <a href="{% url 'tonerdetails_export_toexcel' item_id %}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" id="btn-exporttocsv" data-bs-toggle="tooltip" data-bs-placement="bottom" title="export to csv"><i class="fas fa-file-excel"></i></a>
         <a href="{% url 'view_toners' %}" class="btn btn-primary" id="btn-back-to-viewtoners" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Back-to-viewtoners"><i class="fas fa-angle-double-left"></i></a>
         <button type="submit" class="btn btn-danger bulk_delete" style="display: none;" id="btn-bulkdelete">Bulk Delete</button>
+        <button type="submit" class="btn btn-secondary" style="display: none;" id="btn-bulkdispatch">Bulk Dispatch</button>
     </div>
 
 
-<!---------------------------- Ajax bulk delete --------------------------------------------->
-<script>
-$(document).ready(function(){
-        $('.bulk_delete').click(function(){
-            var id=[];
-            var item_id={{ item_id }}
-            var csrf=$('input[name=csrfmiddlewaretoken]').val();
-            $(':checkbox:checked').each(function(i){
-                    id[i]=$(this).val()
-             })
-                if(id.length===0){
-                       swal("Error!", "Please select the toners to Delete", "error");
-                }
-                else{ swal({
-                              title: "Are you sure?",
-                              text: "You will not be able to recover this record!",
-                              icon: "warning",
-                              buttons: [
-                                'No, cancel it!',
-                                'Yes, I am sure!'
-                              ],
-                              dangerMode: true,
-                            }).then(function(isConfirm) {
-                              if (isConfirm) {
-                                console.log(id)
-                                    $.ajax({
-                                    url:'' + item_id +'/view_tonerdetails_bulk_delete' ,
-                                    method:"POST",
-                                    data:{
-                                        id:id,
-                                        csrfmiddlewaretoken:csrf
-                                    },
 
-                                    success:function(response){
-                                        for(var i=0;i<id.length;i++){
-                                            $('tr#'+id[i]+'').css('background-color','#ccc');
-                                            $('tr#'+id[i]+'').fadeOut('slow');
-
-                                        }
-                                    }
-                                })
-                                swal({
-                                  title: 'Deleted!',
-                                  text: 'Records are successfully deleted!',
-                                  icon: 'success'
-                                })
-                              } else {
-                                swal("Cancelled", "Your records are safe", "error");
-                              }
-                            });
-
-                }
-        })
-})
-</script>
-<!---------------------------- Ajax bulk delete --------------------------------------------->
 
 <!---------------------------- disable addtodispatch button --------------------------------->
-<script>
+<!--<script>
 
     $(document).ready(function(){
     var java_content_type_id = {{content_type_id}}
@@ -186,7 +132,7 @@ $(document).ready(function(){
     }
 });
 
-</script>
+</script>-->
 <!---------------------------- disable addtodispatch button --------------------------------->
 
 <!---------------------------- Messages after CRUD operations ------------------------------->
@@ -205,7 +151,7 @@ $(document).ready(function(){
 <!---------------------------- Messages after CRUD operations ------------------------------->
 
 <!---------------------------- Paginator ---------------------------------------------------->
-<script>
+<!--<script>
 $(document).ready(function () {
     $("#myTable").DataTable({
         paging: true,
@@ -217,11 +163,11 @@ $(document).ready(function () {
 
     });
 });
-</script>
+</script>-->
 <!---------------------------- Paginator ---------------------------------------------------->
 
 <!---------------------------- Search Function ---------------------------------------------->
-<script>
+<!--<script>
 $(document).ready(function () {
 var table = $('#myTable').DataTable();
 
@@ -230,10 +176,13 @@ $('#search').on( 'keyup', function () {
     table.search( this.value ).draw();
 } );
 });
-</script>
+</script>-->
 <!---------------------------- Search Function ---------------------------------------------->
 
 
 </div>
-
+<div class="text-center mt-5" style="display: none;" >
+    <input  id="content_type_id" data-value="{{content_type_id}}">
+    <input  id="joined_ids" data-value="{{joined_ids}}">
+</div>
 {% endblock %}
