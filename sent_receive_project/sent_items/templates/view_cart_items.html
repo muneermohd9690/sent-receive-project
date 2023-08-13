@@ -8,8 +8,12 @@
         <h2 style="float: left">Dispatch Items</h2>
         <h4 style="float: right">No.of Items: {{total}}</h4>
     </div>
-    <input class="form-control" id="search" type="text" placeholder="Search..">
+    <div class="input-group input-group-sm mb-2">
+        <input class="form-control" id="search" type="text" placeholder="Search..">
+        <a href="{% url 'view_cart_items' %}" class="btn btn-dark btn-sm"><i class="fas fa-sync-alt"></i></a>
+    </div>
     <div class="table-responsive">
+        {% csrf_token %}
         <table class="table table-bordered" id="myTable">
             <thead>
             <tr>
@@ -22,11 +26,12 @@
 
                 <th class="w7">Received By</th>
                 <th class="w8">Action</th>
+                <th></th>
             </tr>
             </thead>
             <tbody >
             {% for item in items %}
-            <tr>
+            <tr  id="{{item.id}}" data-id="{{ item.id }}">
                 <td class="w1">{{forloop.counter}}</td>
                 <td class="w2">{{item.content_object.date_dispatched.date}}</td>
                 <td class="w3 right-to-left-text">{{item.content_object.issued_to.name}}</td>
@@ -42,16 +47,19 @@
                     <td class="w7 right-to-left-text">{{item.content_object.employee_name}}</td>
                 {% endif %}
 
-                <td class="w8"><a href="{% url 'remove_from_cart' item.id %}" class="btn btn-danger" type="submit">Remove from Dispatch</a>
-
-
+                <td class="w8"><a href="{% url 'remove_from_cart' item.id %}" class="btn btn-danger" type="submit"
+                                  data-bs-toggle="tooltip" data-bs-placement="bottom" title="Remove from Dispatch">
+                    <i class="fas fa-recycle"></i></a>
                 </td>
+                <td><input type="checkbox" name="item_id[]" value="{{item.id}}" id="bulk_select_action"></td>
             </tr>
             {% endfor %}
             </tbody>
         </table>
         <a href="{% url 'dispatch' %}" class="btn btn-info dispatch" id="btn-dispatch" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Dispatch"><i class="fas fa-shipping-fast"></i></a>
-        <a href="{% url 'print_sent_items_invoice' itemsincart %}" target="_blank" rel="noopener noreferrer" class="btn btn-info" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Print Invoice"><i class="fas fa-receipt"></i></a>
+        <a href="{% url 'print_sent_items_invoice' cart.pk %}" target="_blank" rel="noopener noreferrer" class="btn btn-info" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Print Invoice"><i class="fas fa-receipt"></i></a>
+        <button type="submit" class="btn btn-danger select_remove" style="display: none;" id="btn-selectremove">Select Remove</button>
+        <button type="submit" class="btn btn-secondary select_dispatch" style="display: none;" id="btn-selectdispatch">Select Dispatch</button>
     </div>
 <!--    <script>
         $(document).ready(function(){

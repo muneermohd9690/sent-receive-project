@@ -1,16 +1,17 @@
 ﻿from .models import Cart, Customer,CartItem
 from django.contrib.contenttypes.models import ContentType
 
-def get_total_cart_items(items_in_cart):
-    cartitem = CartItem.objects.filter(cart=items_in_cart)
+def get_total_cart_items(cart):
+    cartitem = cart.cartitem_set.filter(selected=False, dispatched=False)
     total = cartitem.count()
     return total
 
 def calc_cart_total(request):
     customer, created = Customer.objects.get_or_create(user=request.user)
     cart, created = Cart.objects.get_or_create(customer=customer, complete=False)
-    items_in_cart = cart.pk
-    cart_total = get_total_cart_items(items_in_cart)
+    items_in_cart = cart.cartitem_set.filter(selected=False, dispatched=False)
+    # cart_total = get_total_undispatched_items(cart)
+    cart_total = get_total_cart_items(cart)
     return {'cart_total':cart_total,'user_cart':cart,'items_in_cart':items_in_cart}
 
 

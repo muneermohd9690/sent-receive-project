@@ -348,9 +348,13 @@ $(document).ready(function() {
             if ($('input[type="checkbox"]:checked').length > 0) {
                 $('#btn-bulkdelete').show();
                 $('#btn-bulkdispatch').show();
+                $('#btn-selectdispatch').show();
+                $('#btn-selectremove').show();
             } else {
                 $('#btn-bulkdelete').hide();
                 $('#btn-bulkdispatch').hide();
+                $('#btn-selectdispatch').hide();
+                $('#btn-selectremove').hide();
             }
         });
 });

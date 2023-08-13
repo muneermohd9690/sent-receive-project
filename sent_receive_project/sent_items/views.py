@@ -90,7 +90,9 @@ def view_cart_items(request):
         data_calc_toner_stock_alert = calc_toner_stock_alert(request)
         toner_stock_alert = data_calc_toner_stock_alert['toner_stock_alert_count']
         toner_under_fifteen = data_calc_toner_stock_alert['tonerstock']
-        items = cart.cartitem_set.all()
+
+        # items = cart.cartitem_set.all()
+        items = cart.cartitem_set.filter(selected=False, dispatched=False)
 
         ltid = get_list_tonerdetailsid()
         liid = get_list_itemdetailsid()
@@ -178,8 +180,9 @@ def update_items(request):
 def view_sent_items(request):
 
     if request.user.is_authenticated:
-        cart=Cart.objects.filter(complete=True)
-        items = CartItem.objects.filter(cart_id__in=cart.values_list('id', flat=True))
+        #cart=Cart.objects.filter(complete=True)
+        # items = CartItem.objects.filter(cart_id__in=cart.values_list('id', flat=True))
+        items = CartItem.objects.filter(dispatched=True)
 
         data_calc_cart_total = calc_cart_total(request)
         cart_total = data_calc_cart_total['cart_total']
@@ -201,8 +204,11 @@ def view_sent_items(request):
         #idcid = get_itemdetails_content_type_id()  # required
     else:
         items = []
-    context = {'items': items, 'ltid': ltid, 'liid': liid,'cart':cart,'tdcid':tdcid,'idcid':idcid,"total": cart_total,
-               "toner_stock_alert":toner_stock_alert,"toner_under_fifteen":toner_under_fifteen}
+    # context = {'items': items, 'ltid': ltid, 'liid': liid,'cart':cart,'tdcid':tdcid,'idcid':idcid,"total": cart_total,
+    #            "toner_stock_alert":toner_stock_alert,"toner_under_fifteen":toner_under_fifteen}
+    context = {'items': items, 'ltid': ltid, 'liid': liid,'tdcid': tdcid, 'idcid': idcid,
+               "total": cart_total,
+               "toner_stock_alert": toner_stock_alert, "toner_under_fifteen": toner_under_fifteen}
     return render(request, 'view_sent_items.html', context)
 
 @cache_control(no_cache=True, must_revalidate=True,no_store=True)
@@ -274,3 +280,33 @@ def bulk_update_items(request):
 
 
 ###                         for bulk adding to dispatch                                              ###
+
+###                         for removing selected items from dispatch                                              ###
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
+def select_remove_from_cart(request):
+    if request.method == "POST":
+        items_ids = request.POST.getlist('selected_ids[]')
+        for id in items_ids:
+            items = CartItem.objects.get(pk=id)
+            items.delete()
+    return JsonResponse('Item was removed', safe=False)
+
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
+def select_dispatch(request):
+    if request.user.is_authenticated and request.method == "POST":
+        customer = request.user.customer
+        cart, created = Cart.objects.get_or_create(customer=customer, complete=False)
+        selected_item_ids = request.POST.getlist('selected_ids[]')
+        CartItem.objects.filter(id__in=selected_item_ids, cart=cart).update(selected=True, dispatched=True)
+        # for id in selected_item_ids:
+        #     cartitems=CartItem.objects.get(pk=id)
+        #     print(cartitems.cart_id)
+        if cart.cartitem_set.filter(selected=False).count() == 0:
+            cart.complete = True
+            cart.save()
+        return JsonResponse('Item was dispatched', safe=False)
+    else:
+        print('User is not logged in')
+    return redirect('view_sent_items')

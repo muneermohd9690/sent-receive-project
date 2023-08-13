@@ -95,8 +95,6 @@ $(document).ready(function(){
                                   dangerMode: true,
                                 }).then(function(isConfirm) {
                                   if (isConfirm) {
-                                    console.log(id)
-                                    console.log(currentURL)
                                     if (currentURL.indexOf("view_tonerdetails") !== -1)
                                        {
                                             $.ajax({
@@ -119,7 +117,7 @@ $(document).ready(function(){
                                        }
                                     else
                                         {
-                                            console.log(currentURL)
+
                                             $.ajax({
                                             url:'' + item_id +'/view_itemdetails_bulk_delete' ,
                                             method:"POST",
@@ -261,3 +259,142 @@ $(document).ready(function(){
           return false;
         });
 });
+
+<!---------------------------- Ajax remove selected from dispatch --------------------------------------------->
+
+        $(document).ready(function()
+        {
+            $("#btn-selectremove").click(function()
+            {
+                var selectedIds = [];
+                var csrf=$('input[name=csrfmiddlewaretoken]').val();
+                $(':checkbox:checked').each(function(i){
+                        selectedIds[i]=$(this).val()
+                })
+                if(selectedIds.length==0)
+                {
+                           swal("Error!", "Please select the items to Remove", "error");
+                }
+                else
+                {           swal
+                              ({
+                                      title: "Are you sure?",
+                                      text: "You will remove selected items from dispatch!",
+                                      icon: "warning",
+                                      buttons: [
+                                        'No, cancel it!',
+                                        'Yes, I am sure!'
+                                      ],
+                                      dangerMode: true,
+                              }).then(function(isConfirm)
+                              {
+                                  if (isConfirm)
+                                  {
+                                                    $.ajax({
+                                                    type: "POST",
+                                                    url:'select_remove_from_cart/',
+                                                    data: { selected_ids: selectedIds,
+                                                            csrfmiddlewaretoken:csrf
+                                                     },
+                                                    success: function(response)
+                                                    {
+                                                        for(var i=0;i<selectedIds.length;i++)
+                                                        {
+															$('tr#'+selectedIds[i]+'').css('background-color','#ccc');
+															$('tr#'+selectedIds[i]+'').fadeOut('slow');
+
+														}
+
+                                                    },
+                                                    error: function(xhr, errmsg, err)
+                                                    {
+                                                        console.log(xhr.status + ": " + xhr.responseText);
+                                                    }
+                                                });
+                                                swal
+                                                ({
+                                                      title: 'Removed!',
+                                                      text: selectedIds.length+' Items are successfully removed!',
+                                                      icon: 'success'
+                                                }).then((willReload)=>{
+                                                    if (willReload){
+                                                        window.location.reload();
+                                                    }
+                                                });
+
+                                  }
+                                  else
+                                  {
+                                    swal("Cancelled",selectedIds.length+" Items still in dispatch", "error");
+                                  }
+                              });
+                }
+            });
+        });
+
+<!---------------------------- Ajax selected dispatch --------------------------------------------->
+
+        $(document).ready(function() {
+            $("#btn-selectdispatch").click(function() {
+                var selectedIds = [];
+                var csrf=$('input[name=csrfmiddlewaretoken]').val();
+                $(':checkbox:checked').each(function() {
+                    selectedIds.push($(this).val());
+                });
+                if(selectedIds.length==0)
+                {
+                           swal("Error!", "Please select the items to Dispatch", "error");
+                }
+                else
+                {           swal
+                              ({
+                                      title: "Are you sure?",
+                                      text: "You will dispatch the selected items!",
+                                      icon: "warning",
+                                      buttons: [
+                                        'No, cancel it!',
+                                        'Yes, I am sure!'
+                                      ],
+                                      dangerMode: true,
+                              }).then(function(isConfirm)
+                              {
+                                  if (isConfirm)
+                                  {
+                                        $.ajax({
+                                            type: "POST",
+                                            url:'select_dispatch/',
+                                            data: { selected_ids: selectedIds,
+                                                    csrfmiddlewaretoken:csrf
+                                             },
+                                            success: function(response)
+                                            {
+                                                for(var i=0;i<selectedIds.length;i++)
+                                                {
+                                                    $('tr#'+selectedIds[i]+'').css('background-color','#ccc');
+                                                    $('tr#'+selectedIds[i]+'').fadeOut('slow');
+
+                                                }
+                                            },
+                                            error: function(xhr, errmsg, err) {
+                                                console.log(xhr.status + ": " + xhr.responseText);
+                                            }
+                                        });
+                                        swal
+                                        ({
+                                            title: 'Dispatched!',
+                                            text: selectedIds.length+' Items are successfully dispatched!',
+                                            icon: 'success'
+                                        }).then((willReload)=>{
+                                                if (willReload){
+                                                  window.location.reload();
+                                                }
+                                        });
+                                  }
+                                  else
+                                  {
+                                    swal("Cancelled",selectedIds.length+" Items still in dispatch", "error");
+                                  }
+                              });
+                }
+            });
+        });

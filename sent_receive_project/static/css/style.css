@@ -310,3 +310,15 @@ Dropdown submenu css
   transform: translate(0, 1em);
 
 }
+
+#btn-selectremove{
+
+    margin-left: 540px;
+    position: absolute;
+}
+
+#btn-selectdispatch{
+
+    margin-left: 400px;
+    position: absolute;
+}

@@ -101,7 +101,8 @@ def link_callback(uri, rel):
 @login_required(login_url="login")
 def print_sent_items_invoice(request,id):
     items = Cart.objects.filter(id=id)
-    cartitems=CartItem.objects.filter(cart=id)
+    # cartitems=CartItem.objects.filter(cart=id)
+    cartitems = CartItem.objects.filter(cart=id,dispatched=False)
     cartcount=cartitems.count()
     tdcid = get_tonerdetails_content_type_id()
     idcid = get_itemdetails_content_type_id()

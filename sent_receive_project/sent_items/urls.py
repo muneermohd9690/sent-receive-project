@@ -9,4 +9,7 @@ urlpatterns = [
                 path('update_items/', views.update_items, name='update_items'),
                 path('bulk_update_items/', views.bulk_update_items, name='bulk_update_items'),
                 path('view_cart_items/remove_from_cart/<int:id>', views.remove_from_cart, name='remove_from_cart'),
+
+                path('view_cart_items/select_remove_from_cart/', views.select_remove_from_cart, name='select_remove_from_cart'),
+                path('view_cart_items/select_dispatch/', views.select_dispatch, name='select_dispatch'),
                ]

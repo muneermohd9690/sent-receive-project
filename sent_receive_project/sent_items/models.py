@@ -31,6 +31,8 @@ class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.SET_NULL, blank=True, null=True)
     date_added = models.DateTimeField(auto_now_add=True)
     quantity = models.IntegerField(default=0)
+    selected = models.BooleanField(default=False)
+    dispatched = models.BooleanField(default=False)
 
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE,null=True)
     object_id = models.PositiveIntegerField(null=True)
