@@ -1,4 +1,6 @@
-from django.http import HttpResponse
+import json
+
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render,redirect
 from io import BytesIO
 from xhtml2pdf import pisa
@@ -116,6 +118,34 @@ def print_sent_items_invoice(request,id):
         return HttpResponse(response.getvalue(), content_type="application/pdf")
     else:
         return HttpResponse("Error")
+
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required(login_url="login")
+def select_print_sent_items_invoice(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            selected_ids = data.get('selected_ids', [])
+            id = data.get('id', '')
+            cartitems = CartItem.objects.filter(id__in=selected_ids)
+            cartcount = cartitems.count()
+            tdcid = get_tonerdetails_content_type_id()
+            idcid = get_itemdetails_content_type_id()
+            data = {'cartitems': cartitems, 'cartcount': cartcount, 'tdcid': tdcid, 'idcid': idcid}
+            template = get_template("print_sent_items_invoice.html")
+            data_p = template.render(data)
+            response = BytesIO()
+            pdfPage = pisa.pisaDocument(BytesIO(data_p.encode("UTF-8")), response)
+            if not pdfPage.err:
+                return HttpResponse(response.getvalue(), content_type="application/pdf")
+            else:
+                return HttpResponse("Error during PDF generation")
+        except Exception as e:
+            # Handle the exception gracefully but still attempt to generate PDF
+            print("An error occurred during PDF generation:", str(e))
+        return HttpResponse("PDF generation encountered an error")
+
 
 #this is to print the issue vouchers from item details page
 @cache_control(no_cache=True, must_revalidate=True,no_store=True)

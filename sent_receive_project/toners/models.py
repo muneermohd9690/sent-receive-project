@@ -8,7 +8,7 @@ from django.utils import timezone
 from sent_items.models import CartItem
 #import datetime
 from django.contrib.contenttypes.fields import GenericRelation
-from simple_history.models import HistoricalRecords
+
 from django.utils import timezone
 
 

@@ -398,3 +398,41 @@ $(document).ready(function(){
                 }
             });
         });
+
+<!---------------------------- Ajax print selected items sent invoice --------------------------------------------->
+
+        $(document).ready(function() {
+            $(".select_print_sent_items_invoice").click(function(e) {
+                e.preventDefault();
+                var selectedIds = [];
+                var csrf=$('input[name=csrfmiddlewaretoken]').val();
+                var id=$("#cart_id").data("value");
+                $(':checkbox:checked').each(function() {
+                    selectedIds.push($(this).val());
+                });
+                if (selectedIds.length > 0) {
+                        var url = '/forms/select_print_sent_items_invoice/';
+                        fetch(url, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': csrf,
+                            },
+                            body: JSON.stringify({
+                                'selected_ids': selectedIds,  // Use underscore instead of camelCase
+                                'id': id
+                            })
+                        })
+                        .then((response) => response.blob())
+                        .then(blob => {
+                                var blobUrl = URL.createObjectURL(blob);
+                                window.open(blobUrl, '_blank');
+                        })
+                        .catch(error => {
+                                console.error('Error:', error);
+                        });
+                } else {
+                        $("#pdf-generation-status").text("Please select items to generate PDF.");
+                }
+            });
+        });

@@ -17,8 +17,7 @@ from toners.models import TonerDetails
 from prosecutions.models import Prosecutions
 #from pandas import read_frame
 import pandas
-import plotly
-import plotly.express as px
+
 import json
 from django.db.models import Count
 from django.http import JsonResponse

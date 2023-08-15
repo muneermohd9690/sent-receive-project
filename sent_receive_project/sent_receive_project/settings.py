@@ -56,8 +56,6 @@ INSTALLED_APPS = [
     'sent_items.apps.SentItemsConfig',
     'export.apps.ExportConfig',
     'django_forms_bootstrap',
-    'dbbackup',
-    'simple_history',
     'report.apps.ReportsConfig',
 ]
 

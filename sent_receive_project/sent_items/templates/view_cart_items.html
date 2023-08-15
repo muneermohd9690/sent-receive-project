@@ -57,9 +57,11 @@
             </tbody>
         </table>
         <a href="{% url 'dispatch' %}" class="btn btn-info dispatch" id="btn-dispatch" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Dispatch"><i class="fas fa-shipping-fast"></i></a>
-        <a href="{% url 'print_sent_items_invoice' cart.pk %}" target="_blank" rel="noopener noreferrer" class="btn btn-info" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Print Invoice"><i class="fas fa-receipt"></i></a>
-        <button type="submit" class="btn btn-danger select_remove" style="display: none;" id="btn-selectremove">Select Remove</button>
-        <button type="submit" class="btn btn-secondary select_dispatch" style="display: none;" id="btn-selectdispatch">Select Dispatch</button>
+        <a href="{% url 'print_sent_items_invoice' cart.pk %}" target="_blank" rel="noopener noreferrer" class="btn btn-info" id="btn-print_sent_items_invoice" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Print Invoice"><i class="fas fa-receipt"></i></a>
+        <button type="submit" class="btn btn-danger select_remove" style="display: none;" id="btn-selectremove">Remove Selected</button>
+        <button type="submit" class="btn btn-info select_dispatch" style="display: none;" id="btn-selectdispatch">Dispatch Selected</button>
+        <button type="submit" class="btn btn-info select_print_sent_items_invoice" style="display: none;" id="btn-select_print_sent_items_invoice">Invoice Selected</button>
+
     </div>
 <!--    <script>
         $(document).ready(function(){
@@ -86,5 +88,7 @@
     {% endfor %}
 {% endif %}
 <!--- Messages after CRUD operations --->
-
+<div class="text-center mt-5" style="display: none;" >
+    <input  id="cart_id" data-value="{{cart.pk}}">
+</div>
 {% endblock %}

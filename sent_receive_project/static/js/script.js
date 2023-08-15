@@ -350,11 +350,17 @@ $(document).ready(function() {
                 $('#btn-bulkdispatch').show();
                 $('#btn-selectdispatch').show();
                 $('#btn-selectremove').show();
+                $('#btn-select_print_sent_items_invoice').show();
+                $('#btn-dispatch').hide();
+                $('#btn-print_sent_items_invoice').hide();
             } else {
                 $('#btn-bulkdelete').hide();
                 $('#btn-bulkdispatch').hide();
                 $('#btn-selectdispatch').hide();
                 $('#btn-selectremove').hide();
+                $('#btn-select_print_sent_items_invoice').hide();
+                $('#btn-dispatch').show();
+                $('#btn-print_sent_items_invoice').show();
             }
         });
 });

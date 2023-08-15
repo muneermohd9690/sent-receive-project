@@ -7,6 +7,8 @@ urlpatterns=[
     path('sent_items_invoice/print_sent_items_invoice<int:id>',views.print_sent_items_invoice,name='print_sent_items_invoice'),
     path('sent_items_invoice/print_toner_sent_invoice<int:id>',views.print_toner_sent_invoice,name='print_toner_sent_invoice'),
     path('sent_items_invoice/print_item_sent_invoice<int:id>',views.print_item_sent_invoice,name='print_item_sent_invoice'),
+    path('select_print_sent_items_invoice/',views.select_print_sent_items_invoice,name='select_print_sent_items_invoice'),
+    # path('sent_items_invoice/select_print_sent_items_invoice/',views.select_print_sent_items_invoice,name='select_print_sent_items_invoice'),
 
     # path('add_forms/', views.add_forms,name='add_forms'),
     # path('add_forms/add_forms_save', views.add_forms_save,name='add_forms_save'),

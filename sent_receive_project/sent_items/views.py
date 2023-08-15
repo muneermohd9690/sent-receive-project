@@ -17,7 +17,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import cache_control
 from .utils import calc_cart_total,get_tonerdetails_content_type_id,get_itemdetails_content_type_id
-from toners.utils import  calc_toner_stock_alert
+from toners.utils import calc_toner_stock_alert
 
 ltid = []
 liid = []
@@ -225,6 +225,7 @@ def dispatch(request):
     if request.user.is_authenticated:
         customer = request.user.customer
         cart, created = Cart.objects.get_or_create(customer=customer, complete=False)
+        CartItem.objects.filter(cart=cart).update(dispatched=True)
         cart.complete = True
         cart.save()
         messages.success(request, "Items Dispatched")

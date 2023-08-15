@@ -1,2 +1,4 @@
 sent-receive-project\sent_receive_project\db.sqlite3
 *.sqlite3
+*/migrations/
+__pycache__/

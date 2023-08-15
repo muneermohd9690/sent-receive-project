@@ -58,7 +58,7 @@ Sweetalert design
 
     width: 90px;
     float: right;
-    margin-right: 10px;
+
 }
 
 /*----------------------------------------------
@@ -313,12 +313,17 @@ Dropdown submenu css
 
 #btn-selectremove{
 
-    margin-left: 540px;
+    margin-left: 550px;
     position: absolute;
 }
 
 #btn-selectdispatch{
 
-    margin-left: 400px;
+    margin-left: 390px;
+    position: absolute;
+}
+
+#btn-select_print_sent_items_invoice{
+    margin-left: 705px;
     position: absolute;
 }

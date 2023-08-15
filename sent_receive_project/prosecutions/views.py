@@ -9,9 +9,9 @@ from django.template.loader import render_to_string, get_template
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.cache import cache_control
 from sent_items.utils import calc_cart_total
-from toners.utils import  calc_toner_stock_alert
+from toners.utils import calc_toner_stock_alert
 from django.contrib import messages
-from simple_history.models import HistoricalRecords
+
 
 
 @cache_control(no_cache=True, must_revalidate=True,no_store=True)
