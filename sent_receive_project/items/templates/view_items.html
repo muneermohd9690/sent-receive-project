@@ -86,33 +86,5 @@
     {% endfor %}
 {% endif %}
 <!--- Messages after CRUD operations --->
-
-
-
-<!-- - Paginator -
-<script>
-$(document).ready(function () {
-    $("#myTable").DataTable({
-        paging: true,
-        pageLength: 10,
-        lengthChange: false,
-        bInfo: false,
-        bSort: false,
-        order:[]
-    });
-});
-</script>
-
-&lt;!&ndash;- Paginator -&ndash;&gt;
-<script>
-$(document).ready(function () {
-var table = $('#myTable').DataTable();
-
-// #myInput is a <input type="text"> element
-$('#search').on( 'keyup', function () {
-    table.search( this.value ).draw();
-} );
-});
-</script>-->
 </div>
 {% endblock %}

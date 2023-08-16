@@ -108,15 +108,7 @@
         <!-- Modal -->
     </form>
 
-<!-- Date picker -->
-<script>
-    $(function(){
-        $("#date_dispatched").datepicker({
-      format: 'YYYY-MM-DD',
-        });
-     });
-</script>
-<!-- Date picker -->
+
 <!---------------------------- Messages after CRUD operations ------------------------------->
 {% if messages %}
     {% for message in messages %}
@@ -132,46 +124,6 @@
 {% endif %}
 <!---------------------------- Messages after CRUD operations ------------------------------->
 
-<!---------------------------- disable addtodispatch button --------------------------------->
-<script>
-
-    $(document).ready(function(){
-    var java_content_type_id = {{content_type_id}}
-    var java_joined_ids = JSON.parse("{{joined_ids}}")
-    var buttons=$(".addtodispatch")
-    var java_detailId=[]
-    var java_detailId_content_type_id=[]
-    console.log(java_content_type_id);
-    for(x=0;x<buttons.length;x++)
-    {
-    $('button.addtodispatch').each(function() {
-        java_detailId[x++]= parseInt($(this).attr("data-detail"));
-    });
-    console.log(java_detailId_content_type_id);
-    }
-    for(y=0;y<java_detailId.length;y++)
-    {
-        java_detailId_content_type_id[y]=[java_detailId[y],java_content_type_id]
-    }
-    for(let i = 0; i<java_detailId_content_type_id.length; i++)
-    {
-        for(let j = 0; j<java_joined_ids.length; j++)
-        {
-                if(JSON.stringify(java_detailId_content_type_id[i])==JSON.stringify(java_joined_ids[j]))
-                {
-                    $(`button[data-detail="${java_detailId_content_type_id[i][i-i]}"]`).attr("disabled", true)
-                    break;
-                } else
-                    {
-                            $(`button[data-detail="${java_detailId_content_type_id[i][i-i]}"]`).attr("disabled", false)
-                    }
-        }
-    }
-});
-
-
-</script>
-<!---------------------------- disable addtodispatch button --------------------------------->
 
 </div>
 

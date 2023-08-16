@@ -5,9 +5,9 @@
 <div class="container">
   <h2>Toner Details</h2>
    <input type="hidden" name="tonerdetails_id" value="{{tonerdetails.id}}">
-   <input class="form-control" id="myInput" type="text" placeholder="Search..">
+   <input class="form-control" id="search" type="text" placeholder="Search..">
   <div class="table-responsive">
-      <table class="table table-bordered">
+      <table class="table table-bordered" id="myTable">
           <thead>
           <tr>
               <th>Toner Model</th>
@@ -19,7 +19,7 @@
 
           </tr>
           </thead>
-          <tbody id="myTable">
+          <tbody >
           {% for detail in tonerdetails %}
           <tr>
               <td>{{detail.toner_model.toner_model}}</td>
@@ -34,17 +34,7 @@
       </table>
 
     </div>
-<script>
-$(document).ready(function(){
-  $("#myInput").on("keyup", function() {
-    var value = $(this).val().toLowerCase();
-    $("#myTable tr").filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-    });
-  });
-});
 
-</script>
 </div>
 
 {% endblock %}

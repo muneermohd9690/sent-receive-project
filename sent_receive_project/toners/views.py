@@ -311,7 +311,14 @@ def edit_toners_delete(request, id):
 @login_required(login_url="login")
 def edit_tonerdetails(request):
     tonerdetails = TonerDetails.objects.all()
-    return render(request, 'edit_tonerdetails.html', {"tonerdetails": tonerdetails})
+    data_calc_cart_total = calc_cart_total(request)
+    cart_total = data_calc_cart_total['cart_total']
+    data_calc_toner_stock_alert = calc_toner_stock_alert(request)
+    toner_stock_alert = data_calc_toner_stock_alert['toner_stock_alert_count']
+    toner_under_fifteen = data_calc_toner_stock_alert['tonerstock']
+    context = {"total": cart_total, "tonerdetails": tonerdetails, "toner_stock_alert": toner_stock_alert,
+               "toner_under_fifteen": toner_under_fifteen}
+    return render(request, 'edit_tonerdetails.html', context)
 
 
 @cache_control(no_cache=True, must_revalidate=True,no_store=True)
