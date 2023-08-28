@@ -1,13 +1,33 @@
 {% extends 'mainpage.html' %}
 
 {% block content %}
-<h1>this is for dashboard on load</h1>
-    <div class="card m-4" style="width: 50%;">
-        <div class="card-body">
-            <div id="chart"> {{ fig | safe }}</div>
+    <div class="row">
+        <div class="col-md-6">
+                    <div class="card m-4" >
+                        <div class="card-body">
+                            <div id="itemchart"> {{ item_plot_html|safe }}</div>
+                        </div>
+                    </div>
+        </div>
+
+        <div class="col-md-6">
+                    <div class="card m-4 " >
+                        <div class="card-body">
+                            <div id="chart"> {{ toner_plot_html|safe }}</div>
+                        </div>
+                    </div>
         </div>
     </div>
 
-
+    <div class="row">
+        <div class="col-md-12">
+                    <div class="card m-4 " >
+                        <div class="card-body">
+                            <input type="text" id="datepicker" placeholder="Select Date Range">
+                            <div id="tonerstatuschart"> {{ toner_status_chart|safe }}</div>
+                        </div>
+                    </div>
+        </div>
+    </div>
 
 {% endblock %}

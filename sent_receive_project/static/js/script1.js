@@ -241,7 +241,26 @@ $(document).ready(function ()
 
     });
 
+<!---------------------------- Date range picker on toner status chart --------------------------------------------->
+     $(document).ready(function() {
+        // Initialize the date picker
+        $("#datepicker").daterangepicker({
+            opens: 'left',  // Adjust this based on your preference
+            "showDropdowns": true,
+            autoUpdateInput: false,  // Prevent auto-updating the input field
+        });
 
+        // Update the chart when the date picker values change
+        $("#datepicker").on('apply.daterangepicker', function(ev, picker) {
+            var start_date = picker.startDate.format('YYYY-MM-DD');
+            var end_date = picker.endDate.format('YYYY-MM-DD');
+
+            // Redirect to the same page with updated date range as a query parameter
+            window.location.href = window.location.pathname + '?start_date=' + start_date + '&end_date=' + end_date;
+        });
+    });
+
+<!---------------------------- Dropdown menus --------------------------------------------->
 $(document).ready(function(){
         $('.dropdown-menu a.dropdown-toggle').on('click', function(e) {
           if (!$(this).next().hasClass('show')) {
@@ -436,3 +455,5 @@ $(document).ready(function(){
                 }
             });
         });
+
+
