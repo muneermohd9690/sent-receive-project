@@ -1,0 +1,122 @@
+
+<!-- Edit Modal -->
+
+                          <div class="modal fade" id="edit_item_details_form-modal{{ detail.pk }}"
+                                tabindex="-1" aria-labelledby="edit_item_details_form-modal-label{{ detail.pk }}" aria-hidden="true">
+                              <div class="modal-dialog" >
+                                  <div class="modal-content">
+                                          <div class="modal-header">
+                                              <h5 class="modal-title" id="edit_item_details_form-modal-label{{ detail.pk }}">Edit Item Details</h5>
+                                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                              </button>
+                                          </div>
+                                      <form role="form" action="edit_item_details_save" method="post">
+                                         <div class="modal-body">
+                                             <div class="input-group input-group-sm mb-3">
+                                                 <label class="input-group-text side-label">Model Number</label>
+                                                     <select class="form-control selectpicker show-tick"
+                                                             name="model_no" id="{{ detail.pk }}model_no"
+                                                             data-live-search="true" data-dropup-auto="false">
+                                                         {% for item in items %}
+                                                         <option value="{{item.id}}" {% if item.id == detail.model_no.id %}
+                                                                 selected {% endif %}>
+                                                             {{item.model_no}}
+                                                         </option>
+                                                         {% endfor %}
+                                                     </select>
+                                             </div>
+                                             <div class="input-group input-group-sm mb-3">
+                                                 <span class="input-group-text side-label">Serial Number</span>
+                                                 <input type="text" class="form-control "
+                                                        placeholder="Enter serialnumber" name="serial_no"
+                                                        id="{{ detail.pk }}serial_no"
+                                                        value="{{detail.serial_no}}">
+
+                                             </div>
+                                             <div class="input-group input-group-sm mb-3">
+                                                 <span class="input-group-text side-label">Tag Number</span>
+                                                 <input type="text" class="form-control " placeholder="enter tag number"
+                                                        name="tag_no" id="{{ detail.pk }}tag_no"
+                                                        value="{{detail.tag_no}}">
+                                             </div>
+
+                                             <div class="input-group input-group-sm mb-3">
+                                                 <span class="input-group-text side-label">Room Tag</span>
+                                                 <input type="text" class="form-control "
+                                                        placeholder="enter room tag number"
+                                                        name="room_tag" id="{{ detail.pk }}room_tag"
+                                                        value="{{detail.room_tag}}">
+                                             </div>
+                                             <div class="input-group input-group-sm mb-3">
+                                                 <span class="input-group-text side-label">Issued to</span>
+                                                 <select class="form-control selectpicker show-tick "
+                                                         name="issued_to" id="{{ detail.pk }}issued_to"
+                                                         data-live-search="true" data-dropup-auto="false">
+                                                     {% for prosecution in prosecutions %}
+                                                     <option value="{{prosecution.id}}" {% if prosecution.id == detail.issued_to.id %}
+                                                             selected {% endif %}>
+                                                         {{prosecution.name}}
+                                                     </option>
+                                                     {% endfor %}
+                                                 </select>
+                                             </div>
+
+                                             <div class="input-group input-group-sm mb-3">
+                                                 <span class="input-group-text side-label">Employee Name</span>
+                                                 <input type="text" class="form-control "
+                                                        placeholder="enter employee name"
+                                                        name="employee_name"
+                                                        id="{{ detail.pk }}employee_name"
+                                                        value="{{detail.employee_name}}">
+                                             </div>
+
+                                             <div class="input-group input-group-sm mb-3">
+                                                 <span class="input-group-text side-label">Employee Designation</span>
+                                                 <input type="text" class="form-control "
+                                                        placeholder="enter employee designation"
+                                                        name="employee_designation"
+                                                        id="{{ detail.pk }}employee_designation"
+                                                        value="{{detail.employee_designation}}">
+                                             </div>
+
+                                             <div class="input-group input-group-sm mb-3">
+                                                 <span class="input-group-text side-label">Date Dispatched </span>
+                                                 <input type="text" class="form-control"
+                                                        name="date_dispatched"
+                                                        id="{{ detail.pk }}date_dispatched"
+                                                        value="{{detail.date_dispatched.date|date:'Y-m-d'}}">
+                                             </div>
+
+
+                                             <div class="input-group input-group-sm mb-3">
+                                                 <span class="input-group-text side-label">Status</span>
+                                                 <select class="form-control " name="status"
+                                                         id="{{ detail.pk }}status">
+                                                     {% for x,y in status %}
+                                                     <option value="{{x}}" {% if x == detail.status %}
+                                                             selected {% endif %}>{{ x }}
+                                                     </option>
+                                                     {% endfor %}
+                                                 </select>
+                                             </div>
+                                             <button type="submit" name="save" value="save" class="btn btn-success"
+                                                     data-bs-toggle="tooltip" data-bs-placement="bottom" title="Save"><i
+                                                     class="fas fa-save"></i></button>
+                                         </div>
+                                      </form>
+                                         <div class="modal-footer">
+                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                 Cancel
+                                             </button>
+                                             <!--<a href="{% url 'edit_item_details_delete' detail.id %}" class="btn btn-danger"
+                                                type="submit" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"><i class="fas fa-trash"></i></a>-->
+                                             <button type="submit" name="save" value="save" class="btn btn-success"
+                                                     data-bs-toggle="tooltip" data-bs-placement="bottom" title="Save"><i
+                                                     class="fas fa-save"></i>
+                                             </button>
+                                         </div>
+                                  </div>
+                              </div>
+                          </div>
+
+                          <!-- Edit Modal -->

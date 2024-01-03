@@ -7,7 +7,7 @@
     <h2>Sent Items</h2>
      <div class="input-group input-group-sm mb-2">
         <input class="form-control" id="search" type="text" placeholder="Search.." >
-        <a href="{% url 'view_sent_items' %}" class="btn btn-dark btn-sm"><i class="fas fa-sync-alt"></i></a>
+        <a href="{% url 'view_sent_items' %}" class="btn btn-dark btn-sm" title="Reset View"><i class="fas fa-sync-alt"></i></a>
      </div>
     <div class="table-responsive">
         <table class="table table-bordered auto-width-table" id="myTable">
@@ -20,11 +20,12 @@
                 <th class="w5">Model No.</th>
                 <th class="w6">Serial No.</th>
                 <th class="w7">Received By</th>
+                <th class="w7">Action</th>
             </tr>
             </thead>
             <tbody>
             {% for item in items|dictsortreversed:"content_object.date_dispatched" %}
-            <tr>
+            <tr id="{{item.id}}" data-id="{{ item.id }}">
                 <td class="w1">{{forloop.counter}}</td>
                 <td class="w2">{{item.content_object.date_dispatched.date}}</td>
                 <td class="w3 right-to-left-text">{{item.content_object.issued_to.name}}</td>
@@ -39,7 +40,89 @@
 		            <td class="w6">{{item.content_object.serial_no}}</td>
                     <td class="w7 right-to-left-text">{{item.content_object.employee_name}}</td>
                 {% endif %}
+                <td class="w8">
+                    <!--<a href="{% url 'return_to_store' item.id %}" class="btn btn-danger" type="submit"
+                                  data-bs-toggle="tooltip" data-bs-placement="bottom" title="Return to Store">
+                    <i class='fas fa-warehouse'></i></a>-->
+                    <a class="btn btn-danger" data-bs-toggle="modal"
+                         data-bs-target="#returntostore-modal{{ item.id }}" data-bs-toggle="tooltip"
+                         data-bs-placement="bottom" title="Return to Store"><i class="fas fa-warehouse"></i></a>
+                </td>
             </tr>
+            <!-- return confirmation Modal -->
+                  <div class="modal fade" id="returntostore-modal{{ item.id }}" tabindex="-1" role="dialog"
+                       aria-labelledby="returntostore-modal-label{{ item.id }}" data-bs-backdrop="static" data-bs-keyboard="false"
+                       aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                              <div class="modal-header">
+                                  <h5 class="modal-title" id="returntostore-modal-label">Return Item Details</h5>
+                                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                  </button>
+                              </div>
+                              <div class="modal-body card p-3 border-dark mt-3">
+
+                                      {% if item.content_type.id == tdcid %}
+                                          <div class="input-group input-group-sm mb-3">
+                                                <span>Do you want to return this Toner to store ?</span>
+                                                <span class="input-group-text side-label">Model Number</span>
+                                                <input type="text" class="form-control" id="{{forloop.counter}}{{item.content_object.toner_model.toner_printer.model_no}}"
+                                                       value="{{item.content_object.toner_model.toner_printer.model_no}}"
+                                                       name="{{forloop.counter}}{{item.content_object.toner_model.toner_printer.model_no}}" readonly>
+                                          </div>
+                                          <!--<div class="input-group input-group-sm mb-3">
+                                                <span class="input-group-text side-label">Employee name</span>
+                                                <input type="text" class="form-control"  id="{{forloop.counter}}{{item.content_object.employee_name}}"
+                                                       name="{{forloop.counter}}{{item.content_object.employee_name}}"
+                                                       value="{{item.content_object.employee_name}}" readonly>
+                                          </div>-->
+                                      {% elif item.content_type.id == idcid %}
+                                          <span>Do you want to return this Item to store ?</span>
+                                          <div class="input-group input-group-sm mb-3">
+                                                <span class="input-group-text side-label">Product Description</span>
+                                                <input type="text" class="form-control" id="{{forloop.counter}}{{item.content_object.model_no.description}}"
+                                                       name="{{forloop.counter}}{{item.content_object.model_no.description}}"
+                                                       value="{{item.content_object.model_no.description}}" readonly>
+                                          </div>
+                                          <div class="input-group input-group-sm mb-3">
+                                                <span class="input-group-text side-label">Model No</span>
+                                                <input type="text" class="form-control" id="{{item.id}}{{item.content_object.model_no.model_no}}"
+                                                       name="{{forloop.counter}}{{item.content_object.model_no.model_no}}"
+                                                       value="{{item.content_object.model_no.model_no}}" readonly>
+                                          </div>
+                                          <div class="input-group input-group-sm mb-3">
+                                                <span class="input-group-text side-label">Serial No</span>
+                                                <input type="text" class="form-control" id="{{forloop.counter}}{{item.content_object.serial_no}}"
+                                                       name="{{forloop.counter}}{{item.content_object.serial_no}}" value="{{item.content_object.serial_no}}" readonly>
+                                          </div>
+                                          <!--<div class="input-group input-group-sm mb-3">
+                                                <span class="input-group-text side-label">Employee Name</span>
+                                                <input type="text" class="form-control" value="{{item.content_object.employee_name}}"
+                                                id="{{forloop.counter}}{{item.content_object.employee_name}}"
+                                                       name="{{forloop.counter}}{{item.content_object.employee_name}}"       readonly>
+                                          </div>-->
+                                      {% endif %}
+                                            <div class="input-group input-group-sm mb-3">
+                                                <span class="input-group-text side-label">Employee name</span>
+                                                <input type="text" class="form-control"  id="{{forloop.counter}}{{item.content_object.employee_name}}"
+                                                       name="{{forloop.counter}}{{item.content_object.employee_name}}"
+                                                       value="{{item.content_object.employee_name}}" readonly>
+                                            </div>
+
+                              </div>
+                              <div class="modal-footer">
+<!--                                  <a href="{% url 'view_sent_items' %}" class="btn btn-secondary">Cancel</a>-->
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                  <!--<a href="{% url 'return_to_store' item.id %}" class="btn btn-danger"
+                                     type="submit" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                     title="Return to Store"><i class="fas fa-warehouse"></i></a>-->
+                                  <a href="{% url 'return_to_store' item.id %}" class="btn btn-danger"
+                                     type="submit" >Yes</a>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+          <!-- return confirmation Modal -->
             {% endfor %}
             </tbody>
         </table>

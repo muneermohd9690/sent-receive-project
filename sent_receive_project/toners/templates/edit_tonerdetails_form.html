@@ -59,7 +59,7 @@
         </div>
         <button type="submit" name="save" value="save" class="btn btn-success mt-3 btn-action-ETDF" disabled data-bs-toggle="tooltip" data-bs-placement="bottom" title="Save"><i class="fas fa-save"></i></button>
         <a href="{% url 'view_tonerdetails' id=detail.toner_model.id %}" id="btn-back2" class="btn btn-primary mt-3" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Back"><i class="fas fa-angle-double-left"></i></a>
-        <button type="submit" onclick="getCartData('{{detail.id}}','add')" data-detail="{{detail.id}}" data-action="add" class="btn btn-secondary mt-3 addtodispatch" enabled data-bs-toggle="tooltip" data-bs-placement="bottom" title="Save and Add To Dispatch"><i class="fas fa-box"></i></button>
+        <button type="submit" onclick="getCartData('{{detail.id}}','add')" data-detail="{{detail.id}}" data-action="add" class="btn btn-secondary mt-3 savedispatch" enabled data-bs-toggle="tooltip" data-bs-placement="bottom" title="Save and Add To Dispatch"><i class="fas fa-box"></i></button>
 
 
         <!-- Button trigger modal -->
@@ -115,6 +115,7 @@
     <input id="employee_name2"  value="{{detail.employee_name}}">
     <input id="employee_designation2" value="{{detail.employee_designation}}">
     <input id="date_dispatched2" value="{{detail.date_dispatched.date|date:'Y-m-d'}}">
+
     <input id="status2" value="{{detail.status}}">
 </div>
 

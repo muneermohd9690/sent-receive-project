@@ -22,6 +22,45 @@ $(document).ready(function(){
 });
 /**** edit_toners_form ****/
 
+/**** edit_contract_details ****/
+$(document).ready(function(){
+    // Track if a file is chosen
+    var fileChosen = false;
+    $("#pdf_file").change(function(){
+            fileChosen = true;
+    });
+    // Event listener for file input change
+    $("#btn-back").click(function(){
+        var lpo_no = $("#lpo_no").val()
+        var purchased_by = $("#purchased_by").val()
+        var warranty_years = $("#warranty_years").val()
+        var purchased_date = $("#purchased_date").val()
+        //var pdf_file = $("#pdf_file").val()  // Get the value of the file input
+
+        var lpo_no2 = $("#lpo_no2").val()
+        var purchased_by2 = $("#purchased_by2").val()
+        var warranty_years2 = $("#warranty_years2").val()
+        var purchased_date2 = $("#purchased_date2").val()
+        //var pdf_file2 = $("#pdf_file2").val()  // Get the value of the hidden input
+
+        // Check if any changes are made, including choosing a new file
+        if (
+            (lpo_no != lpo_no2) ||
+            (purchased_by != purchased_by2) ||
+            (warranty_years != warranty_years2) ||
+            (purchased_date != purchased_date2) ||
+            (fileChosen)
+        )
+            {
+                // Show the modal
+                $("#modal-confirm").trigger('click');
+                return false;
+            }
+
+    });
+});
+/**** edit_contract_details ****/
+
 /**** edit_tonerdetails_form ****/
 $(document).ready(function(){
        $("#btn-back2").click(function(){
@@ -98,19 +137,6 @@ $(document).ready(function(){
         }
      });
    });
-$(document).ready(function(){
-    $(".btn-action-ETDF").prop("disabled", true);
-    $("#date_dispatched, #date_dispatched2").change(function() {
-        if( ($("#date_dispatched").val()) == ($("#date_dispatched2").val()) ) {
-            $(".btn-action-ETDF").attr("disabled", "disabled");
-        }
-        else {
-            $(".btn-action-ETDF").removeAttr("disabled");
-        }
-     });
-   });
-
-/**** disable save button in edit_tonerdetails_form(ETDF) ****/
 
 /**** modal in edit_items_form ****/
 $(document).ready(function(){
@@ -223,6 +249,70 @@ $(document).ready(function(){
 
  /**** disable save button in edit_items_form(EIF) ****/
 
+ /**** disable save button in edit_contract_details(ECD) ****//*
+*/
+$(document).ready(function(){
+    $("#lpo_no,#lpo_no2").on("keyup",function(){
+        $(".btn-action-ECD").prop("disabled",false);
+            if(($("#lpo_no").val())==($("#lpo_no2").val())){
+                    $(".btn-action-ECD").prop("disabled",true);
+        }
+    });
+   });
+
+$(document).ready(function(){
+    $(".btn-action-ECD").prop("disabled", true);
+    $("#purchased_by, #purchased_by2").change(function() {
+        if( ($("#purchased_by").val()) == ($("#purchased_by2").val()) ) {
+            $(".btn-action-ECD").attr("disabled", "disabled");
+        }
+        else {
+            $(".btn-action-ECD").removeAttr("disabled");
+        }
+     });
+   });
+
+$(document).ready(function(){
+    $(".btn-action-ECD").prop("disabled", true);
+    $("#warranty_years, #warranty_years2").change(function() {
+        if( ($("#warranty_years").val()) == ($("#warranty_years2").val()) ) {
+            $(".btn-action-ECD").attr("disabled", "disabled");
+        }
+        else {
+            $(".btn-action-ECD").removeAttr("disabled");
+        }
+     });
+   });
+
+$(document).ready(function(){
+    $(".btn-action-ECD").prop("disabled", true);
+    $("#purchased_date, #purchased_date2").change(function() {
+        if( ($("#purchased_date").val()) == ($("#purchased_date2").val()) ) {
+            $(".btn-action-ECD").attr("disabled", "disabled");
+        }
+        else {
+            $(".btn-action-ECD").removeAttr("disabled");
+        }
+     });
+   });
+
+$(document).ready(function(){
+    $(".btn-action-ECD").prop("disabled", true);
+
+    $("#pdf_file").change(function() {
+      // Check if a new PDF file is selected
+      if ($(this).val()) {
+        $(".btn-action-ECD").prop("disabled", false);
+      } else {
+        $(".btn-action-ECD").prop("disabled", true);
+      }
+    });
+});
+
+
+ /**//**** disable save button in edit_contract_details(ECD) ****/
+
+
   /**** disable save button in edit_prosecutions_form(EPF) ****/
 $(document).ready(function(){
     $("#name,#name2").on("keyup",function(){
@@ -328,7 +418,7 @@ $(document).ready(function(){
      });
    });
 
-$(document).ready(function(){
+/*$(document).ready(function(){
     $(".btn-action-EIDF").prop("disabled", true);
     $("#date_dispatched, #date_dispatched2").change(function() {
         if( ($("#date_dispatched").val()) == ($("#date_dispatched2").val()) ) {
@@ -338,7 +428,7 @@ $(document).ready(function(){
             $(".btn-action-EIDF").removeAttr("disabled");
         }
      });
-   });
+   });*/
 /**** disable save button in edit_item_details_form(EIDF) ****/
 
 /**** to show bulk delete button on checkbox select ****/
@@ -419,3 +509,37 @@ $(document ).ready(function (){
         });
     });
 /**** Login verification and messages ****/
+
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    var logoutButton = document.getElementById("btn-logout");
+
+    if (logoutButton) {
+        logoutButton.addEventListener("click", function(e) {
+            e.preventDefault();
+
+            // Use Ajax to send a POST request to the logout URL
+            fetch('/logout/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken'),  // Include the CSRF token
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Successful logout, redirect to the login page
+                    window.location.href = data.redirect_url;
+                } else {
+                    // Handle error response if needed
+                    console.error('Logout failed:', data);
+                }
+            })
+            .catch(error => {
+                console.error('Error during logout:', error);
+            });
+        });
+    }
+});

@@ -1,6 +1,6 @@
 import pandas as pd
 from django.contrib.admin import forms
-from django.contrib.auth import authenticate, get_user_model, login
+from django.contrib.auth import authenticate, get_user_model, login,logout
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -17,7 +17,7 @@ from toners.models import TonerDetails
 from prosecutions.models import Prosecutions
 # from pandas import read_frame
 import pandas
-
+from django.contrib.auth.views import LogoutView
 import json
 from django.db.models import Count
 from django.http import JsonResponse
@@ -91,9 +91,13 @@ def mainpage(request):
 
     toner_plot_html = toner_plot_view
     item_plot_html = item_plot_view
-    toner_status_chart = toner_status_view(start_date,end_date)
+    toner_status_data = toner_status_view(start_date, end_date)
+    # toner_status_chart = toner_status_view(start_date,end_date)
+    toner_status_chart=toner_status_data['toner_status_chart']
+    has_data = toner_status_data['has_data']
+
     context = {"total": cart_total, "toner_stock_alert": toner_stock_alert, "toner_under_fifteen": toner_under_fifteen,
-               "toner_plot_html": toner_plot_html, "item_plot_html": item_plot_html,"toner_status_chart":toner_status_chart}
+               "toner_plot_html": toner_plot_html, "item_plot_html": item_plot_html,"toner_status_chart":toner_status_chart,"has_data": has_data}
     return render(request, 'dashboard.html', context)
 
 
@@ -136,25 +140,66 @@ def item_plot_view():
     item_plot_html = fig.to_html(full_html=False, include_plotlyjs='cdn')
     return item_plot_html
 
+# def toner_status_view(start_date=None, end_date=None):
+#     toner_data = TonerDetails.objects.filter(status='Out-of-Stock')
+#     if start_date and end_date:
+#         toner_data = toner_data.filter(date_dispatched__range=(start_date, end_date))
+#
+#     has_data = toner_data.exists()
+#     # Create a Pandas DataFrame to organize the data
+#     toner_df = pd.DataFrame(toner_data.values('toner_model__toner_model'))
+#
+#     # Group the data by 'status' and count the occurrences
+#     toner_counts = toner_df['toner_model__toner_model'].value_counts()
+#
+#     # Create the Plotly bar chart
+#     fig = px.bar(toner_counts, x=toner_counts.index, y=toner_counts.values, title='Toner Status Distribution')
+#     fig.update_xaxes(title_text='Toner Model')
+#     fig.update_yaxes(title_text='Count')
+#     # Add tooltips
+#     fig.update_traces(hovertemplate='<b>%{x}</b><br>Count: %{y}')
+#     # Enable interactive legend
+#     fig.update_layout(legend=dict(orientation='h', yanchor='bottom', y=1.02, xanchor='right', x=1))
+#     # Convert the figure to HTML
+#     toner_status_chart = fig.to_html(full_html=False, include_plotlyjs='cdn')
+#     # return toner_status_chart
+#     return {'toner_status_chart': toner_status_chart, 'has_data': has_data}
+
 def toner_status_view(start_date=None, end_date=None):
+    # Filter the data based on the selected date range
     toner_data = TonerDetails.objects.filter(status='Out-of-Stock')
     if start_date and end_date:
         toner_data = toner_data.filter(date_dispatched__range=(start_date, end_date))
 
-    # Create a Pandas DataFrame to organize the data
-    toner_df = pd.DataFrame(toner_data.values('toner_model__toner_model'))
+    # Check if there is any data available
+    has_data = toner_data.exists()
 
-    # Group the data by 'status' and count the occurrences
-    toner_counts = toner_df['toner_model__toner_model'].value_counts()
+    if has_data:
+        # Create a Pandas DataFrame to organize the data
+        toner_df = pd.DataFrame(toner_data.values('toner_model__toner_model'))
 
-    # Create the Plotly bar chart
-    fig = px.bar(toner_counts, x=toner_counts.index, y=toner_counts.values, title='Toner Status Distribution')
-    fig.update_xaxes(title_text='Toner Model')
-    fig.update_yaxes(title_text='Count')
-    # Add tooltips
-    fig.update_traces(hovertemplate='<b>%{x}</b><br>Count: %{y}')
-    # Enable interactive legend
-    fig.update_layout(legend=dict(orientation='h', yanchor='bottom', y=1.02, xanchor='right', x=1))
-    # Convert the figure to HTML
-    toner_status_chart = fig.to_html(full_html=False, include_plotlyjs='cdn')
-    return toner_status_chart
+        # Group the data by 'status' and count the occurrences
+        toner_counts = toner_df['toner_model__toner_model'].value_counts()
+
+        # Create the Plotly bar chart
+        fig = px.bar(toner_counts, x=toner_counts.index, y=toner_counts.values, title='Toner Status Distribution')
+        fig.update_xaxes(title_text='Toner Model')
+        fig.update_yaxes(title_text='Count')
+        # Add tooltips
+        fig.update_traces(hovertemplate='<b>%{x}</b><br>Count: %{y}')
+        # Enable interactive legend
+        fig.update_layout(legend=dict(orientation='h', yanchor='bottom', y=1.02, xanchor='right', x=1))
+        # Convert the figure to HTML
+        toner_status_chart = fig.to_html(full_html=False, include_plotlyjs='cdn')
+    else:
+        # If there's no data, set toner_status_chart to an empty string
+        toner_status_chart = ''
+
+    # Return both the chart and the has_data flag
+    return {'toner_status_chart': toner_status_chart, 'has_data': has_data}
+
+@cache_control(no_cache=True, must_revalidate=True, no_store=True)
+@login_required(login_url="login")
+def logout_view(request):
+    logout(request)
+    return JsonResponse({'success': True, 'redirect_url': '/login/'})

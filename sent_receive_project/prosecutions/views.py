@@ -114,8 +114,8 @@ def edit_prosecutions_delete(request, prosecutions_id):
 
 @cache_control(no_cache=True, must_revalidate=True,no_store=True)
 @login_required(login_url="login")
-def print_pdf(request, prosecutions_name):
-    prosecutions = Prosecutions.objects.get(name=prosecutions_name)
+def print_pdf(request, id):
+    prosecutions = Prosecutions.objects.filter(id=id)
     data = {'prosecutions': prosecutions}
     template = get_template("pdf_prosecutions.html")
     data_p = template.render(data)

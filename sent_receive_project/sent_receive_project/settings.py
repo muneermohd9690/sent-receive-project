@@ -14,17 +14,15 @@ from pathlib import Path
 from django.contrib.messages import constants as messages
 
 MESSAGE_TAGS = {
-        messages.DEBUG: 'alert-secondary',
-        messages.INFO: 'alert-info',
-        messages.SUCCESS: 'alert-success',
-        messages.WARNING: 'alert-warning',
-        messages.ERROR: 'alert-danger',
- }
-
+    messages.DEBUG: 'alert-secondary',
+    messages.INFO: 'alert-info',
+    messages.SUCCESS: 'alert-success',
+    messages.WARNING: 'alert-warning',
+    messages.ERROR: 'alert-danger',
+}
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -35,8 +33,7 @@ SECRET_KEY = 'pp+xq#rxip@dq&e$qd(-mwm=hw04d2whla9qid_elo3mc&6=n&'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','0.0.0.0','sent-receive.herokuapp.com']
-
+ALLOWED_HOSTS = ['127.0.0.1', '0.0.0.0', 'sent-receive.herokuapp.com']
 
 # Application definition
 
@@ -57,12 +54,11 @@ INSTALLED_APPS = [
     'export.apps.ExportConfig',
     'django_forms_bootstrap',
     'report.apps.ReportsConfig',
+    'contracts.apps.ContractsConfig',
 ]
 
 DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
-DBBACKUP_STORAGE_OPTIONS = {'location': BASE_DIR/'backup'}
-
-
+DBBACKUP_STORAGE_OPTIONS = {'location': BASE_DIR / 'backup'}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -73,7 +69,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    #'simple_history.middleware.HistoryRequestMiddleware',
+    # 'simple_history.middleware.HistoryRequestMiddleware',
 
 ]
 
@@ -95,7 +91,7 @@ TEMPLATES = [
             ],
             'libraries': {
                 'staticfiles': 'django.templatetags.static',
-                #'post_tags': 'sent_receive_app.templatetags.post_tags',
+                # 'post_tags': 'sent_receive_app.templatetags.post_tags',
                 'sent_receive_project_tags': 'sent_items.templatetags.sent_receive_project_tags',
                 'toners_tags': 'toners.templatetags.toners_tags',
             },
@@ -105,16 +101,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'sent_receive_project.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-     'default': {
-         'ENGINE': 'django.db.backends.sqlite3',
-         'NAME': BASE_DIR / 'db.sqlite3',
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
 
-     }
+    }
 }
 
 # DATABASES = {
@@ -149,7 +144,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
@@ -163,26 +157,26 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'images')
 MEDIA_URL = '/images/'
 JS_SCRIPT_URL = '/js/'
 CSS_URL = '/css/'
 
-
-
-#STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # STATICFILES_DIRS=[
 #     os.path.join(BASE_DIR, 'static' )
 # ]
-STATICFILES_DIRS=[BASE_DIR / "static"]
+STATICFILES_DIRS = [BASE_DIR / "static"]
+
+# LOGIN_REDIRECT_URL = 'mainpage'
+#LOGOUT_REDIRECT_URL = 'login'
 
 
 
-
-LOGIN_REDIRECT_URL = 'mainpage'
-LOGOUT_REDIRECT_URL= 'login'
+# SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+# SESSION_COOKIE_AGE = 60 * 1  # 1 minutes

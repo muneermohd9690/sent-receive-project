@@ -1,0 +1,77 @@
+{% extends 'mainpage.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="card card-body border-dark mt-3">
+            <span class="text-center"><h2>Add Contract Details</h2></span>
+            <p class="text-center">Enter the contract details below:</p>
+        </div>
+    </div>
+    <form role="form" action="contract_details_save" method="post" enctype="multipart/form-data" class="card p-3 border-dark mt-3">
+        {% csrf_token %}
+        <div class="input-group input-group-sm mb-3">
+            <label class="input-group-text side-label">LPO Number</label>
+            <input class="form-control" name="lpo_no" placeholder="Enter LPO-number" type="text">
+        </div>
+        <div class="input-group input-group-sm mb-3">
+            <label class="input-group-text side-label">Purchased By</label>
+            <select class="form-control" name="purchased_by">
+                {% for x,y in purchased_by_choice %}
+                <option value="{{x}}">{{ y }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="input-group input-group-sm mb-3">
+            <label class="input-group-text side-label">Warranty in years</label>
+            <select class="form-control" name="warranty_years">
+                {% for x,y in warranty_range %}
+                <option value="{{x}}">{{ y }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="input-group input-group-sm mb-3">
+            <label class="input-group-text side-label">Date Purchased </label>
+            <input type="text" class="form-control" name="purchased_date" id="purchased_date">
+        </div>
+
+        <div class="input-group input-group-sm mb-3">
+                <!-- Your existing form fields -->
+                <label class="input-group-text side-label">Upload contract </label>
+                <input type="file" name="pdf_file" id="pdf_file">
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">Save Details</button>
+
+    </form>
+</div>
+
+
+<!--- Messages after CRUD operations --->
+{% if messages %}
+    {% for message in messages %}
+        {% if message.tags == 'alert-success' %}
+            <script>
+                 var m= "{{ message }}";
+                 swal({
+                       title: "Good job!",
+                       text: m,
+                       icon: "success",
+                      });
+            </script>
+        {% elif message.tags == 'alert-danger' %}
+            <script>
+                 var m= "{{ message }}";
+                 swal({
+                       title: "Error!",
+                       text: m,
+                       icon: "error",
+                      });
+            </script>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+<!--- Messages after CRUD operations --->
+</div>
+{% endblock %}

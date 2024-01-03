@@ -99,7 +99,7 @@
                 <th class="w2">Received By</th>
 
             </tr>
-            {% for item in items|dictsortreversed:"content_object.date_dispatched.date" %}
+            {% for item in items|dictsortreversed:"content_object.date_dispatched" %}
             <tr>
                 <td class="w1">{{forloop.counter}}</td>
                 <td class="w2">{{item.content_object.date_dispatched.date}}</td>

@@ -127,7 +127,7 @@
             {% for item in cartitems %}
             <tr>
                 <td class="w1">{{forloop.counter}}</td>
-                <td class="w2">{{item.date_added.date}}</td>
+                <td class="w2">{{item.content_object.date_dispatched.date}}</td>
 <!--                <td class="w3">Test</td>-->
                 <td class="w3">{% if forloop.first %}{{ cartcount }}{% endif %}</td>
                 <td class="w4">{{item.content_object.issued_to.name}}</td>

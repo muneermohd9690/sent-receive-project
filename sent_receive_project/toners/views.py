@@ -359,6 +359,7 @@ def edit_tonerdetails_save(request):
             # date_dispatched=datetime.strptime(request.POST['date_dispatched'], '%m/%d/%Y')
             # date_dispatched = datetime.strptime(request.POST['date_dispatched'], 'YYYY-MM-DD')
             date_dispatched = request.POST.get("date_dispatched")
+            print(date_dispatched)
             status = request.POST.get("status")
 
             toner_model_id = request.POST.get("toner_model")

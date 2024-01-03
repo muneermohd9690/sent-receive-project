@@ -27,7 +27,9 @@
      </style>
 </head>
 <body>
-<h2>{{prosecutions.name}}</h2>
+{% for prosecution in prosecutions %}
+<h2>{{prosecution.name}}</h2>
+{% endfor %}
 </body>
 
 </html>

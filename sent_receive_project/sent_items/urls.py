@@ -10,6 +10,8 @@ urlpatterns = [
                 path('bulk_update_items/', views.bulk_update_items, name='bulk_update_items'),
                 path('view_cart_items/remove_from_cart/<int:id>', views.remove_from_cart, name='remove_from_cart'),
 
-                path('view_cart_items/select_remove_from_cart/', views.select_remove_from_cart, name='select_remove_from_cart'),
+                path('view_cart_items/select_remove_from_cart/', views.select_remove_from_cart,
+                     name='select_remove_from_cart'),
                 path('view_cart_items/select_dispatch/', views.select_dispatch, name='select_dispatch'),
+                path('view_sent_items/return_to_store/<int:id>', views.return_to_store, name='return_to_store'),
                ]

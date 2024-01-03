@@ -1,0 +1,128 @@
+{% extends 'mainpage.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="card card-body border-dark mt-3">
+            <span class="text-center"><h2>Edit Contract Details | Contract Details ID :{{ contracts.id }} </h2></span>
+        </div>
+    </div>
+    <form role="form" action="edit_contract_details_save" method="post" enctype="multipart/form-data" class="card p-3 border-dark mt-3" >
+        {% csrf_token %}
+        <input type="hidden" name="contract_id" value="{{contracts.id}}">
+
+
+        <div class="input-group input-group-sm mb-3">
+            <span class="input-group-text side-label">LPO Number</span>
+            <input type="text" class="form-control " placeholder="Enter lpo number" name="lpo_no" id="lpo_no"
+                   value="{{contracts.lpo_no}}">
+
+        </div>
+
+         <div class="input-group input-group-sm mb-3">
+            <label class="input-group-text side-label">Purchased By</label>
+            <select class="form-control" name="purchased_by" id="purchased_by">
+                {% for x,y in purchased_by_choice %}
+                <option value="{{x}}" {% if x == contracts.purchased_by %} selected {% endif %}>{{ x }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="input-group input-group-sm mb-3">
+            <label class="input-group-text side-label">Warranty in years</label>
+            <select class="form-control" name="warranty_years" id="warranty_years">>
+                {% for x,y in warranty_range %}
+                <option value="{{x}}" {% if x == contracts.warranty_years %} selected {% endif %}>{{ x }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="input-group input-group-sm mb-3">
+            <label class="input-group-text side-label">Date Purchased </label>
+            <input type="text" class="form-control" name="purchased_date" id="purchased_date"
+             value="{{contracts.purchased_date.date|date:'Y-m-d'}}">
+        </div>
+
+        <!--<div class="input-group input-group-sm mb-3">
+            &lt;!&ndash; Your existing form fields &ndash;&gt;
+            <label class="input-group-text side-label">Existing PDF contract</label>
+            <span class="form-control">{{ contracts.pdf_file }}</span>
+        </div>-->
+
+        {% if contracts.pdf_file %}
+            <!-- Existing PDF contract -->
+            <div class="input-group input-group-sm mb-3">
+                <label class="input-group-text side-label">Existing PDF contract</label>
+                <span class="form-control">{{ contracts.pdf_file }}</span>
+                <a href="{{ contracts.pdf_file.url }}" target="_blank" class="btn btn-info" data-bs-toggle="tooltip"
+                        data-bs-placement="bottom" title="View PDF"><i class="far fa-file-pdf"></i></a>
+            </div>
+        {% endif %}
+
+        <div class="input-group input-group-sm mb-3">
+                <!-- Your existing form fields -->
+                <label class="input-group-text side-label">New PDF contract </label>
+                <input type="file" name="pdf_file" id="pdf_file">
+        </div>
+
+        <button type="submit" name="save" value="save" class="btn btn-success mt-3 btn-action-ECD" disabled data-bs-toggle="tooltip" data-bs-placement="bottom" title="Save"><i class="fas fa-save"></i></button>
+        <a href="{% url 'view_contract_details' %}" class="btn btn-primary mt-3" id="btn-back" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Back"><i class="fas fa-angle-double-left"></i></a>
+
+
+        <!-- Button trigger modal -->
+        <button id="modal-confirm" type="button" style="display:none;" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#save-modal">
+        </button>
+        <!-- Button trigger modal -->
+        <!-- Modal -->
+        <div class="modal fade" id="save-modal" tabindex="-1" role="dialog" aria-labelledby="save-modal-label" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="save-modal-label" >Save Changes</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Do you want to save changes ?
+                    </div>
+                    <div class="modal-footer">
+                        <a href="{% url 'view_contract_details' %}" class="btn btn-secondary" >No</a>
+                        <button type="submit" class="btn btn-primary">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal -->
+    </form>
+
+
+
+<!---------------------------- Messages after CRUD operations ------------------------------->
+{% if messages %}
+    {% for message in messages %}
+            <script>
+                 var m= "{{ message }}";
+                 swal({
+                       title: "Good job!",
+                       text: m,
+                       icon: "success",
+                      });
+            </script>
+    {% endfor %}
+{% endif %}
+<!---------------------------- Messages after CRUD operations ------------------------------->
+
+
+</div>
+
+<!--- Hidden data --->
+<div class="text-center mt-5" style="display: none;">
+
+    <input id="lpo_no2" value="{{contracts.lpo_no}}">
+    <input id="purchased_by2" value="{{contracts.purchased_by}}">
+    <input id="warranty_years2" value="{{contracts.warranty_years}}">
+    <input id="purchased_date2" value="{{contracts.purchased_date|date:'Y-m-d'}}">
+    <input id="pdf_file2" value="{{contracts.pdf_file}}">
+</div>
+<!--- Hidden data --->
+{% endblock %}

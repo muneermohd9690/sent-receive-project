@@ -229,8 +229,8 @@ $(document).ready(function ()
 
 <!------------------------------------------------- Date picker --------------------------------------------------------------->
 
-    $(document).ready(function(){
-        $("#date_dispatched").datepicker({
+   $(document).ready(function(){
+        $("#purchased_date").datepicker({
 
             format: 'yyyy-mm-dd',
             todayBtn : 'linked',
@@ -238,8 +238,50 @@ $(document).ready(function ()
             autoclose: true,
             orientation: 'auto bottom'
         });
+   });
+     $(document).ready(function(){
+        $("#date_dispatched").daterangepicker({
 
+            singleDatePicker: true,
+            opens: 'left',  // Adjust this based on your preference
+
+            "showDropdowns": true,
+            ranges: {
+                'Today': [moment(), moment()],
+
+            },
+            autoUpdateInput: true,  // auto-updating the input field
+            minYear: 2022,
+
+            locale: {
+            format: 'YYYY-MM-DD', // Format of the selected date
+            cancelLabel: 'Clear' // Label for the "Clear" button
+            }
+
+        });
+
+          // Update the save button when the date picker values change
+        $("#date_dispatched").on('apply.daterangepicker', function (ev, picker) {
+            var selectedDate = picker.startDate.format('YYYY-MM-DD');
+            var originalDate = $("#date_dispatched2").val();
+
+            if (selectedDate === originalDate) {
+                $(".btn-action-ETDF").prop("disabled", true);
+                $(".btn-action-EIDF").prop("disabled", true);
+            } else {
+                $(".btn-action-ETDF").prop("disabled", false);
+                $(".btn-action-EIDF").prop("disabled", false);
+            }
+        });
+
+         // Clear the input field when "Clear" is clicked
+         $("#date_dispatched").on('cancel.daterangepicker', function () {
+            $(this).val('');
+            $(".btn-action-ETDF").prop("disabled", true);
+            $(".btn-action-EIDF").prop("disabled", true);
+        });
     });
+
 
 <!---------------------------- Date range picker on toner status chart --------------------------------------------->
      $(document).ready(function() {
@@ -247,7 +289,9 @@ $(document).ready(function ()
         $("#datepicker").daterangepicker({
             opens: 'left',  // Adjust this based on your preference
             "showDropdowns": true,
+            "linkedCalendars": false,
             autoUpdateInput: false,  // Prevent auto-updating the input field
+
         });
 
         // Update the chart when the date picker values change
@@ -455,5 +499,42 @@ $(document).ready(function(){
                 }
             });
         });
+
+
+
+       /* $(document).ready(function() {
+            $(window).on('beforeunload', function() {
+                $.ajax({
+                    url: '/login/',  // Replace with your logout URL
+                    type: 'GET',
+                    async: false,  // Ensure the request completes before the page unloads
+                });
+            });
+        });*/
+
+
+    document.addEventListener("DOMContentLoaded", function() {
+        var expandButtons = document.querySelectorAll('.expand-btn');
+
+        expandButtons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                var modalId = this.dataset.bsTarget;
+                var modal = new bootstrap.Modal(document.getElementById(modalId));
+                modal.show();
+            });
+        });
+    });
+
+
+
+function showNoPdfAlert() {
+                                Swal.fire({
+                                    icon: 'info',
+                                    title: 'No PDF file',
+                                    text: 'There is no PDF file uploaded for this contract.',
+                                    confirmButtonText: 'OK'
+                                });
+}
+
 
 

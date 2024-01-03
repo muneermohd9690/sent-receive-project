@@ -4,7 +4,7 @@ from . import views
 urlpatterns = [
     path('', views.prosecutions),
     path('view_prosecutions/', views.view_prosecutions, name='view_prosecutions'),
-    path('view_prosecutions/print_pdf/<str:prosecutions_name>',views.print_pdf,name='print_pdf'),
+    path('view_prosecutions/print_pdf/<int:id>',views.print_pdf,name='print_pdf'),
 
     path('add_prosecutions/', views.add_prosecutions,name='add_prosecutions'),
     path('add_prosecutions/add_prosecutions_save', views.add_prosecutions_save,name='add_prosecutions_save'),

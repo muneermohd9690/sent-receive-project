@@ -274,3 +274,17 @@ def print_item_sent_invoice(request,id):
 #         return render(request, 'add_forms.html')
 #     Forms.objects.bulk_create([Forms(name=f"forms {i}",location=f"{i}")for i in range(int(quantity))])
 #     return redirect('view_forms')
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
+def print_pdf(request, prosecutions_name):
+    prosecutions = Prosecutions.objects.get(name=prosecutions_name)
+    data = {'prosecutions': prosecutions}
+    template = get_template("pdf_prosecutions.html")
+    data_p = template.render(data)
+    response = BytesIO()
+
+    pdfPage = pisa.pisaDocument(BytesIO(data_p.encode("UTF-8")), response)
+    if not pdfPage.err:
+        return HttpResponse(response.getvalue(), content_type="application/pdf")
+    else:
+        return HttpResponse("Error")

@@ -18,8 +18,11 @@ from django.urls import path,include
 from django.views.static import serve
 from django.conf import settings
 from django.conf.urls.static import static
-
+from django.contrib.auth.views import LoginView
+from django.urls import path, reverse_lazy
+from django.views.generic.base import RedirectView
 from sent_receive_app import views
+from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('prosecutions/',include('prosecutions.urls')),
@@ -30,9 +33,9 @@ urlpatterns = [
     path('excel/',include('excel.urls')),
     path('export/',include('export.urls')),
     path('report/',include('report.urls')),
+    path('contracts/',include('contracts.urls')),
     path('sent_items/',include('sent_items.urls')),
-    path('login/', include('django.contrib.auth.urls')),
-
+    path('', include('django.contrib.auth.urls')),
 
     path(r'^media/(?P<path>.*)$', serve,{'document_root':       settings.MEDIA_ROOT}),
     path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),

@@ -3,9 +3,9 @@
 {% block content %}
 <div class="container">
   <h2>Available Toners</h2>
-  <input class="form-control" id="myInput" type="text" placeholder="Search..">
+  <input class="form-control" id="search" type="text" placeholder="Search..">
   <div class="table-responsive">
-      <table class="table table-bordered">
+      <table class="table table-bordered" id="myTable">
           <thead>
           <tr>
               <th>Toner Description</th>
@@ -14,7 +14,7 @@
               <th>Action</th>
           </tr>
           </thead>
-          <tbody id="myTable">
+          <tbody>
           {% for toner in toners %}
           <tr>
               <td>{{toner.toner_printer.description}} {{toner.toner_printer.model_no}}</td>
@@ -27,17 +27,7 @@
       </table>
 
     </div>
-<script>
-$(document).ready(function(){
-  $("#myInput").on("keyup", function() {
-    var value = $(this).val().toLowerCase();
-    $("#myTable tr").filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-    });
-  });
-});
 
-</script>
 </div>
 
 {% endblock %}

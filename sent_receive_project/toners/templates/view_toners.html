@@ -6,7 +6,7 @@
   <h2>Available Toners</h2>
   <div class="input-group input-group-sm mb-2">
         <input class="form-control" id="search" type="text" placeholder="Search.." >
-        <a href="{% url 'view_toners' %}" class="btn btn-dark btn-sm"><i class="fas fa-sync-alt"></i></a>
+        <a href="{% url 'view_toners' %}" class="btn btn-dark btn-sm" title="Reset View"><i class="fas fa-sync-alt"></i></a>
   </div>
   <div class="table-responsive" >
       <table class="table table-bordered" id="myTable">
@@ -38,7 +38,7 @@
               <div class="modal-dialog" role="document">
                   <div class="modal-content">
                       <div class="modal-header">
-                          <h5 class="modal-title" id="delete-modal-label">Delete Toner</h5>
+                          <h5 class="modal-title" id="delete-modal-label{{ toner.pk }}">Delete Toner</h5>
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                           </button>
                       </div>

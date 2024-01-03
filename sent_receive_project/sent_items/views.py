@@ -3,6 +3,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.shortcuts import render, redirect
 from django.template.defaultfilters import length
 from django.contrib.admin.options import get_content_type_for_model
+from django.utils import timezone
 
 import toners.views
 import items.views
@@ -310,4 +311,43 @@ def select_dispatch(request):
         return JsonResponse('Item was dispatched', safe=False)
     else:
         print('User is not logged in')
+    return redirect('view_sent_items')
+
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
+def return_to_store(request, id):
+    # items = CartItem.objects.get(id=id)
+    try:
+        cart_item = CartItem.objects.get(id=id)
+    except CartItem.DoesNotExist:
+        messages.error(request, "Item not found")
+        return redirect('view_sent_items')
+    # cart_item.delete()
+    toner_details = cart_item.tonerdetails.first()
+    if toner_details:
+        # Update the TonerDetails fields
+
+        toner_details.status = 'In-Stock'
+        toner_details.issued_to_id = '31'
+        toner_details.employee_name = 'returned from dispatch'
+        toner_details.employee_designation = 'returned from dispatch'
+        toner_details.date_dispatched = timezone.now()
+
+        # Save the changes to TonerDetails
+        toner_details.save()
+
+    else:
+        # Check if the CartItem is associated with ItemDetails
+        item_details = cart_item.itemdetails.first()
+
+        if item_details:
+            # Update the ItemDetails fields
+            item_details.status = 'In-Stock'
+            item_details.issued_to_id = '31'
+            item_details.employee_name = 'returned from dispatch'
+            item_details.employee_designation = 'returned from dispatch'
+            item_details.date_dispatched = timezone.now()
+            item_details.save()
+    cart_item.delete()
+    messages.success(request, "Item returned successfully")
     return redirect('view_sent_items')

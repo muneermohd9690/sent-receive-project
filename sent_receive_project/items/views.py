@@ -18,6 +18,7 @@ from datetime import datetime
 from django.core.paginator import Paginator
 from sent_items.utils import calc_cart_total
 from toners.utils import  calc_toner_stock_alert
+from django.http import JsonResponse
 
 
 
@@ -219,12 +220,15 @@ def edit_items_delete(request, id):
 @login_required(login_url="login")
 def edit_item_details(request):
     itemdetails = ItemDetails.objects.all()
+    items = Items.objects.all()
+    prosecutions=Prosecutions.objects.all()
     data_calc_cart_total = calc_cart_total(request)
     cart_total = data_calc_cart_total['cart_total']
     data_calc_toner_stock_alert = calc_toner_stock_alert(request)
     toner_stock_alert = data_calc_toner_stock_alert['toner_stock_alert_count']
     toner_under_fifteen = data_calc_toner_stock_alert['tonerstock']
-    context = {"total": cart_total,"itemdetails": itemdetails,"toner_stock_alert":toner_stock_alert,"toner_under_fifteen":toner_under_fifteen}
+    context = {"total": cart_total,"itemdetails": itemdetails,"toner_stock_alert":toner_stock_alert,"items": items,
+               "toner_under_fifteen":toner_under_fifteen,"prosecutions":prosecutions,"status": ItemDetails.STATUS}
     return render(request, 'edit_item_details.html', context)
 
 @cache_control(no_cache=True, must_revalidate=True,no_store=True)
@@ -247,6 +251,28 @@ def edit_item_details_form(request, id):
     context = {"total": cart_total, "detail": detail, "items": items,"toner_stock_alert":toner_stock_alert,"joined_ids":joined_ids,
                         "prosecutions": prosecutions,"content_type_id":content_type_id,"toner_under_fifteen":toner_under_fifteen, "status": ItemDetails.STATUS}
     return render(request, 'edit_item_details_form.html',context)
+
+
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
+def edit_item_details_modal(request, id):
+    prosecutions = Prosecutions.objects.all()
+    items = Items.objects.all()
+    #itemdetails = ItemDetails.objects.get(id=id)
+    detail = ItemDetails.objects.get(id=id)
+    data_calc_cart_total = calc_cart_total(request)
+    cart_total = data_calc_cart_total['cart_total']
+    data_calc_toner_stock_alert = calc_toner_stock_alert(request)
+    toner_stock_alert = data_calc_toner_stock_alert['toner_stock_alert_count']
+    toner_under_fifteen = data_calc_toner_stock_alert['tonerstock']
+    cartitem = CartItem.objects.all()
+    joined_ids = [(o.object_id, o.content_type_id) for o in cartitem]
+    itemdetails_content_type = ContentType.objects.get(app_label='items', model='itemdetails')
+    content_type_id = itemdetails_content_type.id
+    joined_ids = json.dumps(joined_ids)
+    context = {"total": cart_total, "detail": detail, "items": items,"toner_stock_alert":toner_stock_alert,"joined_ids":joined_ids,
+                        "prosecutions": prosecutions,"content_type_id":content_type_id,"toner_under_fifteen":toner_under_fifteen, "status": ItemDetails.STATUS}
+    return render(request, 'edit_item_details_modal.html',context)
 
 @cache_control(no_cache=True, must_revalidate=True,no_store=True)
 @login_required(login_url="login")
@@ -308,6 +334,38 @@ def edit_item_details_save(request):
             return redirect('view_items_details', item_model_id)
     else:
         return redirect('view_items')
+
+@cache_control(no_cache=True, must_revalidate=True,no_store=True)
+@login_required(login_url="login")
+def save_inline_edit(request):
+    try:
+        itemdetails_id = request.POST.get("detail_id")
+        field_to_update = request.POST.get("field")  # Assuming you pass the field name through the AJAX request
+        new_value = request.POST.get("new_value")
+
+        # Fetch the item details object
+        item_details_model = ItemDetails.objects.get(id=itemdetails_id)
+
+        # Update the specific field
+        setattr(item_details_model, field_to_update, new_value)
+
+        # Save the changes
+        item_details_model.save()
+
+        # Find the corresponding item model ID
+        item_model_id = find_item_model_id(itemdetails_id)
+
+        messages.success(request, "Inline Edit Saved Successfully")
+        return JsonResponse({'success': True, 'message': 'Inline Edit Saved Successfully'})
+
+    except ItemDetails.DoesNotExist:
+        messages.error(request, "Item Details not found.")
+        return JsonResponse({'success': False, 'message': 'Item Details not found.'})
+    except Exception as e:
+        messages.error(request, f"Error: {str(e)}")
+        return JsonResponse({'success': False, 'message': f'Error: {str(e)}'})
+
+
 
 @cache_control(no_cache=True, must_revalidate=True,no_store=True)
 @login_required(login_url="login")
