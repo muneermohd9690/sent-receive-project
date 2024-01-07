@@ -461,9 +461,10 @@ $(document).ready(function() {
 $(document ).ready(function (){
     $('#issued_to').selectpicker();
     $('#toner_model').selectpicker();
+    $('#model_no').selectpicker();
     $('#toner_printer').selectpicker();
-
 })
+
 /**** select picker and search box ****/
 
 /**** Login verification and messages ****/

@@ -327,3 +327,14 @@ Dropdown submenu css
     margin-left: 705px;
     position: absolute;
 }
+
+/* Add this style to your CSS */
+.highlight-row {
+    background-color: #ffeeba !important;
+    transition: background-color 0.5s ease; /* Adjust the duration as needed */
+}
+
+.edited-row {
+    background-color: #d3d3d3; /* Highlight color */
+    transition: background-color 0.5s; /* Add a smooth transition effect */
+}

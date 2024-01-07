@@ -19,6 +19,8 @@ from django.core.paginator import Paginator
 from sent_items.utils import calc_cart_total
 from toners.utils import  calc_toner_stock_alert
 from django.http import JsonResponse
+from django.db import transaction
+from django.shortcuts import get_object_or_404
 
 
 
@@ -255,85 +257,130 @@ def edit_item_details_form(request, id):
 
 @cache_control(no_cache=True, must_revalidate=True,no_store=True)
 @login_required(login_url="login")
-def edit_item_details_modal(request, id):
-    prosecutions = Prosecutions.objects.all()
+def edit_item_details_modal(request):
+    detail_id = request.GET.get('detail_id')
     items = Items.objects.all()
-    #itemdetails = ItemDetails.objects.get(id=id)
-    detail = ItemDetails.objects.get(id=id)
-    data_calc_cart_total = calc_cart_total(request)
-    cart_total = data_calc_cart_total['cart_total']
-    data_calc_toner_stock_alert = calc_toner_stock_alert(request)
-    toner_stock_alert = data_calc_toner_stock_alert['toner_stock_alert_count']
-    toner_under_fifteen = data_calc_toner_stock_alert['tonerstock']
-    cartitem = CartItem.objects.all()
-    joined_ids = [(o.object_id, o.content_type_id) for o in cartitem]
-    itemdetails_content_type = ContentType.objects.get(app_label='items', model='itemdetails')
-    content_type_id = itemdetails_content_type.id
-    joined_ids = json.dumps(joined_ids)
-    context = {"total": cart_total, "detail": detail, "items": items,"toner_stock_alert":toner_stock_alert,"joined_ids":joined_ids,
-                        "prosecutions": prosecutions,"content_type_id":content_type_id,"toner_under_fifteen":toner_under_fifteen, "status": ItemDetails.STATUS}
-    return render(request, 'edit_item_details_modal.html',context)
+    prosecutions = Prosecutions.objects.all()
 
-@cache_control(no_cache=True, must_revalidate=True,no_store=True)
-@login_required(login_url="login")
+    # Fetch details from the database based on detail_id
+    try:
+        detail = ItemDetails.objects.get(pk=detail_id)
+        # print(f"Model Number: {detail.model_no}, Issued to: {detail.issued_to}")
+    except ItemDetails.DoesNotExist:
+        print(f"ItemDetails with id={detail_id} does not exist.")
+
+    # Render a template or return JSON data depending on your needs
+    context = {'detail': detail, 'items': items, 'prosecutions': prosecutions, "status": ItemDetails.STATUS}
+    return render(request, 'edit_item_details_modal.html', context)
+
+# @cache_control(no_cache=True, must_revalidate=True,no_store=True)
+# @login_required(login_url="login")
+# def edit_item_details_save(request):
+#     if request.method == "POST":
+#         button_value = request.POST.get('save')
+#         if button_value == 'save':
+#             itemdetails_id = request.POST.get("detail_id")
+#             serial_no = request.POST.get("serial_no").strip()
+#             tag_no = request.POST.get("tag_no").strip()
+#             room_tag = request.POST.get("room_tag").strip()
+#             employee_name = request.POST.get("employee_name").strip()
+#             employee_designation = request.POST.get("employee_designation").strip()
+#             status = request.POST.get("status")
+#             date_dispatched = request.POST.get("date_dispatched")
+#
+#             model_no_id = request.POST.get("model_no")
+#             model_no = Items.objects.get(id=model_no_id)
+#
+#             issued_to_id = request.POST.get("issued_to")
+#             issued_to = Prosecutions.objects.get(id=issued_to_id)
+#
+#             ItemDetails_model = ItemDetails(id=itemdetails_id, serial_no=serial_no, model_no=model_no, tag_no=tag_no,
+#                                             room_tag=room_tag,issued_to=issued_to,date_dispatched=date_dispatched,
+#                                             employee_name=employee_name, employee_designation=employee_designation,
+#                                             status=status)
+#             ItemDetails_model.save()
+#             item_model_id = find_item_model_id(itemdetails_id)
+#             messages.success(request, "Item Details Edited Successfully")
+#             calc_total_qty()
+#             calc_remaining_qty()
+#             return redirect('view_items_details',item_model_id)
+#         else:
+#             #itemdetails_id = request.POST.get("itemdetails_id")
+#             itemdetails_id = request.POST.get("detail_id")
+#             serial_no = request.POST.get("serial_no").strip()
+#             tag_no = request.POST.get("tag_no").strip()
+#             room_tag = request.POST.get("room_tag").strip()
+#             employee_name = request.POST.get("employee_name").strip()
+#             employee_designation = request.POST.get("employee_designation").strip()
+#             status = request.POST.get("status")
+#             date_dispatched = request.POST.get("date_dispatched")
+#
+#             model_no_id = request.POST.get("model_no")
+#             model_no = Items.objects.get(id=model_no_id)
+#
+#             issued_to_id = request.POST.get("issued_to")
+#             issued_to = Prosecutions.objects.get(id=issued_to_id)
+#
+#             ItemDetails_model = ItemDetails(id=itemdetails_id, serial_no=serial_no, model_no=model_no, tag_no=tag_no,
+#                                             room_tag=room_tag, issued_to=issued_to, date_dispatched=date_dispatched,
+#                                             employee_name=employee_name, employee_designation=employee_designation,
+#                                             status=status)
+#             ItemDetails_model.save()
+#             item_model_id = find_item_model_id(itemdetails_id)
+#             messages.success(request, "Item Details Edited Successfully and added to dispatch")
+#             calc_total_qty()
+#             calc_remaining_qty()
+#             return redirect('view_items_details', item_model_id)
+#     else:
+#         return redirect('view_items')
+
+# @transaction.atomic
 def edit_item_details_save(request):
     if request.method == "POST":
-        button_value = request.POST.get('save')
-        if button_value == 'save':
-            itemdetails_id = request.POST.get("detail_id")
-            serial_no = request.POST.get("serial_no").strip()
-            tag_no = request.POST.get("tag_no").strip()
-            room_tag = request.POST.get("room_tag").strip()
-            employee_name = request.POST.get("employee_name").strip()
-            employee_designation = request.POST.get("employee_designation").strip()
-            status = request.POST.get("status")
-            date_dispatched = request.POST.get("date_dispatched")
+        itemdetails_id = request.POST.get("detail_id")
+        serial_no = request.POST.get("serial_no").strip()
+        tag_no = request.POST.get("tag_no").strip()
+        room_tag = request.POST.get("room_tag").strip()
+        employee_name = request.POST.get("employee_name").strip()
+        employee_designation = request.POST.get("employee_designation").strip()
+        status = request.POST.get("status")
+        date_dispatched = request.POST.get("date_dispatched")
 
-            model_no_id = request.POST.get("model_no")
-            model_no = Items.objects.get(id=model_no_id)
+        model_no_id = request.POST.get("model_no")
+        model_no = get_object_or_404(Items, id=model_no_id)
 
-            issued_to_id = request.POST.get("issued_to")
-            issued_to = Prosecutions.objects.get(id=issued_to_id)
+        issued_to_id = request.POST.get("issued_to")
+        issued_to = get_object_or_404(Prosecutions, id=issued_to_id)
 
-            ItemDetails_model = ItemDetails(id=itemdetails_id, serial_no=serial_no, model_no=model_no, tag_no=tag_no,
-                                            room_tag=room_tag,issued_to=issued_to,date_dispatched=date_dispatched,
-                                            employee_name=employee_name, employee_designation=employee_designation,
-                                            status=status)
-            ItemDetails_model.save()
-            item_model_id = find_item_model_id(itemdetails_id)
+        item_details_data = {
+            'serial_no': serial_no,
+            'model_no': model_no,
+            'tag_no': tag_no,
+            'room_tag': room_tag,
+            'issued_to': issued_to,
+            'date_dispatched': date_dispatched,
+            'employee_name': employee_name,
+            'employee_designation': employee_designation,
+            'status': status,
+        }
+
+        if request.POST.get('save') == 'save':
+            # Additional logic for the 'save' case
             messages.success(request, "Item Details Edited Successfully")
-            calc_total_qty()
-            calc_remaining_qty()
-            return redirect('view_items_details',item_model_id)
         else:
-            #itemdetails_id = request.POST.get("itemdetails_id")
-            itemdetails_id = request.POST.get("detail_id")
-            serial_no = request.POST.get("serial_no").strip()
-            tag_no = request.POST.get("tag_no").strip()
-            room_tag = request.POST.get("room_tag").strip()
-            employee_name = request.POST.get("employee_name").strip()
-            employee_designation = request.POST.get("employee_designation").strip()
-            status = request.POST.get("status")
-            date_dispatched = request.POST.get("date_dispatched")
-
-            model_no_id = request.POST.get("model_no")
-            model_no = Items.objects.get(id=model_no_id)
-
-            issued_to_id = request.POST.get("issued_to")
-            issued_to = Prosecutions.objects.get(id=issued_to_id)
-
-            ItemDetails_model = ItemDetails(id=itemdetails_id, serial_no=serial_no, model_no=model_no, tag_no=tag_no,
-                                            room_tag=room_tag, issued_to=issued_to, date_dispatched=date_dispatched,
-                                            employee_name=employee_name, employee_designation=employee_designation,
-                                            status=status)
-            ItemDetails_model.save()
-            item_model_id = find_item_model_id(itemdetails_id)
+            # Additional logic for the other case
             messages.success(request, "Item Details Edited Successfully and added to dispatch")
-            calc_total_qty()
-            calc_remaining_qty()
-            return redirect('view_items_details', item_model_id)
-    else:
-        return redirect('view_items')
+
+        # Common logic for both cases
+        item_details_model = ItemDetails(id=itemdetails_id, **item_details_data)
+        item_details_model.save()
+
+        item_model_id = find_item_model_id(itemdetails_id)
+        calc_total_qty()
+        calc_remaining_qty()
+        return redirect('view_items_details', item_model_id)
+
+    return redirect('view_items')
 
 @cache_control(no_cache=True, must_revalidate=True,no_store=True)
 @login_required(login_url="login")
