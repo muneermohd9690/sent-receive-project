@@ -536,8 +536,127 @@ function showNoPdfAlert() {
                                 });
 }
 
+    function handleFormSubmission(event) {
+                            event.preventDefault();
+                             var currentRowId = $("#item_id").data("value");
+                            // Use SweetAlert to confirm before submitting the form
+                            Swal.fire({
+                                title: 'Confirm Changes',
+                                text: 'Are you sure you want to save changes?',
+                                icon: 'warning',
+                                showCancelButton: true,
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText: 'Yes, save it!'
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    // User confirmed, proceed with the form submission
+                                    submitForm();
+                                    $('#{{ detail.pk }}editItemDetailsModal').modal('hide');
+                                    console.log('Applying visual effect to row:', currentRowId);
+
+                                }
+                                else
+                                {
+                                        swal("Cancelled"," No changes were made", "error");
+                                        $('#{{ detail.pk }}editItemDetailsModal').modal('hide');
+                                }
+                            });
+                        }
+
+                        function submitForm() {
+                            // Get the form data
+                            var formData = $('#editItemDetailsForm').serialize();
+
+                            // Save the current row ID for later use
+                           var currentRowId = $("#item_id").data("value");
 
 
+                            $.ajax({
+                                type: 'POST',
+                                url: '{% url "edit_item_details_save" %}',
+                                data: formData,
+
+                                success: function (data) {
+    <!--                                $('#{{ detail.pk }}editItemDetailsModal').modal('hide');-->
+                                    applyVisualEffectAndStore(currentRowId);
+                                    Swal.fire({
+                                        title: 'Changes Saved',
+                                        text: 'Your changes have been successfully saved.',
+                                        icon: 'success'
+                                    }).then(() => {
+                                        // Reload the page after the user clicks 'OK' on the Swal alert
+                                        location.reload();
+                                    });
+
+                                },
+                                error: function (error) {
+                                    console.error('Error saving data:', error);
+                                    // Handle errors if needed
+                                }
+                            });
+                        }
+                        function applyVisualEffectAndStore(currentRowId) {
+                            console.log('Applying visual effect to row:', currentRowId);
+                            // Get the row element
+                            var $row = $('#' + currentRowId);
+                            // Exclude the last td containing the edit button from highlighting
+                            $row.find('td:not(:last-child)').each(function () {
+                                var $cell = $(this);
+                                var originalText = $cell.text();
+                                // Wrap the text with a span having the 'highlight' class
+                                var highlightedText = '<span class="highlight">' + originalText + '</span>';
+                                // Replace the cell content with the highlighted text
+                                $cell.html(highlightedText);
+                            });
+                            // Store the current row ID in localStorage
+                            localStorage.setItem('currentHighlightedRow', currentRowId);
+                            setTimeout(function () {
+                                console.log('Removing visual effect from row:', currentRowId);
+                                // Remove the highlighting by unwrapping the text from the span
+                                $row.find('td:not(:last-child)').each(function () {
+                                    var $cell = $(this);
+                                    // Unwrap the text from the span
+                                    $cell.html($cell.find('.highlight').text());
+                                });
+                            }, 5000); // 10000 milliseconds (10 seconds) delay
+                        }
+
+                        // Check localStorage for highlighted rows and apply the visual effect
+                        function checkAndApplyHighlight() {
+                            var currentHighlightedRow = localStorage.getItem('currentHighlightedRow');
+                            if (currentHighlightedRow) {
+                                applyVisualEffectAndStore(currentHighlightedRow);
+                            }
+                        }
+
+                        // Call checkAndApplyHighlight when the page is loaded
+                        checkAndApplyHighlight();
+                        $('body').on('submit', '#editItemDetailsForm', handleFormSubmission);
+                        function openModal(detailId) {
+
+                                        console.log("openmodal clicked")
+                                        $.ajax({
+//                                            url: '{% url "edit_item_details_modal" %}',
+                                            url: 'edit_item_details_modal/',
+                                            type: 'GET',
+                                            data: { detail_id: detailId
+                                                    },
+                                            success: function (response) {
+                                                  console.log(detailId)
+                                                   console.log('Success: ', response);
+//                                                $('#{{ detail.pk }}editItemDetailsModalLabel').text('Edit Item Details - ' + detailId);
+//                                                $('#{{ detail.pk }}modalBody').html(response);
+//                                                $('#{{ detail.pk }}editItemDetailsModal').modal('show');
+                                                    $('#'+detailPk+'editItemDetailsModalLabel').text('Edit Item Details - ' + detailId);
+                                                    $('#'+detailPk+'modalBody').html(response);
+                                                    $('#'+detailPk+'editItemDetailsModal').modal('show');
+                                            },
+                                            error: function (error) {
+                                                console.error('Error fetching data:', error);
+                                            }
+                                        });
+                        }
 
 
 

@@ -24,7 +24,7 @@
                       </thead>
                       <tbody >
                           {% for detail in itemdetails %}
-                          <tr id="{{detail.pk}}" data-id="{{ detail.pk }}">
+                          <tr id="{{detail.pk}}" data-id="{{ detail.pk }}" >
                               <td>{{detail.model_no.model_no}}</td>
                               <td>{{detail.serial_no}}</td>
                               <td>{{detail.tag_no}}</td>
@@ -41,6 +41,9 @@
                                   <button type="button" class="btn btn-warning" onclick="openModal('{{ detail.pk }}')">
                                       <i class="fas fa-edit"></i>
                                   </button>
+                                  <script>
+                                        var detailPk = "{{ detail.pk }}";
+                                  </script>
 
                               </td>
                           </tr>
@@ -54,6 +57,7 @@
               </div>
                <!-- The Modal -->
                 <div class="modal" id="{{ detail.pk }}editItemDetailsModal">
+
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
@@ -76,97 +80,7 @@
                     </div>
                 </div>
                <script>
-                    function handleFormSubmission(event) {
-                        event.preventDefault();
-                         var currentRowId = $("#item_id").data("value");
-                        // Use SweetAlert to confirm before submitting the form
-                        Swal.fire({
-                            title: 'Confirm Changes',
-                            text: 'Are you sure you want to save changes?',
-                            icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonColor: '#3085d6',
-                            cancelButtonColor: '#d33',
-                            confirmButtonText: 'Yes, save it!'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                // User confirmed, proceed with the form submission
-                                submitForm();
-                                $('#{{ detail.pk }}editItemDetailsModal').modal('hide');
-                                console.log('Applying visual effect to row:', currentRowId);
 
-
-
-                            }
-                            else
-                            {
-                                    swal("Cancelled"," No changes were made", "error");
-                                    $('#{{ detail.pk }}editItemDetailsModal').modal('hide');
-                            }
-                        });
-                    }
-
-                    function submitForm() {
-                        // Get the form data
-                        var formData = $('#editItemDetailsForm').serialize();
-
-                        // Save the current row ID for later use
-                       var currentRowId = $("#item_id").data("value");
-
-
-                        $.ajax({
-                            type: 'POST',
-                            url: '{% url "edit_item_details_save" %}',
-                            data: formData,
-
-                            success: function (data) {
-<!--                                $('#{{ detail.pk }}editItemDetailsModal').modal('hide');-->
-                                applyVisualEffect(currentRowId);
-                                Swal.fire({
-                                    title: 'Changes Saved',
-                                    text: 'Your changes have been successfully saved.',
-                                    icon: 'success'
-                                });
-
-                            },
-                            error: function (error) {
-                                console.error('Error saving data:', error);
-                                // Handle errors if needed
-                            }
-                        });
-                    }
-                    function applyVisualEffect(currentRowId) {
-                        var $row = $('#' + currentRowId);
-                        console.log('Applying visual effect to row:', currentRowId);
-                        // Add a class to the row
-                        $row.addClass('edited-row');
-                        $row.css('background-color', 'yellow');
-
-                        setTimeout(function () {
-                            // Remove the class after a delay
-                            $row.removeClass('edited-row');
-                        }, 9000); // 2000 milliseconds (2 seconds) delay
-                    }
-                    $('body').on('submit', '#editItemDetailsForm', handleFormSubmission);
-                    function openModal(detailId) {
-
-                                    $.ajax({
-                                        url: '{% url "edit_item_details_modal" %}',
-                                        type: 'GET',
-                                        data: { detail_id: detailId },
-                                        success: function (response) {
-
-                                            $('#{{ detail.pk }}editItemDetailsModalLabel').text('Edit Item Details - ' + detailId);
-                                            $('#{{ detail.pk }}modalBody').html(response);
-
-
-                                            $('#{{ detail.pk }}editItemDetailsModal').modal('show');
-                                        },
-                                        error: function (error) {
-                                            console.error('Error fetching data:', error);
-                                        }
-                                    });
-                    }
                </script>
 
                 <script>
@@ -184,6 +98,7 @@
                         // Your code here
                     };
                 </script>
+
     </div>
 
 {% endblock %}

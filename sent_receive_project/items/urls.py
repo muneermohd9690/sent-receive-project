@@ -26,8 +26,9 @@ urlpatterns = [
     path('edit_item_details/edit_item_details_save', views.edit_item_details_save, name='edit_item_details_save'),
     path('edit_item_details_form/<int:id>', views.edit_item_details_form, name='edit_item_details_form'),
 
-    # path('edit_item_details/edit_item_details_modal/<int:id>', views.edit_item_details_modal, name='edit_item_details_modal'),
-    path('edit_item_details_modal/', views.edit_item_details_modal, name='edit_item_details_modal'),
+
+    #path('edit_item_details_modal', views.edit_item_details_modal, name='edit_item_details_modal'),
+    path('edit_item_details/edit_item_details_modal/', views.edit_item_details_modal, name='edit_item_details_modal'),
     path('edit_item_details_modal/edit_item_details_save', views.edit_item_details_save, name='edit_item_details_save'),
 
 
