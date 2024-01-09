@@ -38,11 +38,11 @@
                                   </a>-->
 
 
-                                  <button type="button" class="btn btn-warning" onclick="openModal('{{ detail.pk }}')">
+                                  <button type="button" class="btn btn-warning" onclick="openModal('{{detail.pk}}')">
                                       <i class="fas fa-edit"></i>
                                   </button>
                                   <script>
-                                        var detailPk = "{{ detail.pk }}";
+                                        var detailPk = "{{detail.pk}}";
                                   </script>
 
                               </td>
@@ -56,18 +56,18 @@
                   </table>
               </div>
                <!-- The Modal -->
-                <div class="modal" id="{{ detail.pk }}editItemDetailsModal">
+                <div class="modal" id="{{detail.pk}}editItemDetailsModal">
 
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="{{ detail.pk }}editItemDetailsModalLabel">Edit Item Details</h5>
+                                <h5 class="modal-title" id="{{detail.pk}}editItemDetailsModalLabel">Edit Item Details</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <form id="editItemDetailsForm" role="form" action="{% url 'edit_item_details_save' %}" method="post">
                                     {% csrf_token %}
 
-                                    <div class="modal-body" id="{{ detail.pk }}modalBody">
+                                    <div class="modal-body" id="{{detail.pk}}modalBody">
                                         <!-- Modal content will be loaded here dynamically -->
                                     </div>
 

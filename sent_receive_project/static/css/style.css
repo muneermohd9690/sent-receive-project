@@ -332,3 +332,8 @@ Dropdown submenu css
 .highlight  {
                         background-color: yellow; /* You can customize the highlighting color */
                     }
+
+.date-picker-container {
+    display: float;  /* Keep it inline with the label */
+     /* Align vertically in the middle */
+}

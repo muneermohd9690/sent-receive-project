@@ -526,7 +526,7 @@ $(document).ready(function(){
     });
 
 
-
+<!---------------------------- Contracts pdf show message no pdf available --------------------------------------------->
 function showNoPdfAlert() {
                                 Swal.fire({
                                     icon: 'info',
@@ -536,127 +536,137 @@ function showNoPdfAlert() {
                                 });
 }
 
-    function handleFormSubmission(event) {
-                            event.preventDefault();
-                             var currentRowId = $("#item_id").data("value");
-                            // Use SweetAlert to confirm before submitting the form
-                            Swal.fire({
-                                title: 'Confirm Changes',
-                                text: 'Are you sure you want to save changes?',
-                                icon: 'warning',
-                                showCancelButton: true,
-                                confirmButtonColor: '#3085d6',
-                                cancelButtonColor: '#d33',
-                                confirmButtonText: 'Yes, save it!'
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    // User confirmed, proceed with the form submission
-                                    submitForm();
-                                    $('#{{ detail.pk }}editItemDetailsModal').modal('hide');
-                                    console.log('Applying visual effect to row:', currentRowId);
+<!---------------------------- Logic to show edit item details modal, swal message, highlight edited row letters ------->
+var pageIdentifier = 'edit_item_details';
+function handleFormSubmission(event) {
+    event.preventDefault();
+    var currentRowId = $("#item_id").data("value");
 
-                                }
-                                else
-                                {
-                                        swal("Cancelled"," No changes were made", "error");
-                                        $('#{{ detail.pk }}editItemDetailsModal').modal('hide');
-                                }
-                            });
-                        }
+    Swal.fire({
+        title: 'Confirm Changes',
+        text: 'Are you sure you want to save changes?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, save it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            submitForm();
+            $('#editItemDetailsModal').modal('hide');
+            console.log('Applying visual effect to row:', currentRowId);
+        } else {
+            swal("Cancelled", "No changes were made", "error");
+            $('#editItemDetailsModal').modal('hide');
+        }
+    });
+}
 
-                        function submitForm() {
-                            // Get the form data
-                            var formData = $('#editItemDetailsForm').serialize();
+function submitForm() {
+    var formData = $('#editItemDetailsForm').serialize();
+    var currentRowId = $("#item_id").data("value");
 
-                            // Save the current row ID for later use
-                           var currentRowId = $("#item_id").data("value");
+    $.ajax({
+        type: 'POST',
+        url: 'edit_item_details_save',
+        data: formData,
+        success: function (data) {
+            applyVisualEffectAndStore(currentRowId);
+            Swal.fire({
+                title: 'Changes Saved',
+                text: 'Your changes have been successfully saved.',
+                icon: 'success'
+            }).then(() => {
+                location.reload();
+            });
+        },
+        error: function (error) {
+            console.error('Error saving data:', error);
+            // Handle errors if needed
+        }
+    });
+}
 
+function applyVisualEffectAndStore(currentRowId) {
+    console.log('Applying visual effect to row:', currentRowId);
+    var $row = $('#' + currentRowId);
+    $row.find('td:not(:last-child)').each(function () {
+        var $cell = $(this);
+        var originalText = $cell.text();
+        var highlightedText = '<span class="highlight">' + originalText + '</span>';
+        $cell.html(highlightedText);
+    });
 
-                            $.ajax({
-                                type: 'POST',
-                                url: '{% url "edit_item_details_save" %}',
-                                data: formData,
+//    localStorage.setItem('currentHighlightedRow', currentRowId);
+    sessionStorage.setItem('currentHighlightedRow', currentRowId);
+    setTimeout(function () {
+        console.log('Removing visual effect from row:', currentRowId);
+        $row.find('td:not(:last-child)').each(function () {
+            var $cell = $(this);
+            $cell.html($cell.find('.highlight').text());
+        });
+    }, 5000);
+}
 
-                                success: function (data) {
-    <!--                                $('#{{ detail.pk }}editItemDetailsModal').modal('hide');-->
-                                    applyVisualEffectAndStore(currentRowId);
-                                    Swal.fire({
-                                        title: 'Changes Saved',
-                                        text: 'Your changes have been successfully saved.',
-                                        icon: 'success'
-                                    }).then(() => {
-                                        // Reload the page after the user clicks 'OK' on the Swal alert
-                                        location.reload();
-                                    });
+function checkAndApplyHighlight() {
+//    var currentHighlightedRow = localStorage.getItem('currentHighlightedRow');
+    var currentHighlightedRow = sessionStorage.getItem('currentHighlightedRow');
+    if (currentHighlightedRow) {
+        // Check if the current page URL contains the specified substring
+        if (currentPageUrl.includes(pageIdentifier)) {
+            applyVisualEffectAndStore(currentHighlightedRow);
+            sessionStorage.removeItem('currentHighlightedRow');
+        }
+    }
+}
+var currentPageUrl = window.location.href;
+$(document).ready(function () {
+    checkAndApplyHighlight();
+    $('body').on('submit', '#editItemDetailsForm', handleFormSubmission);
+});
 
-                                },
-                                error: function (error) {
-                                    console.error('Error saving data:', error);
-                                    // Handle errors if needed
-                                }
-                            });
-                        }
-                        function applyVisualEffectAndStore(currentRowId) {
-                            console.log('Applying visual effect to row:', currentRowId);
-                            // Get the row element
-                            var $row = $('#' + currentRowId);
-                            // Exclude the last td containing the edit button from highlighting
-                            $row.find('td:not(:last-child)').each(function () {
-                                var $cell = $(this);
-                                var originalText = $cell.text();
-                                // Wrap the text with a span having the 'highlight' class
-                                var highlightedText = '<span class="highlight">' + originalText + '</span>';
-                                // Replace the cell content with the highlighted text
-                                $cell.html(highlightedText);
-                            });
-                            // Store the current row ID in localStorage
-                            localStorage.setItem('currentHighlightedRow', currentRowId);
-                            setTimeout(function () {
-                                console.log('Removing visual effect from row:', currentRowId);
-                                // Remove the highlighting by unwrapping the text from the span
-                                $row.find('td:not(:last-child)').each(function () {
-                                    var $cell = $(this);
-                                    // Unwrap the text from the span
-                                    $cell.html($cell.find('.highlight').text());
-                                });
-                            }, 5000); // 10000 milliseconds (10 seconds) delay
-                        }
+function openModal(detailId) {
+    var modalId = '#editItemDetailsModal';
 
-                        // Check localStorage for highlighted rows and apply the visual effect
-                        function checkAndApplyHighlight() {
-                            var currentHighlightedRow = localStorage.getItem('currentHighlightedRow');
-                            if (currentHighlightedRow) {
-                                applyVisualEffectAndStore(currentHighlightedRow);
-                            }
-                        }
+    // Set modal title
+    $(modalId + 'Label').text('Edit Item Details - ' + detailId);
 
-                        // Call checkAndApplyHighlight when the page is loaded
-                        checkAndApplyHighlight();
-                        $('body').on('submit', '#editItemDetailsForm', handleFormSubmission);
-                        function openModal(detailId) {
+    // Set modal body content
+    $.ajax({
+        url: 'edit_item_details_modal/',
+        type: 'GET',
+        data: { detail_id: detailId },
+        success: function (response) {
+            $(modalId + ' .modal-body').html(response);
 
-                                        console.log("openmodal clicked")
-                                        $.ajax({
-//                                            url: '{% url "edit_item_details_modal" %}',
-                                            url: 'edit_item_details_modal/',
-                                            type: 'GET',
-                                            data: { detail_id: detailId
-                                                    },
-                                            success: function (response) {
-                                                  console.log(detailId)
-                                                   console.log('Success: ', response);
-//                                                $('#{{ detail.pk }}editItemDetailsModalLabel').text('Edit Item Details - ' + detailId);
-//                                                $('#{{ detail.pk }}modalBody').html(response);
-//                                                $('#{{ detail.pk }}editItemDetailsModal').modal('show');
-                                                    $('#'+detailPk+'editItemDetailsModalLabel').text('Edit Item Details - ' + detailId);
-                                                    $('#'+detailPk+'modalBody').html(response);
-                                                    $('#'+detailPk+'editItemDetailsModal').modal('show');
-                                            },
-                                            error: function (error) {
-                                                console.error('Error fetching data:', error);
-                                            }
-                                        });
-                        }
+            // Show the modal
+            $(modalId).modal('show');
+        },
+        error: function (error) {
+            console.error('Error fetching data:', error);
+        }
+    });
+}
+
+// Listen for the modal being shown
+$(document).on('shown.bs.modal', '#editItemDetailsModal', function () {
+    // Initialize date picker after the modal is shown
+    $(".datepicker").daterangepicker({
+        singleDatePicker: true,
+        opens: 'left',
+        "showDropdowns": true,
+        ranges: {
+            'Today': [moment(), moment()],
+        },
+        autoUpdateInput: true,
+        minYear: 2022,
+        locale: {
+            format: 'YYYY-MM-DD',
+            cancelLabel: 'Clear'
+        }
+    });
+});
+
 
 
 

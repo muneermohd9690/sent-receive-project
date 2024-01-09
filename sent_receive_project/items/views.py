@@ -382,37 +382,6 @@ def edit_item_details_save(request):
 
     return redirect('view_items')
 
-@cache_control(no_cache=True, must_revalidate=True,no_store=True)
-@login_required(login_url="login")
-def save_inline_edit(request):
-    try:
-        itemdetails_id = request.POST.get("detail_id")
-        field_to_update = request.POST.get("field")  # Assuming you pass the field name through the AJAX request
-        new_value = request.POST.get("new_value")
-
-        # Fetch the item details object
-        item_details_model = ItemDetails.objects.get(id=itemdetails_id)
-
-        # Update the specific field
-        setattr(item_details_model, field_to_update, new_value)
-
-        # Save the changes
-        item_details_model.save()
-
-        # Find the corresponding item model ID
-        item_model_id = find_item_model_id(itemdetails_id)
-
-        messages.success(request, "Inline Edit Saved Successfully")
-        return JsonResponse({'success': True, 'message': 'Inline Edit Saved Successfully'})
-
-    except ItemDetails.DoesNotExist:
-        messages.error(request, "Item Details not found.")
-        return JsonResponse({'success': False, 'message': 'Item Details not found.'})
-    except Exception as e:
-        messages.error(request, f"Error: {str(e)}")
-        return JsonResponse({'success': False, 'message': f'Error: {str(e)}'})
-
-
 
 @cache_control(no_cache=True, must_revalidate=True,no_store=True)
 @login_required(login_url="login")

@@ -69,12 +69,23 @@
            value="{{detail.employee_designation}}">
 </div>
 
-<div class="input-group input-group-sm mb-3">
+<!--<div class="input-group input-group-sm mb-3">
     <span class="input-group-text side-label">Date Dispatched </span>
-    <input type="text" class="form-control"
+&lt;!&ndash;    <input type="text" class="form-control"&ndash;&gt;
+    <input class="form-control datepicker"
            name="date_dispatched"
            id="{{ detail.pk }}date_dispatched"
            value="{{detail.date_dispatched.date|date:'Y-m-d'}}">
+</div>-->
+
+<div class="input-group input-group-sm mb-3">
+    <span class="input-group-text side-label">Date Dispatched </span>
+    <div class="date-picker-container">
+        <input class="form-control datepicker"
+               name="date_dispatched"
+               id="{{ detail.pk }}date_dispatched"
+               value="{{detail.date_dispatched.date|date:'Y-m-d'}}">
+    </div>
 </div>
 
 <div class="input-group input-group-sm mb-3">
