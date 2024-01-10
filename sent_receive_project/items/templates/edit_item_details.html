@@ -16,6 +16,7 @@
                               <th>Tag Number</th>
                               <th>Room Tag</th>
                               <th>Issued to</th>
+                              <th>Date Dispatched</th>
                               <th>Employee Name</th>
                               <th>Employee Designation</th>
                               <th>Action</th>
@@ -30,6 +31,7 @@
                               <td>{{detail.tag_no}}</td>
                               <td>{{detail.room_tag}}</td>
                               <td>{{detail.issued_to.name}}</td>
+                              <td>{{detail.date_dispatched.date}}</td>
                               <td>{{detail.employee_name}}</td>
                               <td>{{detail.employee_designation}}</td>
                               <td><!--<a href="{% url 'edit_item_details_form' detail.id %}" class="btn btn-warning"

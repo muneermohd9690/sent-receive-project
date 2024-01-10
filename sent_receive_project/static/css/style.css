@@ -328,12 +328,21 @@ Dropdown submenu css
     position: absolute;
 }
 
-/* Add this style to your CSS */
+/* highlight edited row letters */
 .highlight  {
                         background-color: yellow; /* You can customize the highlighting color */
                     }
 
+
+
 .date-picker-container {
-    display: float;  /* Keep it inline with the label */
-     /* Align vertically in the middle */
+    flex:auto;
+    margin-top: -17px;
+    font-size: 0.875rem;
+
 }
+
+
+
+
+
