@@ -1,32 +1,48 @@
 {% extends 'mainpage.html' %}
 
 {% block navbar-content %}
-<div class="container-fluid p-3 my-3 bg-dark text-white">
-    <h1 class ="text-center"><i class="fas fa-inventory-maintenance"></i>IT Inventory Management</h1>
-</div>
+
 {% endblock %}
 
-{% block content %}
-<div class="container mt-5">
-    <div class="card p-3 border-dark">
-        <a class="btn btn-outline-dark mt-3"><i class="fas fa-lock"></i>&nbsp;&nbsp;RESTRICTED ACCESS</a>
-        <form autocomplete="off" method="POST" novalidate id="login-form">
-            {% csrf_token %}
-            <div class="input-group mb-3 mt-5">
-                <span class="input-group-text"><i class="fas fa-user-alt"></i></span>
-                <input class="form-control" name="username" id="username" placeholder="Username" type="text" required>
-            </div>
-            <div class="input-group mb-3 mt-5">
-                <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                <input class="form-control" name="password" id="password" placeholder="Password" type="password" required>
-            </div>
 
-            <button type="submit" class="login-btn btn btn-primary btn-sm mt-4 mb-3">Log In</button>
-            <a href="{% url 'register' %}" class="btn btn-primary btn-sm mt-4 mb-3">Register</a>
-<!--            <span class="error-msg"><strong>{{form.errors}}</strong></span>-->
-        </form>
+{% block content %}
+<body class="loginpage">
+<div class="container ">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+
+                <form autocomplete="off" method="POST" novalidate id="login-form" class="box">
+                    {% csrf_token %}
+                    <h1>Login</h1> <p class="text-muted-loginpage"> Please enter your username and password!</p>
+<!--                    <input type="text" name="" placeholder="Username">-->
+                    <input class="form-control" name="username" id="username" placeholder="Username" type="text" required>
+<!--                    <input type="password" name="" placeholder="Password">-->
+                    <input class="form-control" name="password" id="password" placeholder="Password" type="password" required>
+                    <!-- Show Password checkbox -->
+                    <div class="form-check" style="margin-left: 110px; display: flex; align-items: center;">
+                        <input class="form-check-input"  type="checkbox" id="show-password-checkbox" onclick="togglePasswordVisibility('password')">
+                        <label class="form-check-label" for="show-password-checkbox" style="color: white; margin-left: 10px;">
+                            Show Password
+                        </label>
+                    </div>
+                    <a class="forgot-text-muted" href="#">Forgot password?</a>
+
+<!--                    <input type="submit" name="" value="Login" href="#">-->
+                    <button type="submit" >Log In</button>
+                    <a href="{% url 'register' %}" class="register-button btn">Register</a>
+
+
+                </form>
+            </div>
+        </div>
     </div>
 </div>
+</body>
+{% block footer %}
+{% endblock %}
+{% block settings %}
+{% endblock %}
 <!--- Messages after new user registration  --->
 {% if messages %}
     {% for message in messages %}
@@ -40,29 +56,22 @@
             </script>
     {% endfor %}
 {% endif %}
+<script>
+    function togglePasswordVisibility(passwordId) {
+            var passwordInput1 = document.getElementById(passwordId);
+
+            var showPasswordCheckbox = document.getElementById('show-password-checkbox');
+
+            if (showPasswordCheckbox.checked) {
+                passwordInput1.type = 'text';
+
+            } else {
+                passwordInput1.type = 'password';
+
+            }
+        }
+</script>
 <!--- Messages after new user registration  --->
-
-<!--- Messages if username or password is empty --->
-<!--<script>
-function validateAll() {
-    var username=$("#username").val();
-    var password=$("#password").val();
-
-    if (username==''){
-        swal("Verify !", "Username cannot be empty.","error");
-        return false;
-    }
-    else if (password==''){
-        swal("Verify !", "Password cannot be empty.","error");
-        return false;
-    }
-    else {
-        return true;
-    }
-}
-$("#login").bind("click",validateAll);
-</script>-->
-<!--- Messages if username or password is empty --->
 <div class="text-center mt-5" style="display: none;">
 <div id="login-redirect-url" data-url="{% url 'mainpage' %}"></div>
 </div>

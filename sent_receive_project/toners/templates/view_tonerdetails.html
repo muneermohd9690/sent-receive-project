@@ -7,12 +7,12 @@
   <div class="input-group input-group-sm mb-2">
         <input class="form-control" id="search" type="text" placeholder="Search.." >
         <a href="{% url 'view_tonerdetails' item_id %}" id="item_id" data-value="{{item_id}}"
-           title="Reset View" class="btn btn-dark btn-sm"><i class="fas fa-sync-alt"></i></a>
+           title="Reset View" class="btn btn-dark btn-lg"><i class="fas fa-sync-alt"></i></a>
   </div>
     <div class="table-responsive">
         {% csrf_token %}
         <table class="table table-bordered" id="myTable">
-            <thead>
+            <thead class="table-secondary">
             <tr>
                 <th>Toner Model</th>
                 <th>Issued to</th>
@@ -55,7 +55,7 @@
                                 class="fas fa-trash"></i></a></a>
                     </div>
                 </td>
-                <td><input type="checkbox" name="detail_id[]" value="{{detail.id}}" id="bulk_delete_detail"></td>
+                <td><input type="checkbox" name="detail_id[]" value="{{detail.id}}" id="bulk_delete_detail" class="bulk-action-checkbox"></td>
             </tr>
             <!-- delete confirmation Modal -->
             <div class="modal fade" id="delete-modal{{ detail.pk }}" tabindex="-1" role="dialog"

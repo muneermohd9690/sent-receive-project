@@ -432,10 +432,10 @@ $(document).ready(function(){
 /**** disable save button in edit_item_details_form(EIDF) ****/
 
 /**** to show bulk delete button on checkbox select ****/
-
 $(document).ready(function() {
-        $('input[type="checkbox"]').click(function() {
-            if ($('input[type="checkbox"]:checked').length > 0) {
+        $('.bulk-action-checkbox').change(function() {
+            if ($('.bulk-action-checkbox:checked').length > 0) {
+                console.log('Buttons should be shown');
                 $('#btn-bulkdelete').show();
                 $('#btn-bulkdispatch').show();
                 $('#btn-selectdispatch').show();
@@ -444,6 +444,7 @@ $(document).ready(function() {
                 $('#btn-dispatch').hide();
                 $('#btn-print_sent_items_invoice').hide();
             } else {
+                console.log('Buttons should be hidden');
                 $('#btn-bulkdelete').hide();
                 $('#btn-bulkdispatch').hide();
                 $('#btn-selectdispatch').hide();
@@ -513,34 +514,51 @@ $(document ).ready(function (){
 
 
 
-document.addEventListener("DOMContentLoaded", function() {
-    var logoutButton = document.getElementById("btn-logout");
+    document.addEventListener("DOMContentLoaded", function() {
+        var logoutButton = document.getElementById("btn-logout");
+//        var csrftoken = getCookie('csrftoken');
+        if (logoutButton) {
+            logoutButton.addEventListener("click", function(e) {
+                e.preventDefault();
 
-    if (logoutButton) {
-        logoutButton.addEventListener("click", function(e) {
-            e.preventDefault();
-
-            // Use Ajax to send a POST request to the logout URL
-            fetch('/logout/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCookie('csrftoken'),  // Include the CSRF token
-                },
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Successful logout, redirect to the login page
-                    window.location.href = data.redirect_url;
-                } else {
-                    // Handle error response if needed
-                    console.error('Logout failed:', data);
-                }
-            })
-            .catch(error => {
-                console.error('Error during logout:', error);
+                // Use Ajax to send a POST request to the logout URL
+                fetch('/logout/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken'),  // Include the CSRF token
+//                        'X-CSRFToken': csrftoken
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Successful logout, redirect to the login page
+                        window.location.href = data.redirect_url;
+                    } else {
+                        // Handle error response if needed
+                        console.error('Logout failed:', data);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error during logout:', error);
+                });
             });
-        });
-    }
-});
+        }
+    });
+   /* function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        console.log(cookieValue)
+        return cookieValue;
+    }*/

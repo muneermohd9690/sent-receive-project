@@ -1,43 +1,88 @@
 {% extends 'mainpage.html' %}
 
 {% block navbar-content %}
-<div class="container-fluid p-3 my-3 bg-dark text-white">
-    <h1 class ="text-center"><i class="fas fa-inventory-maintenance"></i>IT Inventory Management</h1>
-</div>
+
 {% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-    <div class="card p-3 border-dark">
-        <a class="btn btn-outline-dark mt-3"><i class="fas fa-user-circle fa-lg"></i>&nbsp;&nbsp;New User Registration</a>
-        <form autocomplete="off" method="POST" novalidate>
-            {% csrf_token %}
-            <div class="input-group mb-3 mt-5">
-                <span class="input-group-text"><i class="fas fa-user-alt"></i></span>
-                    {{form.username}}
+<body class="registerationpage">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+
+                    <form autocomplete="off" method="POST" class="box" novalidate id="registration-form">
+                        {% csrf_token %}
+                        <h1>Register</h1> <p class="text-muted-registerationpage"> Please enter your desired username and password!</p>
+
+                        {{ form.username }}
+
+
+                        {{ form.password1 }}
+
+
+                        {{ form.password2 }}
+                                <!-- Show Password checkbox -->
+                                <div class="form-check" style="margin-left: 110px; display: flex; align-items: center;">
+                                    <input class="form-check-input" type="checkbox" id="show-password-checkbox" onclick="togglePasswordVisibility('id_password1', 'id_password2')">
+                                    <label class="form-check-label" for="show-password-checkbox" style="color: white; margin-left: 50px;">
+                                        Show Password
+                                    </label>
+                                </div>
+<!--                        <input class="btn btn-primary btn-sm mt-4 mb-3" type="submit" value="Create User">-->
+                        <button type="submit" >Create User</button>
+
+                        <p class="text-muted-loginpage">Already have an account? <a href="{% url 'login' %}">Sign in</a></p>
+                    </form>
+                </div>
             </div>
-            <div class="input-group mb-3 mt-5">
-                <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                    {{form.password1}}
-            </div>
-            <div class="input-group mb-3 mt-5">
-                <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                    {{form.password2}}
-            </div>
-            <input class="btn btn-primary btn-sm mt-4 mb-3" type="submit" value="Create User">
-            <span class="error-msg"><strong>{{form.errors}}</strong></span>
-        </form>
+        </div>
     </div>
-</div>
+</body>
+
 	<script>
 		var form_fields = document.getElementsByTagName('input')
 		form_fields[1].placeholder='Username..';
 		form_fields[2].placeholder='Enter password...';
 		form_fields[3].placeholder='Re-enter Password...';
-
-
 		for (var field in form_fields){
-			form_fields[field].className += ' form-control'
+			form_fields[field].className += ' form-control';
 		}
+        function togglePasswordVisibility(passwordId1, passwordId2) {
+            var passwordInput1 = document.getElementById(passwordId1);
+            var passwordInput2 = document.getElementById(passwordId2);
+            var showPasswordCheckbox = document.getElementById('show-password-checkbox');
+
+            if (showPasswordCheckbox.checked) {
+                passwordInput1.type = 'text';
+                passwordInput2.type = 'text';
+            } else {
+                passwordInput1.type = 'password';
+                passwordInput2.type = 'password';
+            }
+        }
+       var errorMessages = [];
+
+        {% if form.errors %}
+            {% for field, errors in form.errors.items %}
+
+                    errorMessages.push("{{ field }}: {{ errors.0 }}");
+
+            {% endfor %}
+
+            if (errorMessages.length > 0) {
+                Swal.fire({
+                    title: "Registration Failed",
+                    html: errorMessages.map(message => `<p>${message}</p>`).join(''),
+                    icon: "error",
+                    confirmButtonColor: '#d33',
+                    confirmButtonText: 'OK',
+                });
+            }
+        {% endif %}
 	</script>
+{% endblock %}
+{% block footer %}
+{% endblock %}
+{% block settings %}
 {% endblock %}

@@ -434,6 +434,7 @@ def view_tonerdetails_bulk_delete(request,id):
         #     print(tonerdetails)
         #     tonerdetails.delete()
         # return JsonResponse('Item was deleted', safe=False)
+        count=0
         if request.method=="POST":
             tonerdetails_ids=request.POST.getlist('id[]')
             for id in tonerdetails_ids:

@@ -5,11 +5,15 @@
     <div class="container">
       <h2>Item Details</h2>
        <input type="hidden" name="itemdetails_id" value="{{itemdetails.id}}">
-       <input class="form-control" id="search" type="text" placeholder="Search..">
+       <div class="input-group input-group-sm mb-2">
+            <input class="form-control" id="search" type="text" placeholder="Search.." >
+           <a href="{% url 'edit_item_details' %}" class="btn btn-dark btn-lg" title="Reset View"><i class="fas fa-sync-alt"></i></a>
+       </div>
+
               <div class="table-responsive">
 
                   <table class="table table-bordered" id="myTable">
-                      <thead>
+                      <thead class="table-secondary">
                           <tr>
                               <th>Model Number</th>
                               <th>Serial Number</th>
@@ -58,7 +62,7 @@
                   </table>
               </div>
                <!-- The Modal -->
-                <div class="modal" id="{{detail.pk}}editItemDetailsModal">
+                <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" id="{{detail.pk}}editItemDetailsModal">
 
                     <div class="modal-dialog">
                         <div class="modal-content">

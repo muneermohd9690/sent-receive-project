@@ -3,10 +3,13 @@
 {% block content %}
 <div class="container">
   <h2>Available Toners</h2>
-  <input class="form-control" id="search" type="text" placeholder="Search..">
+  <div class="input-group input-group-sm mb-2">
+            <input class="form-control" id="search" type="text" placeholder="Search.." >
+           <a href="{% url 'edit_toners' %}" class="btn btn-dark btn-lg" title="Reset View"><i class="fas fa-sync-alt"></i></a>
+  </div>
   <div class="table-responsive">
       <table class="table table-bordered" id="myTable">
-          <thead>
+          <thead class="table-secondary">
           <tr>
               <th>Toner Description</th>
               <th>Model Number</th>

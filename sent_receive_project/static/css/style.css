@@ -44,12 +44,12 @@ Sweetalert design
 /*----------------------------------------------
 #Logout btn properties
 -----------------------------------------------*/
-#btn-logout {
+/*#btn-logout {
     width: 90px;
     float: right;
     margin-right: 70px;
     margin-top: -2px;
-}
+}*/
 
 /*----------------------------------------------
 # Dispatch page dispatch btn properties
@@ -64,13 +64,23 @@ Sweetalert design
 /*----------------------------------------------
 # Navbar dispatch box properties
 -----------------------------------------------*/
-#dispatch-icon {
+/*#dispatch-icon {
     float: right;
     margin-right: 50px;
-    margin-left: 5px;
-    margin-top:-15px;
+    margin-left: 15px;
+    margin-top: 10px;
     display : flex;
     font-size: 40px;
+
+}*/
+
+#dispatch-icon {
+
+    margin-right: 50px;
+    margin-left: 15px;
+
+    display : flex;
+    font-size: 25px;
 
 }
 
@@ -100,12 +110,20 @@ Sweetalert design
 /*----------------------------------------------
 # Navbar restock bell notification properties (id # class .)
 -----------------------------------------------*/
-#bell-notification {
+/*#bell-notification {
     float: right;
     margin-right: -140px;
     margin-left: 30px;
     margin-top:-15px;
     font-size: 40px;
+    cursor:pointer;
+
+}*/
+#bell-notification {
+
+
+
+    font-size: 25px;
     cursor:pointer;
 
 }
@@ -137,8 +155,19 @@ Sweetalert design
 /*----------------------------------------------
 #Edit Item Details Form
 -----------------------------------------------*/
-.side-label {
+/*.side-label {
     width: 200px;
+
+}*/
+.form-control {
+
+    margin-left: 60px;
+    margin-bottom: 10px;
+
+}
+.side-label {
+    margin-left: 10px;
+    width:200px;
 
 }
 
@@ -206,18 +235,18 @@ div.dataTables_wrapper div.dataTables_filter label {
 }
 #btn-exporttocsv{
     margin-top: -40px;
-    margin-left: 40px;
+    margin-left: 50px;
     position: absolute;
 }
 #btn-bulkdelete{
     margin-top: -40px;
-    margin-left: 550px;
+    margin-left: 230px;
     position: absolute;
 }
 
 #btn-bulkdispatch{
     margin-top: -40px;
-    margin-left: 420px;
+    margin-left: 100px;
     position: absolute;
 }
 
@@ -230,10 +259,10 @@ div.dt-buttons {
 /*----------------------------------------------
 # selectpicker box border and background
 -----------------------------------------------*/
-.btn-light {
+/*.btn-light {
     --bs-btn-bg: white;
     --bs-btn-border-color: #ced4da;
-}
+}*/
 
 
 /*----------------------------------------------
@@ -249,9 +278,7 @@ div.dt-buttons {
 }
 
 
-.auto-width-table {
-  table-layout: auto;
-}
+
 
 /*----------------------------------------------
 # allign the arabic texts from right to left
@@ -265,21 +292,21 @@ div.dt-buttons {
 /*----------------------------------------------
 # allign the btn-back-to-viewitems in view item details page
 -----------------------------------------------*/
-#btn-back-to-viewitems{
+/*#btn-back-to-viewitems{
     margin-top: -40px;
     margin-left: 100px;
     position: absolute;
-}
+}*/
 
 
 /*----------------------------------------------
 # allign the btn-back-to-viewtoners in view toner details page
 -----------------------------------------------*/
-#btn-back-to-viewtoners{
+/*#btn-back-to-viewtoners{
     margin-top: -40px;
     margin-left: 100px;
     position: absolute;
-}
+}*/
 
 /*----------------------------------------------------
 Dropdown submenu css
@@ -342,7 +369,199 @@ Dropdown submenu css
 
 }
 
+/****************************New Loginpage*************************************/
+.loginpage {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    /*background: linear-gradient(to right, #b92b27, #1565c0)*/
+    /*background:linear-gradient(#141e30, #243b55);*/
+    background: #222D32;
+}
+.text-muted-loginpage{
+    color: #ffffff!important;
+}
+.text-muted-registerationpage{
+    color: #ffffff!important;
+}
+.forgot-text-muted{
+    color: #ffffff!important;
+}
+.card{
+    margin-bottom:20px;
+    border:none;
+}
+input.form-control#username::placeholder {
+    color: grey;
+
+}
+input.form-control#password::placeholder {
+    color: grey;
+
+}
+.box {
+    width: 500px;
+    padding: 40px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background: #191919;
+    ;
+    text-align: center;
+    transition: 0.25s;
+    margin-top: 100px
+
+}
+
+.box input[type="text"],
+.box input[type="password"] {
+    border: 0;
+    background: none;
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+    border: 2px solid #3498db;
+    padding: 10px 10px;
+    width: 250px;
+    outline: none;
+    color: white;
+    border-radius: 24px;
+    transition: 0.25s
+}
+
+.box h1 {
+    color: white;
+    text-transform: uppercase;
+    font-weight: 500
+}
+
+.box input[type="text"]:focus,
+.box input[type="password"]:focus {
+    width: 300px;
+    border-color: #2ecc71
+}
+
+.box button[type="submit"] {
+    border: 0;
+    background: none;
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+    border: 2px solid #2ecc71;
+    padding: 14px 40px;
+    outline: none;
+    color: white;
+    border-radius: 24px;
+    transition: 0.25s;
+    cursor: pointer
+}
+
+.box button[type="submit"]:hover {
+    background: #2ecc71
+}
+
+.register-button {
+    border: 0;
+    background: none;
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+    border: 2px solid #2ecc71;
+    padding: auto;
+    outline: none;
+    color: white;
+    width: 100px;
+    border-radius: 24px;
+    transition: 0.25s;
+    cursor: pointer
+}
+
+.register-button:hover {
+    background: #2ecc71
+}
+
+.forgot {
+    text-decoration: underline
+}
+
+/****************************New Registrationpage*************************************/
+.registerationpage {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    /*background: linear-gradient(to right, #b92b27, #1565c0)*/
+    /*background:linear-gradient(#141e30, #243b55);*/
+    background: #222D32;
+}
+input.form-control#id_username::placeholder {
+    color: grey;
+
+}
+input.form-control#id_password1::placeholder {
+    color: grey;
+
+}
+input.form-control#id_password2::placeholder {
+    color: grey;
+
+}
+
+.dropdown-menu-wrapper.prosecution,.dropdown-menu-wrapper.items{
+    opacity: 1; /* Start with opacity 0 to hide the dropdown menu */
+
+    background-color: black !important; /* Set background color */
+
+   /* Add box shadow */
 
 
+}
+.dropdown-item.viewprosecution,.dropdown-item.addprosecution {
+    text-align: center;
 
+    /* Add more styles as needed */
+}
+
+/* Dropdown box for each subdropdown */
+.dropdown-menu.prosecution,.dropdown-menu.items,.dropdown-menu.addtab,.dropdown-menu.edittab,.dropdown-menu.toners,
+.dropdown-menu.reports,.dropdown-menu.contracts,.dropdown-menu.sentitems {
+    top: 100%;
+    left: 0;
+    margin-top: auto;
+
+    /* Adjust the offset to add padding between popper and reference element */
+
+    --bs-dropdown-offset: 0 10px;
+    background-color: #3c3c43;
+    border: 1px solid black;
+
+}
+.dropdown-menu.prosecution .dropdown-item:hover {
+    background-color: white;
+}
+
+.dropdown-menu.prosecution .dropdown-item, .dropdown-menu.items .dropdown-item, .dropdown-menu.reports .dropdown-item,
+.dropdown-menu.contracts .dropdown-item,.dropdown-menu.sentitems .dropdown-item{
+    display: block;
+    padding: 10px 20px;
+    text-decoration: none;
+    background-color: grey;
+    color: #ffffff; /* text color */
+    border: 1px solid black;
+    border-radius: 5px;
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+}
+
+.dropdown-menu.prosecution .dropdown-item:hover, .dropdown-menu.items .dropdown-item:hover,
+.dropdown-menu.reports .dropdown-item:hover,.dropdown-menu.contracts .dropdown-item:hover,
+.dropdown-menu.sentitems .dropdown-item:hover{
+    background-color: #e43270;
+    border-color: black;
+    color: white; /* text color on hover */
+}
+
+
+#table-search {
+    margin-left: 20px; /* Adjust bottom margin as needed */
+    width:97.5%;
+}
 

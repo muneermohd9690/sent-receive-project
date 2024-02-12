@@ -7,13 +7,13 @@
 
   <div class="input-group input-group-sm mb-2">
         <input class="form-control" id="search" type="text" placeholder="Search.." >
-        <a href="{% url 'view_contract_details' %}" class="btn btn-dark btn-sm" title="Reset View">
+        <a href="{% url 'view_contract_details' %}" class="btn btn-dark btn-lg" title="Reset View">
             <i class="fas fa-sync-alt"></i></a>
   </div>
   <div class="table-responsive">
       {% csrf_token %}
       <table class="table table-bordered auto-width-table" id="myTable">
-          <thead>
+          <thead class="table-secondary">
           <tr>
               <th>LPO Number</th>
               <th>Purchase Date</th>

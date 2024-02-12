@@ -1,0 +1,43 @@
+{% extends 'mainpage.html' %}
+
+{% block navbar-content %}
+
+{% endblock %}
+
+{% block content %}
+<body class="registerationpage">
+<div class="container mt-5">
+    <div class="card p-3 border-dark">
+        <a class="btn btn-outline-dark mt-3"><i class="fas fa-user-circle fa-lg"></i>&nbsp;&nbsp;New User Registration</a>
+        <form autocomplete="off" method="POST" novalidate>
+            {% csrf_token %}
+            <div class="input-group mb-3 mt-5">
+                <span class="input-group-text"><i class="fas fa-user-alt"></i></span>
+                    {{form.username}}
+            </div>
+            <div class="input-group mb-3 mt-5">
+                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                    {{form.password1}}
+            </div>
+            <div class="input-group mb-3 mt-5">
+                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                    {{form.password2}}
+            </div>
+            <input class="btn btn-primary btn-sm mt-4 mb-3" type="submit" value="Create User">
+            <span class="error-msg"><strong>{{form.errors}}</strong></span>
+        </form>
+    </div>
+</div>
+</body>
+	<script>
+		var form_fields = document.getElementsByTagName('input')
+		form_fields[1].placeholder='Username..';
+		form_fields[2].placeholder='Enter password...';
+		form_fields[3].placeholder='Re-enter Password...';
+
+
+		for (var field in form_fields){
+			form_fields[field].className += ' form-control'
+		}
+	</script>
+{% endblock %}

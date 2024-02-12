@@ -1,6 +1,7 @@
 import pandas as pd
 from django.contrib.admin import forms
 from django.contrib.auth import authenticate, get_user_model, login,logout
+from django.db import IntegrityError, transaction
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.shortcuts import render
@@ -25,6 +26,10 @@ from datetime import datetime
 import plotly.express as px
 from django.shortcuts import render
 from items.models import ItemDetails
+from django.contrib.auth.models import User
+from django.contrib.auth import login, authenticate
+from django.core.exceptions import ValidationError
+from django.contrib.auth.password_validation import validate_password
 
 User = get_user_model()
 
@@ -34,25 +39,44 @@ def check_login(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
 
+        # Use case-insensitive lookup for username (default behavior)
+        try:
+            user = User.objects.get(username__iexact=username)
+        except User.DoesNotExist:
+            return JsonResponse({'status': 'error', 'message': 'Username does not exist.'})
+
         # Add your authentication logic here.
         # For example, you can use Django's built-in authentication to check the credentials:
+        authenticated_user = authenticate(request, username=user.username, password=password)
 
-        user = authenticate(request, username=username, password=password)
-
-        if user is not None:
+        if authenticated_user is not None:
             # The username and password are correct.
-            login(request, user)
+            login(request, authenticated_user)
             return JsonResponse({'is_valid': True})
-
         else:
             # The username and password are incorrect.
-            try:
-                User.objects.get(username=username)  # Check if the username exists
-                return JsonResponse({'status': 'error', 'message': 'Incorrect password.'})
-            except User.DoesNotExist:
-                return JsonResponse({'status': 'error', 'message': 'Username does not exist.'})
+            return JsonResponse({'status': 'error', 'message': 'Incorrect password.'})
 
     return JsonResponse({'is_valid': False})
+
+
+# def register(request):
+#     form = CreateUserForm()
+#
+#     if request.method == 'POST':
+#         form = CreateUserForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             user = form.cleaned_data.get('username')
+#             messages.success(request, 'Account was created for ' + user)
+#             return redirect('login')
+#         else:
+#             # Return form errors as JSON
+#             errors = {field: form.errors[field][0] for field in form.errors}
+#
+#     context = {'form': form}
+#     return render(request, 'register.html', context)
+#
 
 
 def register(request):
@@ -61,10 +85,21 @@ def register(request):
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
         if form.is_valid():
-            form.save()
-            user = form.cleaned_data.get('username')
-            messages.success(request, 'Account was created for ' + user)
-            return redirect('login')
+            print(f"Valid Form Data: {form.cleaned_data}")
+            try:
+                user = form.save(commit=False)
+                user.set_password(form.cleaned_data['password1'])
+                user.save()
+
+                messages.success(request, 'Account was created for ' + user.username)
+                return redirect('login')
+            except IntegrityError as e:
+                print(f"IntegrityError: {e}")
+                messages.error(request, 'IntegrityError occurred. See console for details.')
+        else:
+            # Return form errors as JSON
+            errors = {field: form.errors[field][0] for field in form.errors}
+            # return JsonResponse({'success': False, 'message': 'Form validation failed.', 'errors': errors})
 
     context = {'form': form}
     return render(request, 'register.html', context)
@@ -98,8 +133,9 @@ def mainpage(request):
 
     context = {"total": cart_total, "toner_stock_alert": toner_stock_alert, "toner_under_fifteen": toner_under_fifteen,
                "toner_plot_html": toner_plot_html, "item_plot_html": item_plot_html,"toner_status_chart":toner_status_chart,"has_data": has_data}
+    # return render(request, 'dashboard.html', context)
+    # return render(request, 'mainpage.html', context)
     return render(request, 'dashboard.html', context)
-
 
 def toner_plot_view():
     # Retrieve data from the model

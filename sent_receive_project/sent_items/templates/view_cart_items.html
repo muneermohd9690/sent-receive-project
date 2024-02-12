@@ -10,12 +10,12 @@
     </div>
     <div class="input-group input-group-sm mb-2">
         <input class="form-control" id="search" type="text" placeholder="Search..">
-        <a href="{% url 'view_cart_items' %}" class="btn btn-dark btn-sm" title="Reset View"><i class="fas fa-sync-alt"></i></a>
+        <a href="{% url 'view_cart_items' %}" class="btn btn-dark btn-lg" title="Reset View"><i class="fas fa-sync-alt"></i></a>
     </div>
     <div class="table-responsive">
         {% csrf_token %}
-        <table class="table table-bordered" id="myTable">
-            <thead>
+        <table class="table table-bordered"  id="myTable">
+            <thead class="table-secondary">
             <tr>
                 <th class="w1">No</th>
                 <th class="w2">Send Date</th>
@@ -51,7 +51,7 @@
                                   data-bs-toggle="tooltip" data-bs-placement="bottom" title="Remove from Dispatch">
                     <i class="fas fa-recycle"></i></a>
                 </td>
-                <td><input type="checkbox" name="item_id[]" value="{{item.id}}" id="bulk_select_action"></td>
+                <td><input type="checkbox" name="item_id[]" value="{{item.id}}" id="bulk_select_action" class="bulk-action-checkbox"></td>
             </tr>
             {% endfor %}
             </tbody>

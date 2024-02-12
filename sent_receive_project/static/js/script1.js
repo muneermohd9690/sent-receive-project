@@ -72,91 +72,165 @@ $(document).ready(function(){
 
 <!---------------------------- Ajax bulk delete --------------------------------------------->
 
-    $(document).ready(function(){
-            $('.bulk_delete').click(function(){
-                var id=[];
-                var item_id=$("#item_id").data("value");
-                var currentURL = window.location.href;
-                var csrf=$('input[name=csrfmiddlewaretoken]').val();
-                $(':checkbox:checked').each(function(i){
-                        id[i]=$(this).val()
-                 })
-                    if(id.length===0){
-                           swal("Error!", "Please select the toners to Delete", "error");
-                    }
-                    else{ swal({
-                                  title: "Are you sure?",
-                                  text: "You will not be able to recover this record!",
-                                  icon: "warning",
-                                  buttons: [
-                                    'No, cancel it!',
-                                    'Yes, I am sure!'
-                                  ],
-                                  dangerMode: true,
-                                }).then(function(isConfirm) {
-                                  if (isConfirm) {
-                                    if (currentURL.indexOf("view_tonerdetails") !== -1)
-                                       {
-                                            $.ajax({
-                                            url:'' + item_id +'/view_tonerdetails_bulk_delete' ,
-                                            method:"POST",
-                                            data:{
-                                                id:id,
-                                                csrfmiddlewaretoken:csrf
-                                            },
+//    $(document).ready(function(){
+//            $('.bulk_delete').click(function(){
+//                var id=[];
+//                var item_id=$("#item_id").data("value");
+//                var currentURL = window.location.href;
+//                var csrf=$('input[name=csrfmiddlewaretoken]').val();
+//                $(':checkbox:checked').each(function(i){
+//                        id[i]=$(this).val()
+//                 })
+//                    if(id.length===0){
+//                           swal("Error!", "Please select the toners to Delete", "error");
+//                    }
+//                    else{ swal({
+//                                  title: "Are you sure?",
+//                                  text: "You will not be able to recover this record!",
+//                                  icon: "warning",
+//                                  buttons: [
+//                                    'No, cancel it!',
+//                                    'Yes, I am sure!'
+//                                  ],
+//                                  dangerMode: true,
+//                                }).then(function(isConfirm) {
+//                                  if (isConfirm) {
+//                                    if (currentURL.indexOf("view_tonerdetails") !== -1)
+//                                       {
+//                                            $.ajax({
+//                                            url:'' + item_id +'/view_tonerdetails_bulk_delete' ,
+//                                            method:"POST",
+//                                            data:{
+//                                                id:id,
+//                                                csrfmiddlewaretoken:csrf
+//                                            },
+//
+//                                            success:function(response){
+//                                                for(var i=0;i<id.length;i++){
+//                                                    $('tr#'+id[i]+'').css('background-color','#ccc');
+//                                                    $('tr#'+id[i]+'').fadeOut('slow');
+//
+//                                                }
+//
+//                                            }
+//                                            })
+//                                       }
+//                                    else
+//                                        {
+//
+//                                            $.ajax({
+//                                            url:'' + item_id +'/view_itemdetails_bulk_delete' ,
+//                                            method:"POST",
+//                                            data:{
+//                                                id:id,
+//                                                csrfmiddlewaretoken:csrf
+//                                            },
+//
+//                                            success:function(response){
+//                                                for(var i=0;i<id.length;i++){
+//                                                    $('tr#'+id[i]+'').css('background-color','#ccc');
+//                                                    $('tr#'+id[i]+'').fadeOut('slow');
+//
+//                                                }
+//
+//                                            }
+//                                            })
+//                                        }
+//                                    swal({
+//                                      title: 'Deleted!',
+//                                      text: 'Records are successfully deleted!',
+//                                      icon: 'success'
+//                                    })
+//
+//                                  } else {
+//                                    swal("Cancelled", "Your records are safe", "error");
+//                                  }
+//                                });
+//
+//                    }
+//            })
+//    })
+$(document).ready(function(){
+    // Define a global array to store selected bulk delete item IDs
+    var selectedBulkDeleteIds = [];
 
-                                            success:function(response){
-                                                for(var i=0;i<id.length;i++){
-                                                    $('tr#'+id[i]+'').css('background-color','#ccc');
-                                                    $('tr#'+id[i]+'').fadeOut('slow');
+    // Update the array when a bulk delete checkbox is clicked
+    $('body').on('change', 'input[name="detail_id[]"]', function() {
+        var itemId = $(this).val();
+        if ($(this).is(':checked')) {
+            // Add to the array if the bulk delete checkbox is checked
+            selectedBulkDeleteIds.push(itemId);
+        } else {
+            // Remove from the array if the bulk delete checkbox is unchecked
+            selectedBulkDeleteIds = selectedBulkDeleteIds.filter(id => id !== itemId);
+        }
+    });
 
-                                                }
+    $('.bulk_delete').click(function(){
+        var item_id = $("#item_id").data("value");
+        var csrf = $('input[name=csrfmiddlewaretoken]').val();
+        var currentURL = window.location.href;
+        if (selectedBulkDeleteIds.length === 0) {
+            swal("Error!", "Please select the items to delete", "error");
+        } else {
+            swal({
+                title: "Are you sure?",
+                text: "You will not be able to recover these records!",
+                icon: "warning",
+                buttons: [
+                    'No, cancel it!',
+                    'Yes, I am sure!'
+                ],
+                dangerMode: true,
+            }).then(function(isConfirm) {
+                if (isConfirm) {
+                    // Determine the correct AJAX URL based on your conditions
+                    var ajaxURL = (currentURL.indexOf("view_tonerdetails") !== -1) ?
+                        item_id + '/view_tonerdetails_bulk_delete' :
+                        item_id + '/view_itemdetails_bulk_delete';
 
-                                            }
-                                            })
-                                       }
-                                    else
-                                        {
+                    $.ajax({
+                        url: ajaxURL,
+                        method: "POST",
+                        data: {
+                            id: selectedBulkDeleteIds,
+                            csrfmiddlewaretoken: csrf
+                        },
+                        success: function(response) {
+                            for (var i = 0; i < selectedBulkDeleteIds.length; i++) {
+                                $('tr#' + selectedBulkDeleteIds[i] + '').css('background-color', '#ccc');
+                                $('tr#' + selectedBulkDeleteIds[i] + '').fadeOut('slow');
+                            }
+                        },
+                        error: function(xhr, errmsg, err) {
+                            console.log(xhr.status + ": " + xhr.responseText);
+                        }
+                    });
 
-                                            $.ajax({
-                                            url:'' + item_id +'/view_itemdetails_bulk_delete' ,
-                                            method:"POST",
-                                            data:{
-                                                id:id,
-                                                csrfmiddlewaretoken:csrf
-                                            },
+                    swal({
+                        title: 'Deleted!',
+                        text: + selectedBulkDeleteIds.length + ' Records are successfully deleted!',
+                        icon: 'success'
+                    }).then((willReload) => {
+                        if (willReload) {
+                            window.location.reload();
+                        }
+                    });
 
-                                            success:function(response){
-                                                for(var i=0;i<id.length;i++){
-                                                    $('tr#'+id[i]+'').css('background-color','#ccc');
-                                                    $('tr#'+id[i]+'').fadeOut('slow');
-
-                                                }
-
-                                            }
-                                            })
-                                        }
-                                    swal({
-                                      title: 'Deleted!',
-                                      text: 'Records are successfully deleted!',
-                                      icon: 'success'
-                                    })
-
-                                  } else {
-                                    swal("Cancelled", "Your records are safe", "error");
-                                  }
-                                });
-
-                    }
-            })
-    })
+                } else {
+                    swal("Cancelled", "Your records are safe", "error");
+                }
+            });
+        }
+    });
+});
 
 <!---------------------------- Ajax bulk delete --------------------------------------------->
 
 
 
 <!--------------------------------------- Paginator and keyup Search ----------------------------->
-
+var table;
 $(document).ready(function ()
     {
             var currentURL = window.location.href;
@@ -203,29 +277,70 @@ $(document).ready(function ()
 
 <!---------------------------- Ajax bulk add to dispatch --------------------------------------------->
 
-        $(document).ready(function() {
-            $("#btn-bulkdispatch").click(function() {
-                var selectedIds = [];
-                var csrf=$('input[name=csrfmiddlewaretoken]').val();
-                $(':checkbox:checked').each(function() {
-                    selectedIds.push($(this).val());
-                });
+//        $(document).ready(function() {
+//            $("#btn-bulkdispatch").click(function() {
+//                var selectedIds = [];
+//                var csrf=$('input[name=csrfmiddlewaretoken]').val();
+//                $(':checkbox:checked').each(function() {
+//                    selectedIds.push($(this).val());
+//                });
+//
+//                $.ajax({
+//                    type: "POST",
+//                    url:'/sent_items/bulk_update_items/',
+//                    data: { selected_ids: selectedIds,
+//                            csrfmiddlewaretoken:csrf
+//                     },
+//                    success: function(response) {
+//                        window.location.reload();
+//                    },
+//                    error: function(xhr, errmsg, err) {
+//                        console.log(xhr.status + ": " + xhr.responseText);
+//                    }
+//                });
+//            });
+//        });
+// Define a global array to store selected bulk dispatch item IDs
+var selectedBulkDispatchIds = [];
 
-                $.ajax({
-                    type: "POST",
-                    url:'/sent_items/bulk_update_items/',
-                    data: { selected_ids: selectedIds,
-                            csrfmiddlewaretoken:csrf
-                     },
-                    success: function(response) {
-                        window.location.reload();
-                    },
-                    error: function(xhr, errmsg, err) {
-                        console.log(xhr.status + ": " + xhr.responseText);
-                    }
-                });
+$(document).ready(function() {
+    // Update the array when a bulk dispatch checkbox is clicked
+    $('body').on('change', 'input[name="detail_id[]"]', function() {
+        var itemId = $(this).val();
+        if ($(this).is(':checked')) {
+            // Add to the array if the bulk dispatch checkbox is checked
+            selectedBulkDispatchIds.push(itemId);
+        } else {
+            // Remove from the array if the bulk dispatch checkbox is unchecked
+            selectedBulkDispatchIds = selectedBulkDispatchIds.filter(id => id !== itemId);
+        }
+    });
+
+    // Handle bulk dispatching for all selected items
+    $("#btn-bulkdispatch").click(function() {
+        var csrf = $('input[name=csrfmiddlewaretoken]').val();
+
+        if (selectedBulkDispatchIds.length == 0) {
+            swal("Error!", "Please select the items for bulk dispatch", "error");
+        } else {
+            $.ajax({
+                type: "POST",
+                url: '/sent_items/bulk_update_items/',
+                data: {
+                    selected_ids: selectedBulkDispatchIds,
+                    csrfmiddlewaretoken: csrf
+                },
+                success: function(response) {
+                    window.location.reload();
+                },
+                error: function(xhr, errmsg, err) {
+                    console.log(xhr.status + ": " + xhr.responseText);
+                }
             });
-        });
+        }
+    });
+});
+
 
 <!------------------------------------------------- Date picker --------------------------------------------------------------->
 
@@ -325,180 +440,364 @@ $(document).ready(function(){
 
 <!---------------------------- Ajax remove selected from dispatch --------------------------------------------->
 
-        $(document).ready(function()
-        {
-            $("#btn-selectremove").click(function()
-            {
-                var selectedIds = [];
-                var csrf=$('input[name=csrfmiddlewaretoken]').val();
-                $(':checkbox:checked').each(function(i){
-                        selectedIds[i]=$(this).val()
-                })
-                if(selectedIds.length==0)
-                {
-                           swal("Error!", "Please select the items to Remove", "error");
-                }
-                else
-                {           swal
-                              ({
-                                      title: "Are you sure?",
-                                      text: "You will remove selected items from dispatch!",
-                                      icon: "warning",
-                                      buttons: [
-                                        'No, cancel it!',
-                                        'Yes, I am sure!'
-                                      ],
-                                      dangerMode: true,
-                              }).then(function(isConfirm)
-                              {
-                                  if (isConfirm)
-                                  {
-                                                    $.ajax({
-                                                    type: "POST",
-                                                    url:'select_remove_from_cart/',
-                                                    data: { selected_ids: selectedIds,
-                                                            csrfmiddlewaretoken:csrf
-                                                     },
-                                                    success: function(response)
-                                                    {
-                                                        for(var i=0;i<selectedIds.length;i++)
-                                                        {
-															$('tr#'+selectedIds[i]+'').css('background-color','#ccc');
-															$('tr#'+selectedIds[i]+'').fadeOut('slow');
+//        $(document).ready(function()
+//        {
+//            $("#btn-selectremove").click(function()
+//            {
+//                var selectedIds = [];
+//                var csrf=$('input[name=csrfmiddlewaretoken]').val();
+//                $(':checkbox:checked').each(function(i){
+//                        selectedIds[i]=$(this).val()
+//                })
+//                if(selectedIds.length==0)
+//                {
+//                           swal("Error!", "Please select the items to Remove", "error");
+//                }
+//                else
+//                {           swal
+//                              ({
+//                                      title: "Are you sure?",
+//                                      text: "You will remove selected items from dispatch!",
+//                                      icon: "warning",
+//                                      buttons: [
+//                                        'No, cancel it!',
+//                                        'Yes, I am sure!'
+//                                      ],
+//                                      dangerMode: true,
+//                              }).then(function(isConfirm)
+//                              {
+//                                  if (isConfirm)
+//                                  {
+//                                                    $.ajax({
+//                                                    type: "POST",
+//                                                    url:'select_remove_from_cart/',
+//                                                    data: { selected_ids: selectedIds,
+//                                                            csrfmiddlewaretoken:csrf
+//                                                     },
+//                                                    success: function(response)
+//                                                    {
+//                                                        for(var i=0;i<selectedIds.length;i++)
+//                                                        {
+//															$('tr#'+selectedIds[i]+'').css('background-color','#ccc');
+//															$('tr#'+selectedIds[i]+'').fadeOut('slow');
+//
+//														}
+//
+//                                                    },
+//                                                    error: function(xhr, errmsg, err)
+//                                                    {
+//                                                        console.log(xhr.status + ": " + xhr.responseText);
+//                                                    }
+//                                                });
+//                                                swal
+//                                                ({
+//                                                      title: 'Removed!',
+//                                                      text: selectedIds.length+' Items are successfully removed!',
+//                                                      icon: 'success'
+//                                                }).then((willReload)=>{
+//                                                    if (willReload){
+//                                                        window.location.reload();
+//                                                    }
+//                                                });
+//
+//                                  }
+//                                  else
+//                                  {
+//                                    swal("Cancelled",selectedIds.length+" Items still in dispatch", "error");
+//                                  }
+//                              });
+//                }
+//            });
+//        });
+// Define a global array to store selected removal item IDs
+var selectedRemoveIds = [];
 
-														}
+$(document).ready(function() {
+    // Update the array when a remove checkbox is clicked
+    $('body').on('change', 'input[name="item_id[]"]', function() {
+        var itemId = $(this).val();
+        if ($(this).is(':checked')) {
+            // Add to the array if the remove checkbox is checked
+            selectedRemoveIds.push(itemId);
+        } else {
+            // Remove from the array if the remove checkbox is unchecked
+            selectedRemoveIds = selectedRemoveIds.filter(id => id !== itemId);
+        }
+    });
 
-                                                    },
-                                                    error: function(xhr, errmsg, err)
-                                                    {
-                                                        console.log(xhr.status + ": " + xhr.responseText);
-                                                    }
-                                                });
-                                                swal
-                                                ({
-                                                      title: 'Removed!',
-                                                      text: selectedIds.length+' Items are successfully removed!',
-                                                      icon: 'success'
-                                                }).then((willReload)=>{
-                                                    if (willReload){
-                                                        window.location.reload();
-                                                    }
-                                                });
+    // Handle removing for all selected removal items
+    $("#btn-selectremove").click(function() {
+        var csrf = $('input[name=csrfmiddlewaretoken]').val();
 
-                                  }
-                                  else
-                                  {
-                                    swal("Cancelled",selectedIds.length+" Items still in dispatch", "error");
-                                  }
-                              });
+        if (selectedRemoveIds.length == 0) {
+            swal("Error!", "Please select the items to Remove", "error");
+        } else {
+            swal({
+                title: "Are you sure?",
+                text: "You will remove selected items from dispatch!",
+                icon: "warning",
+                buttons: [
+                    'No, cancel it!',
+                    'Yes, I am sure!'
+                ],
+                dangerMode: true,
+            }).then(function(isConfirm) {
+                if (isConfirm) {
+                    $.ajax({
+                        type: "POST",
+                        url: 'select_remove_from_cart/',
+                        data: {
+                            selected_ids: selectedRemoveIds,
+                            csrfmiddlewaretoken: csrf
+                        },
+                        success: function(response) {
+                            for (var i = 0; i < selectedRemoveIds.length; i++) {
+                                $('tr#' + selectedRemoveIds[i] + '').css('background-color', '#ccc');
+                                $('tr#' + selectedRemoveIds[i] + '').fadeOut('slow');
+                            }
+                        },
+                        error: function(xhr, errmsg, err) {
+                            console.log(xhr.status + ": " + xhr.responseText);
+                        }
+                    });
+                    swal({
+                        title: 'Removed!',
+                        text: selectedRemoveIds.length + ' Items are successfully removed!',
+                        icon: 'success'
+                    }).then((willReload) => {
+                        if (willReload) {
+                            window.location.reload();
+                        }
+                    });
+                } else {
+                    swal("Cancelled", selectedRemoveIds.length + " Items still in dispatch", "error");
                 }
             });
-        });
+        }
+    });
+});
+
 
 <!---------------------------- Ajax selected dispatch --------------------------------------------->
 
-        $(document).ready(function() {
-            $("#btn-selectdispatch").click(function() {
-                var selectedIds = [];
-                var csrf=$('input[name=csrfmiddlewaretoken]').val();
-                $(':checkbox:checked').each(function() {
-                    selectedIds.push($(this).val());
-                });
-                if(selectedIds.length==0)
-                {
-                           swal("Error!", "Please select the items to Dispatch", "error");
-                }
-                else
-                {           swal
-                              ({
-                                      title: "Are you sure?",
-                                      text: "You will dispatch the selected items!",
-                                      icon: "warning",
-                                      buttons: [
-                                        'No, cancel it!',
-                                        'Yes, I am sure!'
-                                      ],
-                                      dangerMode: true,
-                              }).then(function(isConfirm)
-                              {
-                                  if (isConfirm)
-                                  {
-                                        $.ajax({
-                                            type: "POST",
-                                            url:'select_dispatch/',
-                                            data: { selected_ids: selectedIds,
-                                                    csrfmiddlewaretoken:csrf
-                                             },
-                                            success: function(response)
-                                            {
-                                                for(var i=0;i<selectedIds.length;i++)
-                                                {
-                                                    $('tr#'+selectedIds[i]+'').css('background-color','#ccc');
-                                                    $('tr#'+selectedIds[i]+'').fadeOut('slow');
+//        $(document).ready(function() {
+//            $("#btn-selectdispatch").click(function() {
+//                var selectedIds = [];
+//                var csrf=$('input[name=csrfmiddlewaretoken]').val();
+//                $(':checkbox:checked').each(function() {
+//                    selectedIds.push($(this).val());
+//                });
+//                if(selectedIds.length==0)
+//                {
+//                           swal("Error!", "Please select the items to Dispatch", "error");
+//                }
+//                else
+//                {           swal
+//                              ({
+//                                      title: "Are you sure?",
+//                                      text: "You will dispatch the selected items!",
+//                                      icon: "warning",
+//                                      buttons: [
+//                                        'No, cancel it!',
+//                                        'Yes, I am sure!'
+//                                      ],
+//                                      dangerMode: true,
+//                              }).then(function(isConfirm)
+//                              {
+//                                  if (isConfirm)
+//                                  {
+//                                        $.ajax({
+//                                            type: "POST",
+//                                            url:'select_dispatch/',
+//                                            data: { selected_ids: selectedIds,
+//                                                    csrfmiddlewaretoken:csrf
+//                                             },
+//                                            success: function(response)
+//                                            {
+//                                                for(var i=0;i<selectedIds.length;i++)
+//                                                {
+//                                                    $('tr#'+selectedIds[i]+'').css('background-color','#ccc');
+//                                                    $('tr#'+selectedIds[i]+'').fadeOut('slow');
+//
+//                                                }
+//                                            },
+//                                            error: function(xhr, errmsg, err) {
+//                                                console.log(xhr.status + ": " + xhr.responseText);
+//                                            }
+//                                        });
+//                                        swal
+//                                        ({
+//                                            title: 'Dispatched!',
+//                                            text: selectedIds.length+' Items are successfully dispatched!',
+//                                            icon: 'success'
+//                                        }).then((willReload)=>{
+//                                                if (willReload){
+//                                                  window.location.reload();
+//                                                }
+//                                        });
+//                                  }
+//                                  else
+//                                  {
+//                                    swal("Cancelled",selectedIds.length+" Items still in dispatch", "error");
+//                                  }
+//                              });
+//                }
+//            });
+//        });
+    // Define a global array to store selected dispatch item IDs
+var selectedDispatchIds = [];
 
-                                                }
-                                            },
-                                            error: function(xhr, errmsg, err) {
-                                                console.log(xhr.status + ": " + xhr.responseText);
-                                            }
-                                        });
-                                        swal
-                                        ({
-                                            title: 'Dispatched!',
-                                            text: selectedIds.length+' Items are successfully dispatched!',
-                                            icon: 'success'
-                                        }).then((willReload)=>{
-                                                if (willReload){
-                                                  window.location.reload();
-                                                }
-                                        });
-                                  }
-                                  else
-                                  {
-                                    swal("Cancelled",selectedIds.length+" Items still in dispatch", "error");
-                                  }
-                              });
+$(document).ready(function() {
+    // Update the array when a dispatch checkbox is clicked
+    $('body').on('change', 'input[name="item_id[]"]', function() {
+        var itemId = $(this).val();
+        if ($(this).is(':checked')) {
+            // Add to the array if the dispatch checkbox is checked
+            selectedDispatchIds.push(itemId);
+        } else {
+            // Remove from the array if the dispatch checkbox is unchecked
+            selectedDispatchIds = selectedDispatchIds.filter(id => id !== itemId);
+        }
+    });
+
+    // Handle dispatching for all selected dispatch items
+    $("#btn-selectdispatch").click(function() {
+        var csrf = $('input[name=csrfmiddlewaretoken]').val();
+
+        if (selectedDispatchIds.length == 0) {
+            swal("Error!", "Please select the items to Dispatch", "error");
+        } else {
+            swal({
+                title: "Are you sure?",
+                text: "You will dispatch the selected items!",
+                icon: "warning",
+                buttons: [
+                    'No, cancel it!',
+                    'Yes, I am sure!'
+                ],
+                dangerMode: true,
+            }).then(function(isConfirm) {
+                if (isConfirm) {
+                    $.ajax({
+                        type: "POST",
+                        url: 'select_dispatch/',
+                        data: {
+                            selected_ids: selectedDispatchIds,
+                            csrfmiddlewaretoken: csrf
+                        },
+                        success: function(response) {
+                            for (var i = 0; i < selectedDispatchIds.length; i++) {
+                                $('tr#' + selectedDispatchIds[i] + '').css('background-color', '#ccc');
+                                $('tr#' + selectedDispatchIds[i] + '').fadeOut('slow');
+                            }
+                        },
+                        error: function(xhr, errmsg, err) {
+                            console.log(xhr.status + ": " + xhr.responseText);
+                        }
+                    });
+                    swal({
+                        title: 'Dispatched!',
+                        text: selectedDispatchIds.length + ' Items are successfully dispatched!',
+                        icon: 'success'
+                    }).then((willReload) => {
+                        if (willReload) {
+                            window.location.reload();
+                        }
+                    });
+                } else {
+                    swal("Cancelled", selectedDispatchIds.length + " Items still in dispatch", "error");
                 }
             });
-        });
+        }
+    });
+});
+
 
 <!---------------------------- Ajax print selected items sent invoice --------------------------------------------->
 
-        $(document).ready(function() {
-            $(".select_print_sent_items_invoice").click(function(e) {
-                e.preventDefault();
-                var selectedIds = [];
-                var csrf=$('input[name=csrfmiddlewaretoken]').val();
-                var id=$("#cart_id").data("value");
-                $(':checkbox:checked').each(function() {
-                    selectedIds.push($(this).val());
+    //        $(document).ready(function() {
+    //            $(".select_print_sent_items_invoice").click(function(e) {
+    //                e.preventDefault();
+    //                var selectedIds = [];
+    //                var csrf=$('input[name=csrfmiddlewaretoken]').val();
+    //                var id=$("#cart_id").data("value");
+    //                $(':checkbox:checked').each(function() {
+    //                    selectedIds.push($(this).val());
+    //                });
+    //                if (selectedIds.length > 0) {
+    //                        var url = '/forms/select_print_sent_items_invoice/';
+    //                        fetch(url, {
+    //                            method: 'POST',
+    //                            headers: {
+    //                                'Content-Type': 'application/json',
+    //                                'X-CSRFToken': csrf,
+    //                            },
+    //                            body: JSON.stringify({
+    //                                'selected_ids': selectedIds,  // Use underscore instead of camelCase
+    //                                'id': id
+    //                            })
+    //                        })
+    //                        .then((response) => response.blob())
+    //                        .then(blob => {
+    //                                var blobUrl = URL.createObjectURL(blob);
+    //                                window.open(blobUrl, '_blank');
+    //                        })
+    //                        .catch(error => {
+    //                                console.error('Error:', error);
+    //                        });
+    //                } else {
+    //                        $("#pdf-generation-status").text("Please select items to generate PDF.");
+    //                }
+    //            });
+    //        });
+    // Define a global array to store selected checkbox IDs
+var selectedIds = [];
+
+$(document).ready(function() {
+    // Update the array when a checkbox is clicked
+    $('body').on('change', 'input[name="item_id[]"]', function() {
+        var itemId = $(this).val();
+        if ($(this).is(':checked')) {
+            // Add to the array if the checkbox is checked
+            selectedIds.push(itemId);
+        } else {
+            // Remove from the array if the checkbox is unchecked
+            selectedIds = selectedIds.filter(id => id !== itemId);
+        }
+    });
+
+    // Handle invoicing for all selected checkboxes
+    $(".select_print_sent_items_invoice").click(function(e) {
+        e.preventDefault();
+        var csrf = $('input[name=csrfmiddlewaretoken]').val();
+        var id = $("#cart_id").data("value");
+
+        if (selectedIds.length > 0) {
+            var url = '/forms/select_print_sent_items_invoice/';
+            fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrf,
+                    },
+                    body: JSON.stringify({
+                        'selected_ids': selectedIds,
+                        'id': id
+                    })
+                })
+                .then((response) => response.blob())
+                .then(blob => {
+                    var blobUrl = URL.createObjectURL(blob);
+                    window.open(blobUrl, '_blank');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
                 });
-                if (selectedIds.length > 0) {
-                        var url = '/forms/select_print_sent_items_invoice/';
-                        fetch(url, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRFToken': csrf,
-                            },
-                            body: JSON.stringify({
-                                'selected_ids': selectedIds,  // Use underscore instead of camelCase
-                                'id': id
-                            })
-                        })
-                        .then((response) => response.blob())
-                        .then(blob => {
-                                var blobUrl = URL.createObjectURL(blob);
-                                window.open(blobUrl, '_blank');
-                        })
-                        .catch(error => {
-                                console.error('Error:', error);
-                        });
-                } else {
-                        $("#pdf-generation-status").text("Please select items to generate PDF.");
-                }
-            });
-        });
+        } else {
+            $("#pdf-generation-status").text("Please select items to generate PDF.");
+        }
+    });
+});
 
 
 
@@ -538,9 +837,11 @@ function showNoPdfAlert() {
 
 <!---------------------------- Logic to show edit item details modal, swal message, highlight edited row letters ------->
 var pageIdentifier = 'edit_item_details';
+
 function handleFormSubmission(event) {
     event.preventDefault();
     var currentRowId = $("#item_id").data("value");
+
 
     Swal.fire({
         title: 'Confirm Changes',
@@ -566,6 +867,7 @@ function submitForm() {
     var formData = $('#editItemDetailsForm').serialize();
     var currentRowId = $("#item_id").data("value");
 
+
     $.ajax({
         type: 'POST',
         url: 'edit_item_details_save',
@@ -577,8 +879,9 @@ function submitForm() {
                 text: 'Your changes have been successfully saved.',
                 icon: 'success'
             }).then(() => {
-                location.reload();
+                                location.reload();
             });
+//            table.ajax.reload();
         },
         error: function (error) {
             console.error('Error saving data:', error);

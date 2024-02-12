@@ -1,19 +1,22 @@
 {% extends 'mainpage.html' %}
 {% load static %}
+<div class="main-content position-relative max-height-vh-100 h-100 border-radius-lg" xmlns="">
 {% block content %}
 
-<div class="container" xmlns="">
+<!--<div class="container" xmlns="">-->
+<!--<div class="main-content position-relative max-height-vh-100 h-100 border-radius-lg" xmlns="">-->
   <h2>Item Details</h2>
 
-  <div class="input-group input-group-sm mb-2">
+  <div class="input-group input-group-sm mb-2" id="table-search">
         <input class="form-control" id="search" type="text" placeholder="Search.." >
         <a href="{% url 'view_items_details' item_id %}" id="item_id" data-value="{{item_id}}" title="Reset View"
-           class="btn btn-dark btn-sm"><i class="fas fa-sync-alt"></i></a>
+           class="btn btn-dark btn-lg"><i class="fas fa-sync-alt"></i></a>
   </div>
-  <div class="table-responsive">
+<!--  <div class="table-responsive col-lg-50" >-->
+  <div class=" table-responsive" >
       {% csrf_token %}
-      <table class="table table-bordered auto-width-table" id="myTable">
-          <thead>
+      <table class="table table-bordered" id="myTable">
+          <thead class="table-secondary">
           <tr>
               <th>Model Number</th>
               <th>Serial Number</th>
@@ -59,7 +62,7 @@
                          data-bs-placement="bottom" title="Delete"><i class="fas fa-trash"></i></a>
                   </div>
               </td>
-              <td><input type="checkbox" name="detail_id[]" value="{{detail.id}}" id="bulk_delete_detail"></td>
+              <td><input type="checkbox" name="detail_id[]" value="{{detail.id}}" id="bulk_delete_detail"  class="bulk-action-checkbox"></td>
           </tr>
           <!-- delete confirmation Modal -->
           <div class="modal fade" id="delete-modal{{ detail.pk }}" tabindex="-1" role="dialog"
@@ -91,13 +94,13 @@
           {% endfor %}
           </tbody>
       </table>
-      <a href="{% url 'itemdetails_export_topdf' item_id %}"  rel="noopener noreferrer"  class="btn btn-secondary" id="btn-exporttopdf" data-bs-toggle="tooltip" data-bs-placement="bottom" title="export to pdf"><i class="fas fa-file-pdf"></i></a>
-      <a href="{% url 'itemdetails_export_toexcel' item_id %}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" id="btn-exporttocsv" data-bs-toggle="tooltip" data-bs-placement="bottom" title="export to csv"><i class="fas fa-file-excel"></i></a>
-      <a href="{% url 'view_items' %}" class="btn btn-primary" id="btn-back-to-viewitems" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Back-to-viewitems"><i class="fas fa-angle-double-left"></i></a>
-      <button type="submit" class="btn btn-danger bulk_delete" style="display: none;" id="btn-bulkdelete">Bulk Delete</button>
-      <button type="submit" class="btn btn-secondary" style="display: none;" id="btn-bulkdispatch">Bulk Dispatch</button>
-  </div>
+      <a href="{% url 'itemdetails_export_topdf' item_id %}"  rel="noopener noreferrer"  class="btn btn-outline-primary btn-sm mb-0 me-3" id="btn-exporttopdf"
+         data-bs-toggle="tooltip" data-bs-placement="bottom" title="export to pdf"><i class="fas fa-file-pdf"></i></a>
+      <a href="{% url 'itemdetails_export_toexcel' item_id %}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary btn-sm mb-0 me-3" id="btn-exporttocsv" data-bs-toggle="tooltip" data-bs-placement="bottom" title="export to csv"><i class="fas fa-file-excel"></i></a>
+      <button type="submit" class="btn btn-outline-primary bulk_delete btn-sm mb-0 me-3" style="display: none;" id="btn-bulkdelete">Bulk Delete</button>
+      <button type="submit" class="btn btn-outline-primary btn-sm mb-0 me-3" style="display: none;" id="btn-bulkdispatch">Bulk Dispatch</button>
 
+  </div>
 
 <!--- Messages after CRUD operations --->
 {% if messages %}
@@ -126,10 +129,11 @@
 <!--- Messages after CRUD operations --->
 
 
-</div>
+
 
 <div class="text-center mt-5" style="display: none;" >
     <input  id="content_type_id" data-value="{{content_type_id}}">
     <input  id="joined_ids" data-value="{{joined_ids}}">
 </div>
 {% endblock %}
+</div>

@@ -1,0 +1,69 @@
+{% extends 'mainpage.html' %}
+
+{% block navbar-content %}
+<div class="container-fluid p-3 my-3 bg-dark text-white">
+    <h1 class ="text-center"><i class="fas fa-inventory-maintenance"></i>IT Inventory Management</h1>
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card p-3 border-dark">
+        <a class="btn btn-outline-dark mt-3"><i class="fas fa-lock"></i>&nbsp;&nbsp;RESTRICTED ACCESS</a>
+        <form autocomplete="off" method="POST" novalidate id="login-form">
+            {% csrf_token %}
+            <div class="input-group mb-3 mt-5">
+                <span class="input-group-text"><i class="fas fa-user-alt"></i></span>
+                <input class="form-control" name="username" id="username" placeholder="Username" type="text" required>
+            </div>
+            <div class="input-group mb-3 mt-5">
+                <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                <input class="form-control" name="password" id="password" placeholder="Password" type="password" required>
+            </div>
+
+            <button type="submit" class="login-btn btn btn-primary btn-sm mt-4 mb-3">Log In</button>
+            <a href="{% url 'register' %}" class="btn btn-primary btn-sm mt-4 mb-3">Register</a>
+<!--            <span class="error-msg"><strong>{{form.errors}}</strong></span>-->
+        </form>
+    </div>
+</div>
+<!--- Messages after new user registration  --->
+{% if messages %}
+    {% for message in messages %}
+            <script>
+                 var m= "{{ message }}";
+                 swal({
+                       title: "Good job!",
+                       text: m,
+                       icon: "success",
+                      });
+            </script>
+    {% endfor %}
+{% endif %}
+<!--- Messages after new user registration  --->
+
+<!--- Messages if username or password is empty --->
+<!--<script>
+function validateAll() {
+    var username=$("#username").val();
+    var password=$("#password").val();
+
+    if (username==''){
+        swal("Verify !", "Username cannot be empty.","error");
+        return false;
+    }
+    else if (password==''){
+        swal("Verify !", "Password cannot be empty.","error");
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+$("#login").bind("click",validateAll);
+</script>-->
+<!--- Messages if username or password is empty --->
+<div class="text-center mt-5" style="display: none;">
+<div id="login-redirect-url" data-url="{% url 'mainpage' %}"></div>
+</div>
+{% endblock %}

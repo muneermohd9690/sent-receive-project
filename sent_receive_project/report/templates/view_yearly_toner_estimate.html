@@ -7,17 +7,18 @@
 
     <div class="input-group input-group-sm mb-2">
         <input class="form-control" id="search" type="text" placeholder="Search.." >
-        <a href="{% url 'view_yearly_toner_estimate' %}" class="btn btn-dark btn-sm" title="Reset View">
+        <a href="{% url 'view_yearly_toner_estimate' %}" class="btn btn-dark btn-lg" title="Reset View">
             <i class="fas fa-sync-alt"></i></a>
     </div>
     <div class="container">
         <div class="table-responsive" >
             <table class="table table-bordered" id="myTable">
-                <thead>
+                <thead class="table-secondary">
                 <tr>
                     <th>Printer Model</th>
                     <th>Toner Model</th>
                     <th>Yearly Consumption</th>
+                    <th>In-Stock</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -26,6 +27,7 @@
                     <td>{{toner_count.printer_description}} {{toner_count.printer_model}}</td>
                     <td>{{toner_count.toner_model_id__toner_model}}</td>
                     <td>{{toner_count.total_toner_count}}</td>
+                    <td>{{toner_count.remaining_quantity}}</td>
                 </tr>
                 {% endfor %}
                 </tbody>
