@@ -1,3 +1,4 @@
+
 @include media-breakpoint-up(lg) {
   .dropdown,
   .dropup,
@@ -236,7 +237,13 @@
       transform: $dropdown-subitem-arrow-rotate;
       left: 0;
       top: 0;
-      z-index: -1;
+
+
+
+ z-index: -1;
+
+
+
       transition: left .35s ease;
     }
     &.dropdown-menu-end{
@@ -290,3 +297,5 @@
    min-width: $dropdown-lg-width-responsive;
  }
 }
+
+

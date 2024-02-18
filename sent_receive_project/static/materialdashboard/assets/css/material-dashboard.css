@@ -2780,9 +2780,9 @@ progress {
 .form-control:focus {
   color: #495057;
   background-color: transparent;
-  border-color: #343a40;
+  border-color: #86b7fe;
   outline: 0;
-  box-shadow: none;
+  box-shadow:  0 0 0 0.25rem rgba(13,110,253,.25);
 }
 
 .form-control::-webkit-date-and-time-value {
@@ -4172,7 +4172,7 @@ fieldset:disabled .btn {
   margin-left: 0;
 }
 
-.dropdown-menu {
+/*.dropdown-menu {
   --bs-dropdown-zindex: 1000;
   --bs-dropdown-min-width: 11rem;
   --bs-dropdown-padding-x: 0;
@@ -4213,7 +4213,7 @@ fieldset:disabled .btn {
   background-clip: padding-box;
   border: var(--bs-dropdown-border-width) solid var(--bs-dropdown-border-color);
   border-radius: var(--bs-dropdown-border-radius);
-}
+}*/
 
 .dropdown-menu[data-bs-popper] {
   top: 100%;
@@ -4338,7 +4338,6 @@ fieldset:disabled .btn {
     left: auto;
   }
 }
-
 .dropup .dropdown-menu[data-bs-popper] {
   top: auto;
   bottom: 100%;
@@ -6416,7 +6415,7 @@ fieldset:disabled .btn {
   height: 1em;
   padding: 0.25em 0.25em;
   color: #fff;
-  background: transparent url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 16 16'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
+  background: black url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='%23fff' viewBox='0 0 16 16'%3e%3cpath d='M.293.293a1 1 0 011.414 0L8 6.586 14.293.293a1 1 0 111.414 1.414L9.414 8l6.293 6.293a1 1 0 01-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 01-1.414-1.414L6.586 8 .293 1.707a1 1 0 010-1.414z'/%3e%3c/svg%3e") center/1em auto no-repeat;
   border: 0;
   border-radius: 0.375rem;
   opacity: 0.5;
@@ -6436,7 +6435,7 @@ fieldset:disabled .btn {
 
 .btn-close:disabled,
 .btn-close.disabled {
-  pointer-events: none;
+ pointer-events: none;
   user-select: none;
   opacity: 0.25;
 }
@@ -20526,7 +20525,7 @@ fieldset:disabled .btn {
 .btn {
   margin-bottom: 1rem;
   letter-spacing: 0;
-  text-transform: uppercase;
+  text-transform: none;
   background-size: 150%;
   background-position-x: 25%;
   position: relative;
@@ -21146,10 +21145,10 @@ fieldset:disabled .btn {
   color: #fff;
 }
 
-.btn-light,
+/*.btn-light,
 .btn.bg-gradient-light {
   color: #3A416F;
-}
+}*/
 
 .btn-light:hover,
 .btn.bg-gradient-light:hover {
@@ -21553,12 +21552,14 @@ fieldset:disabled .btn {
     z-index: 4;
   }
 
+/***** adjusting this destroys the entire template design **********/
   .rotating-card-container.manual-flip.hover .card .back,
   .rotating-card-container:not(.manual-flip):hover .card .back {
     z-index: 5;
     visibility: visible;
   }
 }
+/***** adjusting this destroys the entire template design **********/
 
 .dark-version {
   background-color: #1a2035 !important;
@@ -21848,7 +21849,8 @@ body.dark-version {
     transition: 0.3s ease;
   }
 
-  .dropdown.dropdown-hover .dropdown-menu,
+/**** this was causing the selectpicker dropdown issue *********************/
+/*  .dropdown.dropdown-hover .dropdown-menu,
   .dropdown .dropdown-menu {
     display: block;
     position: absolute;
@@ -21856,12 +21858,13 @@ body.dark-version {
     transform-origin: 0 0;
     inset: 0px auto auto 0px;
     margin-top: 2.8125rem !important;
-    pointer-events: none;
+    *//*pointer-events: none;*//*
     transform: scale(0.95) !important;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
     will-change: transform, box-shadow;
-  }
+  }*/
+/**** this was causing the selectpicker dropdown issue *********************/
 
   .dropdown.dropdown-hover .dropdown-menu .dropdown.dropdown-hover .dropdown-menu,
   .dropdown.dropdown-hover .dropdown-menu .dropdown .dropdown-menu,
@@ -22159,8 +22162,8 @@ body.dark-version {
 .fixed-plugin .fixed-plugin-button {
   background: #fff;
   border-radius: 50%;
-  bottom: 30px;
-  right: 30px;
+  bottom: 1px;
+  right: 20px;
   font-size: 1.25rem;
   z-index: 990;
   box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.16);
@@ -25841,6 +25844,7 @@ body:not(.dark-version) .sidenav.bg-transparent .collapse .nav-item .nav-link.ac
 /**************************** this is to define font size in the table data *************************/
 .table td{
     font-size:14px;
+    font-weight:bold;
 }
 /**************************** this is to define font size in the table data *************************/
 

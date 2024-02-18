@@ -160,15 +160,45 @@ Sweetalert design
 
 }*/
 .form-control {
-
+    line-height: 1.2rem;
     margin-left: 60px;
+    margin-top:auto;
     margin-bottom: 10px;
 
 }
+#toner_model_bulk_modal.form-control,#toner_quantity_bulk_modal.form-control{
+    margin-left:auto;
+}
 .side-label {
-    margin-left: 10px;
+
     width:200px;
 
+}
+
+  .bordered-label {
+    border: 1px solid black;
+    padding: 5px;
+    display: inline-block; /* This ensures the border size fits the content */
+  }
+
+.input-group-prepend {
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  background-color: #e9ecef;
+}
+.input-group-text {
+    display: flex;
+    align-items: center;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--bs-body-color);
+    text-align: center;
+    white-space: nowrap;
+    background-color: var(--bs-tertiary-bg);
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    border-radius: var(--bs-border-radius);
 }
 
 
@@ -333,10 +363,10 @@ Dropdown submenu css
 /*----------------------------------------------------
 # Datepicker dropdown
 -----------------------------------------------*/
-.datepicker {
+/*.datepicker {
   transform: translate(0, 1em);
 
-}
+}*/
 
 #btn-selectremove{
 
@@ -362,12 +392,21 @@ Dropdown submenu css
 
 
 
-.date-picker-container {
+/*.date-picker-container {
     flex:auto;
     margin-top: -17px;
     font-size: 0.875rem;
 
+}*/
+
+input.form-control.datepicker {
+
+    margin-left:auto;
+    line-height: 1.9rem;
+    width: 156%
+
 }
+
 
 /****************************New Loginpage*************************************/
 .loginpage {
@@ -561,7 +600,28 @@ input.form-control#id_password2::placeholder {
 
 
 #table-search {
-    margin-left: 20px; /* Adjust bottom margin as needed */
-    width:97.5%;
+
+    width:97%;
 }
 
+.bs-searchbox .form-control {
+
+    margin-left: 5px;
+}
+#search.form-control {
+    margin-top: 10px;
+}
+select.form-control{
+    color: blue; /* Example color (change to desired color) */
+    border-color:red;
+
+}
+.selectpicker.form-control {
+    border-color: blue !important;
+}
+div.dropdown.bootstrap-select.form-control{
+    border-color: blue !important;
+}
+div.dropdown.bootstrap-select.form-control.show select#issued_to {
+    border-color: blue !important;
+}

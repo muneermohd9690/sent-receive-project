@@ -4,7 +4,7 @@
 
 <div class="container" >
     <h2>Available Items</h2>
-    <div class="input-group input-group-sm mb-2">
+    <div class="input-group input-group-sm mb-2" id="table-search">
         <input class="form-control" id="search" type="text" placeholder="Search.." >
         <a href="{% url 'view_items' %}" class="btn btn-dark btn-lg" title="Reset View"><i class="fas fa-sync-alt"></i></a>
     </div>
@@ -86,5 +86,18 @@
     {% endfor %}
 {% endif %}
 <!--- Messages after CRUD operations --->
+<script>
+  // Get the element representing the current page
+  var currentPageElement = document.getElementById('currentPage');
+
+  // Set the breadcrumb text content to "Prosecutions / View Prosecutions"
+  currentPageElement.textContent = "Items / View Items";
+
+  // Get the <h6> element representing "TEMPLATE"
+  var templateElement = document.querySelector('h6.font-weight-bolder.mb-0');
+
+  // Update the text content of the <h6> element to "View Items"
+  templateElement.textContent = "View Items";
+</script>
 </div>
 {% endblock %}

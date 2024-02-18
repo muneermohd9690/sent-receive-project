@@ -10,12 +10,17 @@
      </div>
      <form action="add_items_save" enctype="multipart/form-data" method="post" role="form" class="card p-3 border-dark mt-3">
         {% csrf_token %}
-        <div class="input-group input-group-sm mb-3">
-                <label class="input-group-text side-label">Model Number</label>
+        <div class="input-group" >
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">Model Number</span>
+            </div>
                 <input class="form-control" name="model_no" placeholder="Enter model-number" type="text">
         </div>
-        <div class="input-group input-group-sm mb-3">
-                <label class="input-group-text side-label">Item Description</label>
+
+        <div class="input-group" >
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">Item Description</span>
+            </div>
                 <input class="form-control" name="description" placeholder="Enter description" type="text">
         </div>
         <button class="btn btn-primary mt-3" type="submit">Save Items</button>
@@ -84,4 +89,17 @@
     {% endfor %}
 {% endif %}
 <!--- Messages after CRUD operations --->
+<script>
+  // Get the element representing the current page
+  var currentPageElement = document.getElementById('currentPage');
+
+  // Set the breadcrumb text content to "Items / Add Items"
+  currentPageElement.textContent = "Items / Add Items";
+
+  // Get the <h6> element representing "TEMPLATE"
+  var templateElement = document.querySelector('h6.font-weight-bolder.mb-0');
+
+  // Update the text content of the <h6> element to "Add Items"
+  templateElement.textContent = "Add Items";
+</script>
 {% endblock %}

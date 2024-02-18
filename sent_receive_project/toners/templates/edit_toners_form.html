@@ -58,7 +58,19 @@
     <input id="toner_printer2"  value="{{toners.toner_printer.id}}">
 </div>
 <!--- Hidden data --->
+<script>
+  // Get the element representing the current page
+  var currentPageElement = document.getElementById('currentPage');
 
+  // Set the breadcrumb text content to "Toners / View Toners"
+  currentPageElement.textContent = "Toners / Edit Toners";
+
+  // Get the <h6> element representing "TEMPLATE"
+  var templateElement = document.querySelector('h6.font-weight-bolder.mb-0');
+
+  // Update the text content of the <h6> element to "Edit Toners"
+  templateElement.textContent = "Edit Toners";
+</script>
 
 
 {% endblock %}

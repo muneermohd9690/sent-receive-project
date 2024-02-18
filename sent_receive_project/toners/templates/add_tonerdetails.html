@@ -11,32 +11,46 @@
     </div>
     <form role="form" action="add_tonerdetails_save" method="post" class="card p-3 border-dark mt-3">
         {% csrf_token %}
-        <div class="input-group input-group-sm mb-3">
-            <label class="input-group-text side-label">Toner Number</label>
+        <div class="input-group" >
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">Toner Number</span>
+            </div>
             <select class="form-control selectpicker show-tick"  name="toner_model" placeholder="" data-live-search="true"  data-dropup-auto="false">
                 {% for toner in toners %}
                 <option value="{{toner.id}}">{{toner.toner_model}} </option>
                 {% endfor %}
             </select>
         </div>
-        <div class="input-group input-group-sm mb-3">
-            <label class="input-group-text side-label">Issued To</label>
+
+        <div class="input-group" >
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">Issued To</span>
+            </div>
             <select class="form-control selectpicker show-tick"  name="issued_to" placeholder="" data-live-search="true"  data-dropup-auto="false">
                 {% for prosecution in prosecutions %}
                 <option value="{{prosecution.id}}">{{prosecution.name}} </option>
                 {% endfor %}
             </select>
         </div>
-        <div class="input-group input-group-sm mb-3">
-            <label class="input-group-text side-label">Employee Name</label>
+
+        <div class="input-group" >
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">Employee Name</span>
+            </div>
             <input class="form-control" name="employee_name" placeholder="Enter employee name" type="text">
         </div>
-        <div class="input-group input-group-sm mb-3">
-            <label class="input-group-text side-label">Employee Designation</label>
+
+        <div class="input-group" >
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">Employee Designation</span>
+            </div>
             <input class="form-control" name="employee_designation" placeholder="Enter employee designation" type="text">
         </div>
-        <div class="input-group input-group-sm mb-3">
-            <label class="input-group-text side-label">Status</label>
+
+        <div class="input-group" >
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">Status</span>
+            </div>
             <select class="form-control" name="status">
                 {% for x,y in status %}
                 <option value="{{x}}">{{ y }}</option>
@@ -100,7 +114,7 @@
                 <div class="modal-body">
                     <div class="text-center text-danger form-group">
                         <span>Please enter the quantity:</span>
-                        <input class="form-control" name="quantity" placeholder="Enter quantity" type="text">
+                        <input class="form-control" name="quantity" id="toner_quantity_bulk_modal" placeholder="Enter quantity" type="text">
                     </div>
                     <div class="text-center text-danger form-group">
                         <span>Select Toner Number</span>
@@ -151,4 +165,17 @@
     {% endfor %}
 {% endif %}
 <!--- Messages after CRUD operations --->
+<script>
+  // Get the element representing the current page
+  var currentPageElement = document.getElementById('currentPage');
+
+  // Set the breadcrumb text content to "Toners / View Toners"
+  currentPageElement.textContent = "Toners / Add Tones Details";
+
+  // Get the <h6> element representing "TEMPLATE"
+  var templateElement = document.querySelector('h6.font-weight-bolder.mb-0');
+
+  // Update the text content of the <h6> element to "Add Tones Details"
+  templateElement.textContent = "Add Tones Details";
+</script>
 {% endblock %}

@@ -13,23 +13,29 @@
         <input type="hidden" name="contract_id" value="{{contracts.id}}">
 
 
-        <div class="input-group input-group-sm mb-3">
-            <span class="input-group-text side-label">LPO Number</span>
+        <div class="input-group" >
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">LPO Number</span>
+            </div>
             <input type="text" class="form-control " placeholder="Enter lpo number" name="lpo_no" id="lpo_no"
                    value="{{contracts.lpo_no}}">
-
         </div>
 
-         <div class="input-group input-group-sm mb-3">
-            <label class="input-group-text side-label">Purchased By</label>
+         <div class="input-group" >
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">Purchased By</span>
+            </div>
             <select class="form-control" name="purchased_by" id="purchased_by">
                 {% for x,y in purchased_by_choice %}
                 <option value="{{x}}" {% if x == contracts.purchased_by %} selected {% endif %}>{{ x }}</option>
                 {% endfor %}
             </select>
         </div>
-        <div class="input-group input-group-sm mb-3">
-            <label class="input-group-text side-label">Warranty in years</label>
+
+        <div class="input-group" >
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">Warranty in years</span>
+            </div>
             <select class="form-control" name="warranty_years" id="warranty_years">>
                 {% for x,y in warranty_range %}
                 <option value="{{x}}" {% if x == contracts.warranty_years %} selected {% endif %}>{{ x }}</option>
@@ -37,8 +43,10 @@
             </select>
         </div>
 
-        <div class="input-group input-group-sm mb-3">
-            <label class="input-group-text side-label">Date Purchased </label>
+        <div class="input-group" >
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">Date Purchased </span>
+            </div>
             <input type="text" class="form-control" name="purchased_date" id="purchased_date"
              value="{{contracts.purchased_date.date|date:'Y-m-d'}}">
         </div>
@@ -51,17 +59,21 @@
 
         {% if contracts.pdf_file %}
             <!-- Existing PDF contract -->
-            <div class="input-group input-group-sm mb-3">
-                <label class="input-group-text side-label">Existing PDF contract</label>
-                <span class="form-control">{{ contracts.pdf_file }}</span>
+            <div class="input-group" >
+                <div class="input-group-prepend" >
+                    <span class="bordered-label side-label">Existing PDF contract</span>
+                </div>
+                <span class="form-control" style="margin-top:10px;">{{ contracts.pdf_file }}</span>
                 <a href="{{ contracts.pdf_file.url }}" target="_blank" class="btn btn-info" data-bs-toggle="tooltip"
                         data-bs-placement="bottom" title="View PDF"><i class="far fa-file-pdf"></i></a>
             </div>
         {% endif %}
 
-        <div class="input-group input-group-sm mb-3">
-                <!-- Your existing form fields -->
-                <label class="input-group-text side-label">New PDF contract </label>
+        <div class="input-group" >
+                <div class="input-group-prepend" >
+                    <!-- Your existing form fields -->
+                    <span class="bordered-label side-label">New PDF contract </span>
+                </div>
                 <input type="file" name="pdf_file" id="pdf_file">
         </div>
 
@@ -114,7 +126,19 @@
 
 
 </div>
+<script>
+  // Get the element representing the current page
+  var currentPageElement = document.getElementById('currentPage');
 
+  // Set the breadcrumb text content to "Toners / View Toners"
+  currentPageElement.textContent = "Contracts / Edit Contracts";
+
+  // Get the <h6> element representing "TEMPLATE"
+  var templateElement = document.querySelector('h6.font-weight-bolder.mb-0');
+
+  // Update the text content of the <h6> element to "Edit Contracts"
+  templateElement.textContent = "Edit Contracts";
+</script>
 <!--- Hidden data --->
 <div class="text-center mt-5" style="display: none;">
 

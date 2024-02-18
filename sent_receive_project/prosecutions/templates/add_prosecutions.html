@@ -3,23 +3,37 @@
 {% block content %}
 
 <div class="container">
-  <h2>Add Prosecutions</h2>
-  <p>Enter the new prosecution and location below:</p>
-  <form  role="form" action="add_prosecutions_save" method="post">
+  <div class="row">
+        <div class="card card-body border-dark mt-3">
+          <span class="text-center"><h2><h2>Add Prosecutions</h2></h2></span>
+        </div>
+  </div>
+  <form  role="form" action="add_prosecutions_save" method="post" class="card p-3 border-dark mt-3">
     {% csrf_token %}
-    <div class="row">
-      <div class="col">
-        <label>Prosecution Name</label>
+    <div class="input-group" >
+      <div class="input-group-prepend" >
+        <span class="bordered-label side-label">Prosecution Name</span>
+      </div>
         <input type="text" class="form-control"  placeholder="Enter prosecution" name="name">
-      </div>
-      <div class="col">
-        <label>Prosecution Location</label>
-        <input type="text" class="form-control" placeholder="Enter location" name="location">
-      </div>
     </div>
+
+    <div class="input-group" >
+      <div class="input-group-prepend" >
+        <span class="bordered-label side-label">Prosecution Location</span>
+      </div>
+        <input type="text" class="form-control" placeholder="Enter location" name="location">
+    </div>
+
     <button type="submit" class="btn btn-primary mt-3">Add Prosecution</button>
   </form>
 </div>
+<script>
+  // Get the element representing the current page
+  var currentPageElement = document.getElementById('currentPage');
+
+  // Set the breadcrumb text content to "Prosecutions / Add Prosecutions"
+  currentPageElement.textContent = "Prosecutions / Add Prosecutions";
+</script>
 {% endblock %}
 
 

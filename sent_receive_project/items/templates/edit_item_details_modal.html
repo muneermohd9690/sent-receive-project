@@ -3,8 +3,10 @@
 <!-- Edit Modal -->
 
 <input type="hidden" name="detail_id" value="{{detail.id}}">
-<div class="input-group input-group-sm mb-3" >
-    <label class="input-group-text side-label" >Model Number</label>
+<div class="input-group" >
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">Model Number</span>
+            </div>
     <select class="form-control selectpicker show-tick " name="model_no"
             id="model_no" data-live-search="true"  >
         {% for item in items %}
@@ -12,33 +14,41 @@
             {{item.model_no}}</option>
         {% endfor %}
     </select>
-
 </div>
-<div class="input-group input-group-sm mb-3">
-    <span class="input-group-text side-label">Serial Number</span>
+
+<div class="input-group" >
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">Serial Number</span>
+            </div>
     <input type="text" class="form-control "
            placeholder="Enter serialnumber" name="serial_no"
            id="{{ detail.pk }}serial_no"
            value="{{detail.serial_no}}">
-
 </div>
-<div class="input-group input-group-sm mb-3">
-    <span class="input-group-text side-label">Tag Number</span>
+
+<div class="input-group" >
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">Tag Number</span>
+            </div>
     <input type="text" class="form-control " placeholder="enter tag number"
            name="tag_no" id="{{ detail.pk }}tag_no"
            value="{{detail.tag_no}}">
 </div>
 
-<div class="input-group input-group-sm mb-3">
-    <span class="input-group-text side-label">Room Tag</span>
+<div class="input-group" >
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">Room Tag</span>
+            </div>
     <input type="text" class="form-control "
            placeholder="enter room tag number"
            name="room_tag" id="{{ detail.pk }}room_tag"
            value="{{detail.room_tag}}">
 </div>
 
-<div class="input-group input-group-sm mb-3">
-    <span class="input-group-text side-label">Issued to</span>
+<div class="input-group" >
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">Issued to</span>
+            </div>
     <select class="form-control selectpicker show-tick "
             name="issued_to" id="{{ detail.pk }}issued_to"
             data-live-search="true" >
@@ -51,8 +61,10 @@
     </select>
 </div>
 
-<div class="input-group input-group-sm mb-3">
-    <span class="input-group-text side-label">Employee Name</span>
+<div class="input-group" >
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">Employee Name</span>
+            </div>
     <input type="text" class="form-control "
            placeholder="enter employee name"
            name="employee_name"
@@ -60,8 +72,10 @@
            value="{{detail.employee_name}}">
 </div>
 
-<div class="input-group input-group-sm mb-3">
-    <span class="input-group-text side-label">Employee Designation</span>
+<div class="input-group" >
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">Employee Designation</span>
+            </div>
     <input type="text" class="form-control "
            placeholder="enter employee designation"
            name="employee_designation"
@@ -78,18 +92,25 @@
            value="{{detail.date_dispatched.date|date:'Y-m-d'}}">
 </div>-->
 
-<div class="input-group input-group-sm mb-3">
-    <span class="input-group-text side-label">Date Dispatched </span>
+<div class="input-group" >
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">Date Dispatched </span>
+            </div>
     <div class="date-picker-container">
+
         <input class="form-control datepicker"
                name="date_dispatched"
                id="{{ detail.pk }}date_dispatched"
                value="{{detail.date_dispatched.date|date:'Y-m-d'}}">
+
     </div>
 </div>
 
-<div class="input-group input-group-sm mb-3">
-    <span class="input-group-text side-label">Status</span>
+
+<div class="input-group" >
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">Status</span>
+            </div>
     <select class="form-control " name="status"
             id="{{ detail.pk }}status">
         {% for x,y in status %}
@@ -107,4 +128,23 @@
     $(document).ready(function () {
         $('.selectpicker').selectpicker();
     });
+</script>
+<script>
+$(document).on('shown.bs.modal', '#editItemDetailsModal', function () {
+    // Initialize date picker after the modal is shown
+    $(".datepicker").daterangepicker({
+        singleDatePicker: true,
+        opens: 'left',
+        "showDropdowns": true,
+        ranges: {
+            'Today': [moment(), moment()],
+        },
+        autoUpdateInput: true,
+        minYear: 2022,
+        locale: {
+            format: 'YYYY-MM-DD',
+            cancelLabel: 'Clear'
+        }
+    });
+});
 </script>

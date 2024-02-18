@@ -4,7 +4,7 @@
 
 <div class="container" xmlns="">
   <h2>Toner Details</h2>
-  <div class="input-group input-group-sm mb-2">
+  <div class="input-group input-group-sm mb-2" id="table-search">
         <input class="form-control" id="search" type="text" placeholder="Search.." >
         <a href="{% url 'view_tonerdetails' item_id %}" id="item_id" data-value="{{item_id}}"
            title="Reset View" class="btn btn-dark btn-lg"><i class="fas fa-sync-alt"></i></a>
@@ -111,7 +111,19 @@
     {% endfor %}
 {% endif %}
 <!---------------------------- Messages after CRUD operations ------------------------------->
+<script>
+  // Get the element representing the current page
+  var currentPageElement = document.getElementById('currentPage');
 
+  // Set the breadcrumb text content to "Toners / View Toner Details"
+  currentPageElement.textContent = "Toners / View Toner Details";
+
+  // Get the <h6> element representing "TEMPLATE"
+  var templateElement = document.querySelector('h6.font-weight-bolder.mb-0');
+
+  // Update the text content of the <h6> element to "View Toner Details"
+  templateElement.textContent = "View Toner Details";
+</script>
 
 
 

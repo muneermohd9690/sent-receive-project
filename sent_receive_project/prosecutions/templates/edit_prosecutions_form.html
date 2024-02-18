@@ -3,22 +3,27 @@
 {% block content %}
 
 <div class="container">
-    <h2>Edit Prosecution | Prosecution ID :{{ prosecutions.id }}</h2>
-    <p>Edit the prosecution and location below:</p>
-    <form role="form" action="edit_prosecutions_save" method="post">
+    <div class="row">
+        <div class="card card-body border-dark mt-3">
+            <span class="text-center"><h2>Edit Prosecution | Prosecution ID :{{ prosecutions.id }}</h2></span>
+        </div>
+    </div>
+    <form role="form" action="edit_prosecutions_save" method="post" class="card p-3 border-dark mt-3">
         {% csrf_token %}
-        <div class="row">
-            <div class="col">
-                <label>Prosecution Name</label>
+        <input type="hidden" name="prosecutions_id" value="{{prosecutions.id}}">
+        <div class="input-group" >
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">Prosecution Name</span>
+            </div>
                 <input type="text" class="form-control" placeholder="Enter prosecution" name="name"
                        id="name" value="{{prosecutions.name}}">
-                <input type="hidden" name="prosecutions_id" value="{{prosecutions.id}}">
+        </div>
+        <div class="input-group" >
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">Prosecution Location</span>
             </div>
-            <div class="col">
-                <label>Prosecution Location</label>
                 <input type="text" class="form-control" placeholder="Enter location" name="location" id="location"
                        value="{{prosecutions.location}}">
-            </div>
         </div>
         <button type="submit" class="btn btn-success mt-3 btn-action-EPF" disabled data-bs-toggle="tooltip" data-bs-placement="bottom" title="Save"><i class="fas fa-save"></i></button>
         <a href="{% url 'view_prosecutions' %}" class="btn btn-primary mt-3" id="btn-back" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Back"><i class="fas fa-angle-double-left"></i></a>
@@ -48,12 +53,26 @@
         <!-- Modal -->
     </form>
 </div>
+<script>
+  // Get the element representing the current page
+  var currentPageElement = document.getElementById('currentPage');
+
+  // Set the breadcrumb text content to "Prosecutions / Edit Prosecutions"
+  currentPageElement.textContent = "Prosecutions / Edit Prosecutions";
+
+  // Get the <h6> element representing "TEMPLATE"
+  var templateElement = document.querySelector('h6.font-weight-bolder.mb-0');
+
+  // Update the text content of the <h6> element to "Edit Prosecutions"
+  templateElement.textContent = "Edit Prosecutions";
+</script>
 <!--- Hidden data --->
 <div class="text-center mt-5" style="display :none;">
     <input id="name2" value="{{ prosecutions.name }}">
     <input id="location2"  value="{{ prosecutions.location }}">
 </div>
 <!--- Hidden data --->
+
 {% endblock %}
 
 

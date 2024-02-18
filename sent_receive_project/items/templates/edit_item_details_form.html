@@ -12,7 +12,9 @@
         {% csrf_token %}
         <input type="hidden" name="detail_id" value="{{detail.id}}">
         <div class="input-group" >
-            <label class="side-label">Model Number</label>
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">Model Number</span>
+            </div>
             <select class="form-control selectpicker show-tick" name="model_no" id="model_no" data-live-search="true"  data-dropup-auto="false">
                         {% for item in items %}
                         <option value="{{item.id}}" {% if item.id == detail.model_no.id %} selected {% endif %}>
@@ -22,60 +24,83 @@
         </div>
 
         <div class="input-group">
-            <label class="side-label">Serial Number</label>
-            <input type="text" class="form-control " placeholder="Enter serialnumber" name="serial_no" id="serial_no"
-                   value="{{detail.serial_no}}">
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">Serial Number</span>
+            </div>
+                <input type="text" class="form-control " placeholder="Enter serialnumber" name="serial_no" id="serial_no"
+                       value="{{detail.serial_no}}">
 
         </div>
 
         <div class="input-group">
-            <label class="side-label">Tag Number</label>
-            <input type="text" class=" form-control " placeholder="enter tag number" name="tag_no" id="tag_no"
-                   value="{{detail.tag_no}}">
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">Tag Number</span>
+            </div>
+                <input type="text" class=" form-control " placeholder="enter tag number" name="tag_no" id="tag_no"
+                       value="{{detail.tag_no}}">
         </div>
 
+
         <div class="input-group">
-            <label class="side-label">Room Tag</label>
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">Room Tag</span>
+            </div>
             <input type="text" class="form-control " placeholder="enter room tag number" name="room_tag" id="room_tag"
                    value="{{detail.room_tag}}">
+
+        </div>
+
+        <div class="input-group input-group-sm">
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">Issued to</span>
+            </div>
+                <select class="form-control " name="issued_to" id="issued_to" data-live-search="true"  data-dropup-auto="false">
+                    {% for prosecution in prosecutions %}
+                    <option value="{{prosecution.id}}" {% if prosecution.id == detail.issued_to.id %} selected {% endif %}>
+                        {{prosecution.name}}</option>
+                    {% endfor %}
+                </select>
+
         </div>
 
         <div class="input-group">
-            <label class="side-label">Issued to</label>
-            <select class="form-control selectpicker show-tick " name="issued_to" id="issued_to" data-live-search="true"  data-dropup-auto="false">
-                {% for prosecution in prosecutions %}
-                <option value="{{prosecution.id}}" {% if prosecution.id == detail.issued_to.id %} selected {% endif %}>
-                    {{prosecution.name}}</option>
-                {% endfor %}
-            </select>
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">Employee Name</span>
+            </div>
+                <input type="text" class="form-control " placeholder="enter employee name" name="employee_name" id="employee_name"
+                       value="{{detail.employee_name}}">
+
         </div>
 
         <div class="input-group">
-            <label class="side-label">Employee Name</label>
-            <input type="text" class="form-control " placeholder="enter employee name" name="employee_name" id="employee_name"
-                   value="{{detail.employee_name}}">
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">Employee Designation</span>
+            </div>
+                <input type="text" class="form-control " placeholder="enter employee designation" name="employee_designation" id="employee_designation"
+                       value="{{detail.employee_designation}}">
+
         </div>
 
         <div class="input-group">
-            <label class="side-label">Employee Designation</label>
-            <input type="text" class="form-control " placeholder="enter employee designation" name="employee_designation" id="employee_designation"
-                   value="{{detail.employee_designation}}">
-        </div>
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">Date Dispatched </span>
+            </div>
+                <input type="text" class="form-control" name="date_dispatched" id="date_dispatched"
+                       value="{{detail.date_dispatched.date|date:'Y-m-d'}}">
 
-        <div class="input-group">
-            <label class="side-label">Date Dispatched </label>
-            <input type="text" class="form-control" name="date_dispatched" id="date_dispatched"
-                   value="{{detail.date_dispatched.date|date:'Y-m-d'}}">
         </div>
 
 
         <div class="input-group">
-            <label class="side-label ">Status</label>
-            <select class=" form-control " name="status" id="status">
-                {% for x,y in status %}
-                <option value="{{x}}" {% if x == detail.status %} selected {% endif %}>{{ x }}</option>
-                {% endfor %}
-            </select>
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label ">Status</span>
+            </div>
+                <select class=" form-control " name="status" id="status">
+                    {% for x,y in status %}
+                    <option value="{{x}}" {% if x == detail.status %} selected {% endif %}>{{ x }}</option>
+                    {% endfor %}
+                </select>
+
         </div>
 
         <button type="submit" name="save" value="save" class="btn btn-success mt-3 btn-action-EIDF" disabled data-bs-toggle="tooltip" data-bs-placement="bottom" title="Save"><i class="fas fa-save"></i></button>
@@ -126,7 +151,19 @@
 
 
 </div>
+<script>
+  // Get the element representing the current page
+  var currentPageElement = document.getElementById('currentPage');
 
+  // Set the breadcrumb text content to "Items / Edit Item Details"
+  currentPageElement.textContent = "Items / Edit Item Details";
+
+  // Get the <h6> element representing "TEMPLATE"
+  var templateElement = document.querySelector('h6.font-weight-bolder.mb-0');
+
+  // Update the text content of the <h6> element to "Edit Item Details"
+  templateElement.textContent = "Edit Item Details";
+</script>
 <!--- Hidden data --->
 <div class="text-center mt-5" style="display: none;">
 <!--    <input id="model_no2" value="{{itemdetails.model_no.id}}">-->

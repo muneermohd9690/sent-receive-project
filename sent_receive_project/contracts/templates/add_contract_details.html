@@ -10,20 +10,28 @@
     </div>
     <form role="form" action="contract_details_save" method="post" enctype="multipart/form-data" class="card p-3 border-dark mt-3">
         {% csrf_token %}
-        <div class="input-group input-group-sm mb-3">
-            <label class="input-group-text side-label">LPO Number</label>
+        <div class="input-group" >
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">LPO Number</span>
+            </div>
             <input class="form-control" name="lpo_no" placeholder="Enter LPO-number" type="text">
         </div>
-        <div class="input-group input-group-sm mb-3">
-            <label class="input-group-text side-label">Purchased By</label>
+
+        <div class="input-group" >
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">Purchased By</span>
+            </div>
             <select class="form-control" name="purchased_by">
                 {% for x,y in purchased_by_choice %}
                 <option value="{{x}}">{{ y }}</option>
                 {% endfor %}
             </select>
         </div>
-        <div class="input-group input-group-sm mb-3">
-            <label class="input-group-text side-label">Warranty in years</label>
+
+        <div class="input-group" >
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">Warranty in years</span>
+            </div>
             <select class="form-control" name="warranty_years">
                 {% for x,y in warranty_range %}
                 <option value="{{x}}">{{ y }}</option>
@@ -31,14 +39,19 @@
             </select>
         </div>
 
-        <div class="input-group input-group-sm mb-3">
-            <label class="input-group-text side-label">Date Purchased </label>
+        <div class="input-group" >
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">Date Purchased </span>
+            </div>
             <input type="text" class="form-control" name="purchased_date" id="purchased_date">
         </div>
 
-        <div class="input-group input-group-sm mb-3">
+
+        <div class="input-group" >
+            <div class="input-group-prepend" >
                 <!-- Your existing form fields -->
-                <label class="input-group-text side-label">Upload contract </label>
+                <span class="bordered-label side-label">Upload contract </span>
+            </div>
                 <input type="file" name="pdf_file" id="pdf_file">
         </div>
 
@@ -74,4 +87,17 @@
 {% endif %}
 <!--- Messages after CRUD operations --->
 </div>
+<script>
+  // Get the element representing the current page
+  var currentPageElement = document.getElementById('currentPage');
+
+  // Set the breadcrumb text content to "Toners / View Toners"
+  currentPageElement.textContent = "Contracts / Add Contracts";
+
+  // Get the <h6> element representing "TEMPLATE"
+  var templateElement = document.querySelector('h6.font-weight-bolder.mb-0');
+
+  // Update the text content of the <h6> element to "Edit Toner Details"
+  templateElement.textContent = "Add Contracts";
+</script>
 {% endblock %}
