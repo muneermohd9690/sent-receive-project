@@ -10,10 +10,12 @@ from toners.utils import calc_toner_stock_alert
 # Create your views here.
 
 def view_yearly_toner_estimate(request):
-    toner_counts=TonerDetails.objects.values('toner_model_id__toner_model').annotate(total_toner_count=Count('id'),
-        printer_model=F('toner_model_id__toner_printer_id__model_no'),remaining_quantity=F('toner_model_id__remaining_qty'),
-         printer_description=F('toner_model_id__toner_printer_id__description'))\
-        .filter(date_dispatched__lte=date.today(),date_dispatched__gte=date.today() - relativedelta(days=365),status="Out-of-Stock")
+    toner_counts=(TonerDetails.objects.values('toner_model_id__toner_model')
+                .annotate(total_toner_count=Count('id'),
+                printer_model=F('toner_model_id__toner_printer_id__model_no'),remaining_quantity=F('toner_model_id__remaining_qty'),
+                printer_description=F('toner_model_id__toner_printer_id__description'))\
+                .filter(date_dispatched__lte=date.today(),date_dispatched__gte=date.today() - relativedelta(days=365),status="Out-of-Stock"))\
+                .order_by('printer_model','printer_description')
     data_calc_cart_total = calc_cart_total(request)
     cart_total = data_calc_cart_total['cart_total']
     data_calc_toner_stock_alert = calc_toner_stock_alert(request)

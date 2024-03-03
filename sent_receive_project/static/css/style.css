@@ -259,23 +259,23 @@ div.dataTables_wrapper div.dataTables_filter label {
 
 #btn-exporttopdf {
 
-    margin-top: -40px;
+    margin-top: 20px;
     position: absolute;
 
 }
 #btn-exporttocsv{
-    margin-top: -40px;
+    margin-top: 20px;
     margin-left: 50px;
     position: absolute;
 }
 #btn-bulkdelete{
-    margin-top: -40px;
-    margin-left: 230px;
+    margin-top: 20px;
+    margin-left: 210px;
     position: absolute;
 }
 
 #btn-bulkdispatch{
-    margin-top: -40px;
+    margin-top: 20px;
     margin-left: 100px;
     position: absolute;
 }
@@ -413,6 +413,8 @@ input.form-control.datepicker {
     margin: 0;
     padding: 0;
     font-family: sans-serif;
+    height: 100%;
+    text-align: center;
     /*background: linear-gradient(to right, #b92b27, #1565c0)*/
     /*background:linear-gradient(#141e30, #243b55);*/
     background: #222D32;
@@ -429,6 +431,8 @@ input.form-control.datepicker {
 .card{
     margin-bottom:20px;
     border:none;
+    text-align: center;
+
 }
 input.form-control#username::placeholder {
     color: grey;
@@ -444,11 +448,14 @@ input.form-control#password::placeholder {
     position: absolute;
     top: 50%;
     left: 50%;
+
     background: #191919;
-    ;
-    text-align: center;
+
+    /*text-align: center;*/
     transition: 0.25s;
-    margin-top: 100px
+    margin-top: 200px;
+
+
 
 }
 
@@ -480,6 +487,11 @@ input.form-control#password::placeholder {
     border-color: #2ecc71
 }
 
+.form-check-input#show-password-checkbox[type="checkbox"] {
+    margin-left: 5px !important;
+    margin-top:-10px !important;
+}
+
 .box button[type="submit"] {
     border: 0;
     background: none;
@@ -499,7 +511,7 @@ input.form-control#password::placeholder {
     background: #2ecc71
 }
 
-.register-button {
+a.register-button.btn {
     border: 0;
     background: none;
     display: block;
@@ -509,13 +521,13 @@ input.form-control#password::placeholder {
     padding: auto;
     outline: none;
     color: white;
-    width: 100px;
+    width: 110px;
     border-radius: 24px;
     transition: 0.25s;
     cursor: pointer
 }
 
-.register-button:hover {
+a.register-button.btn:hover {
     background: #2ecc71
 }
 
@@ -543,6 +555,16 @@ input.form-control#id_password1::placeholder {
 input.form-control#id_password2::placeholder {
     color: grey;
 
+}
+
+p.text-muted-loginpage a#registerpage_sigin {
+    color: #2ecc71; /* Default color for "sigin" */
+    text-decoration: none; /* Remove underline */
+}
+
+p.text-muted-loginpage a#registerpage_sigin:hover {
+    color: #3498db; /* Color change on hover */
+    text-decoration: underline; /* Underline on hover */
 }
 
 .dropdown-menu-wrapper.prosecution,.dropdown-menu-wrapper.items{
@@ -611,11 +633,11 @@ input.form-control#id_password2::placeholder {
 #search.form-control {
     margin-top: 10px;
 }
-select.form-control{
-    color: blue; /* Example color (change to desired color) */
+/*select.form-control{
+    color: blue; *//* Example color (change to desired color) *//*
     border-color:red;
 
-}
+}*/
 .selectpicker.form-control {
     border-color: blue !important;
 }
@@ -625,3 +647,23 @@ div.dropdown.bootstrap-select.form-control{
 div.dropdown.bootstrap-select.form-control.show select#issued_to {
     border-color: blue !important;
 }
+
+.login-logo {
+
+
+    width: 500px;
+    padding: 40px;
+    position: absolute;
+    margin-top: 70px;
+    left: 50%;
+    background: #191919;
+
+    text-align: center;
+    transition: 0.25s;
+
+    background-color: transparent !important;
+
+    border-radius: 50%;
+    z-index: 1;
+}
+

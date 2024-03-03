@@ -87,11 +87,12 @@
             {% endfor %}
             </tbody>
         </table>
-        <a href="{% url 'tonerdetails_export_topdf' item_id %}"  rel="noopener noreferrer"  class="btn btn-secondary" id="btn-exporttopdf" data-bs-toggle="tooltip" data-bs-placement="bottom" title="export to pdf"><i class="fas fa-file-pdf"></i></a>
-        <a href="{% url 'tonerdetails_export_toexcel' item_id %}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" id="btn-exporttocsv" data-bs-toggle="tooltip" data-bs-placement="bottom" title="export to csv"><i class="fas fa-file-excel"></i></a>
-        <a href="{% url 'view_toners' %}" class="btn btn-primary" id="btn-back-to-viewtoners" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Back-to-viewtoners"><i class="fas fa-angle-double-left"></i></a>
-        <button type="submit" class="btn btn-danger bulk_delete" style="display: none;" id="btn-bulkdelete">Bulk Delete</button>
-        <button type="submit" class="btn btn-secondary" style="display: none;" id="btn-bulkdispatch">Bulk Dispatch</button>
+        <a href="{% url 'tonerdetails_export_topdf' item_id %}"  rel="noopener noreferrer"  class="btn btn-outline-primary btn-sm mb-0 me-3"
+           id="btn-exporttopdf" data-bs-toggle="tooltip" data-bs-placement="bottom" title="export to pdf"><i class="fas fa-file-pdf"></i></a>
+        <a href="{% url 'tonerdetails_export_toexcel' item_id %}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary btn-sm mb-0 me-3"
+           id="btn-exporttocsv" data-bs-toggle="tooltip" data-bs-placement="bottom" title="export to csv"><i class="fas fa-file-excel"></i></a>
+        <button type="submit" class="btn btn-danger bulk_delete btn-sm mb-0 me-3" style="display: none;" id="btn-bulkdelete">Bulk Delete</button>
+        <button type="submit" class="btn btn-secondary btn-sm mb-0 me-3" style="display: none;" id="btn-bulkdispatch">Bulk Dispatch</button>
     </div>
 
 

@@ -3770,7 +3770,8 @@ fieldset:disabled .btn {
 
 .btn-info {
   --bs-btn-color: #fff;
-  --bs-btn-bg: #1A73E8;
+  /*--bs-btn-bg: #1A73E8;*/
+  --bs-btn-bg: #548597;
   --bs-btn-border-color: #1A73E8;
   --bs-btn-hover-color: #fff;
   --bs-btn-hover-bg: #1662c5;
@@ -3787,15 +3788,21 @@ fieldset:disabled .btn {
 
 .btn-warning {
   --bs-btn-color: #000;
-  --bs-btn-bg: #fb8c00;
-  --bs-btn-border-color: #fb8c00;
+  /*--bs-btn-bg: #fb8c00;*/
+  --bs-btn-bg: #198754b5;
+  /*--bs-btn-border-color: #fb8c00;*/
+  --bs-btn-border-color: #198754b5;
   --bs-btn-hover-color: #000;
-  --bs-btn-hover-bg: #fc9d26;
-  --bs-btn-hover-border-color: #fb981a;
+  /*--bs-btn-hover-bg: #fc9d26;*/
+  --bs-btn-hover-bg: #198754b5;
+  /*--bs-btn-hover-border-color: #fb981a;*/
+  --bs-btn-hover-border-color: #198754b5;
   --bs-btn-focus-shadow-rgb: 213, 119, 0;
   --bs-btn-active-color: #000;
-  --bs-btn-active-bg: #fca333;
-  --bs-btn-active-border-color: #fb981a;
+  /*--bs-btn-active-bg: #fca333;*/
+  --bs-btn-active-bg: #198754b5;
+/*  --bs-btn-active-border-color: #fb981a;*/
+  --bs-btn-active-border-color: #198754b5;
   --bs-btn-active-shadow: none;
   --bs-btn-disabled-color: #000;
   --bs-btn-disabled-bg: #fb8c00;
@@ -3804,7 +3811,8 @@ fieldset:disabled .btn {
 
 .btn-danger {
   --bs-btn-color: #000;
-  --bs-btn-bg: #F44335;
+  /*--bs-btn-bg: #F44335;*/
+  --bs-btn-bg: #ef4f43;
   --bs-btn-border-color: #F44335;
   --bs-btn-hover-color: #000;
   --bs-btn-hover-bg: #f65f53;
@@ -5645,8 +5653,8 @@ fieldset:disabled .btn {
   --bs-pagination-focus-bg: #f0f2f5;
   --bs-pagination-focus-box-shadow: 0 0 0 0.2rem rgba(233, 30, 99, 0.25);
   --bs-pagination-active-color: #fff;
-  --bs-pagination-active-bg: #e91e63;
-  --bs-pagination-active-border-color: #e91e63;
+  --bs-pagination-active-bg: #007bff;
+  --bs-pagination-active-border-color: #007bff;
   --bs-pagination-disabled-color: #6c757d;
   --bs-pagination-disabled-bg: #fff;
   --bs-pagination-disabled-border-color: #dee2e6;
@@ -24993,17 +25001,20 @@ body:not(.dark-version) .sidenav.bg-transparent .collapse .nav-item .nav-link.ac
   box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.09), 0 2px 3px -1px rgba(0, 0, 0, 0.07);
 }
 
-/********** to control the pagination links *******************/
+/********** to control the pagination links to make boxes *******************/
 .page-item .page-link,
 .page-item span {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #7b809a;
+  /*color: #7b809a;*/
+  color:#1a237e;
   padding: 0;
-  margin: 0 3px;
-  border-radius: 50% !important;
-  width: 36px;
+  margin: 20px 0;
+  /*border-radius: 50% !important;*/
+  border-radius: 0;
+  /*width: 36px;*/
+  width: 60px;
   height: 36px;
   font-size: 0.875rem;
 }
@@ -25843,8 +25854,10 @@ body:not(.dark-version) .sidenav.bg-transparent .collapse .nav-item .nav-link.ac
 
 /**************************** this is to define font size in the table data *************************/
 .table td{
-    font-size:14px;
-    font-weight:bold;
+    font-size:16px;
+    /*font-weight:bold;*/
+    font-family:system-ui;
+    color:black;
 }
 /**************************** this is to define font size in the table data *************************/
 

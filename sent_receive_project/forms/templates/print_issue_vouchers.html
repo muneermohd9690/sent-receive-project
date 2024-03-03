@@ -110,7 +110,7 @@
         }
         @frame header_frame {           /* Static Frame */
             -pdf-frame-content: header_greybox3;
-            right: 638pt; width: 512pt; top: 500pt; height: 40pt;
+            right: 638pt; width: 512pt; top: 560pt; height: 40pt; margin-bottom:10pt;
 
         }
         @frame header_frame {           /* Static Frame */
@@ -191,12 +191,13 @@
             text-align: right;
             margin-right: 230%;
      }
-    .table1{
-    border:2px solid black;
-    margin-top:380px;
-    margin-left:1px;
-    margin-right:auto;
+    .table1 {
+    border: 2px solid black;
+    margin-top: 445px;
+    margin-left: 1px;
+    margin-right: auto;
     padding-left: 5px;
+    margin-bottom: 20px; /* Adjust this value for the desired space between table and frame */
     }
     .table1 th{
     text-align: center;
@@ -219,7 +220,7 @@
     }
     .table2{
     border:2px solid black;
-    margin-top:70px;
+    margin-top:100px;
     margin-left:1px;
     margin-right:auto;
     padding-left: 5px;
@@ -331,8 +332,19 @@
                 <td>{{device}}</td>
                 <td>{{detail.model_no.model_no}}</td>
                 <td>{{detail.serial_no}}</td>
-                <td>{{detail.tag_no}}</td>
-                <td>{{detail.room_tag}}</td>
+                {% if detail.tag_no == 0 or detail.tag_no is none or detail.tag_no == '-' or detail.tag_no == "" %}
+                    <td>-</td>
+                {% else %}
+                    <td>{{ detail.tag_no }}</td>
+                {% endif %}
+
+                {% if detail.room_tag == 0 or detail.room_tag is none or detail.room_tag == '-' or detail.room_tag == "" %}
+                    <td>-</td>
+                {% else %}
+                    <td>{{ detail.room_tag }}</td>
+                {% endif %}
+<!--                <td>{{detail.tag_no}}</td>-->
+<!--                <td>{{detail.room_tag}}</td>-->
             </tr>
             {% endfor %}
         </table>

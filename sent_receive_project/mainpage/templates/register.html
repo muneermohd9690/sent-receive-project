@@ -10,6 +10,9 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="card">
+                    <div class="login-logo">
+                    {% load static %}<img src="{% static 'images/logo.ico' %}" alt=" login logo">
+                    </div>
 
                     <form autocomplete="off" method="POST" class="box" novalidate id="registration-form">
                         {% csrf_token %}
@@ -25,14 +28,15 @@
                                 <!-- Show Password checkbox -->
                                 <div class="form-check" style="margin-left: 110px; display: flex; align-items: center;">
                                     <input class="form-check-input" type="checkbox" id="show-password-checkbox" onclick="togglePasswordVisibility('id_password1', 'id_password2')">
-                                    <label class="form-check-label" for="show-password-checkbox" style="color: white; margin-left: 50px;">
+                                    <label class="form-check-label" for="show-password-checkbox" style="color: white; margin-left: 10px; height:30px;">
                                         Show Password
                                     </label>
                                 </div>
 <!--                        <input class="btn btn-primary btn-sm mt-4 mb-3" type="submit" value="Create User">-->
                         <button type="submit" >Create User</button>
 
-                        <p class="text-muted-loginpage">Already have an account? <a href="{% url 'login' %}">Sign in</a></p>
+                        <p class="text-muted-loginpage">Already have an account? <a href="{% url 'login' %}"
+                             id="registerpage_sigin">Sign in</a></p>
                     </form>
                 </div>
             </div>

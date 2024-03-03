@@ -230,7 +230,7 @@ $(document).ready(function(){
 
 
 <!--------------------------------------- Paginator and keyup Search ----------------------------->
-var table;
+/*var table;
 $(document).ready(function ()
     {
             var currentURL = window.location.href;
@@ -269,6 +269,28 @@ $(document).ready(function ()
                         });
 
                 }
+            $('#search').on( 'keyup', function ()
+            {
+                table.search( this.value ).draw();
+            });
+    });
+    */
+var table;
+$(document).ready(function ()
+    {
+
+
+                     var table = $('#myTable').DataTable
+                        ({
+                                paging: true,
+                                pageLength: 10,
+                                lengthChange: false,
+                                bInfo: false,
+                                bSort: false,
+                                order:[]
+                        });
+
+
             $('#search').on( 'keyup', function ()
             {
                 table.search( this.value ).draw();

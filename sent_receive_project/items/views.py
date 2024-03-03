@@ -134,12 +134,63 @@ def add_items_details(request):
 
 
 # this is where item details are added like modelno,serialno,department,empname
+# @cache_control(no_cache=True, must_revalidate=True,no_store=True)
+# @login_required(login_url="login")
+# def add_items_details_save(request):
+#     items = Items.objects.all()
+#     if request.method == "POST":
+#         serial_no = request.POST.get("serial_no").strip()
+#
+#         model_no_id = request.POST.get("model_no").strip()
+#         model_no = Items.objects.get(id=model_no_id)
+#
+#         tag_no = request.POST.get("tag_no").strip()
+#         room_tag = request.POST.get("room_tag").strip()
+#
+#         name_id = request.POST.get("issued_to").strip()
+#         issued_to = Prosecutions.objects.get(id=name_id)
+#
+#         employee_name = request.POST.get("employee_name").strip()
+#
+#         employee_designation = request.POST.get("employee_designation").strip()
+#
+#
+#         status = request.POST.get("status")
+#
+#         ItemDetails_model = ItemDetails(serial_no=serial_no, model_no=model_no, tag_no=tag_no, room_tag=room_tag, issued_to=issued_to,
+#                                         employee_name=employee_name, employee_designation=employee_designation,
+#                                         status=status)
+#         ItemDetails_model.save()
+#         messages.success(request, "Item Details Added Successfully")
+#         calc_total_qty()
+#         calc_remaining_qty()
+#         return redirect('view_items')
+#     else:
+#         return redirect('view_items')
+
 @cache_control(no_cache=True, must_revalidate=True,no_store=True)
 @login_required(login_url="login")
 def add_items_details_save(request):
-    items = Items.objects.all()
     if request.method == "POST":
         serial_no = request.POST.get("serial_no").strip()
+
+        # Check if the checkbox is checked
+        if request.POST.get("na_checkbox"):
+            serial_no = None  # Set serial number to None if NA checkbox is checked
+        else:
+            # Check if serial number is empty
+            if not serial_no:
+                messages.error(request, "Please enter a serial number.")
+                return redirect('add_items_details')
+        if serial_no is not None:  # Check for existing serial number only if it's not None
+            # Check if the serial number already exists
+            if ItemDetails.objects.filter(serial_no=serial_no).exists():
+                existing_item = ItemDetails.objects.get(serial_no=serial_no)
+                model_name = existing_item.model_no.model_no  # Assuming model_no has a 'name' field
+                message = f"Serial number {serial_no} already exists. Associated model: {model_name}."
+                # serial_number_error = f"{str(serial_number_count)} serial numbers already exists in Database."
+                messages.error(request, message)
+                return redirect('view_items')
 
         model_no_id = request.POST.get("model_no").strip()
         model_no = Items.objects.get(id=model_no_id)
@@ -151,15 +202,14 @@ def add_items_details_save(request):
         issued_to = Prosecutions.objects.get(id=name_id)
 
         employee_name = request.POST.get("employee_name").strip()
-
         employee_designation = request.POST.get("employee_designation").strip()
-
 
         status = request.POST.get("status")
 
-        ItemDetails_model = ItemDetails(serial_no=serial_no, model_no=model_no, tag_no=tag_no, room_tag=room_tag, issued_to=issued_to,
-                                        employee_name=employee_name, employee_designation=employee_designation,
-                                        status=status)
+        # Save item details if serial number does not exist
+        ItemDetails_model = ItemDetails(serial_no=serial_no, model_no=model_no, tag_no=tag_no, room_tag=room_tag,
+                                        issued_to=issued_to, employee_name=employee_name,
+                                        employee_designation=employee_designation, status=status)
         ItemDetails_model.save()
         messages.success(request, "Item Details Added Successfully")
         calc_total_qty()
@@ -167,6 +217,7 @@ def add_items_details_save(request):
         return redirect('view_items')
     else:
         return redirect('view_items')
+
 
 
 @cache_control(no_cache=True, must_revalidate=True,no_store=True)
