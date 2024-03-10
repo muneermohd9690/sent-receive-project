@@ -10,8 +10,11 @@
     <form role="form" action="edit_tonerdetails_save" method="post" class="card p-3 border-dark mt-3">
         {% csrf_token %}
         <input type="hidden" name="detail_id" value="{{detail.id}}">
-        <div class="input-group input-group-sm mb-3">
-        <label class="input-group-text side-label">Toner Model </label>
+        <div class="input-group">
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">Toner Model </span>
+            </div>
+
             <select class="form-control selectpicker show-tick" name="toner_model" id="toner_model" data-live-search="true"  data-dropup-auto="false">
                 {% for toner in toners %}
                 <option value="{{toner.id}}" {% if toner.id == detail.toner_model.id %} selected {% endif %}>
@@ -20,8 +23,11 @@
             </select>
         </div>
 
-        <div class="input-group input-group-sm mb-3">
-          <label class="input-group-text side-label">Issued To </label>
+        <div class="input-group">
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">Issued To </span>
+            </div>
+
             <select class="form-control selectpicker show-tick" name="issued_to" id="issued_to" data-live-search="true"  data-dropup-auto="false">
                 {% for prosecution in prosecutions %}
                 <option value="{{prosecution.id}}" {% if prosecution.id == detail.issued_to.id %} selected {% endif %}>
@@ -30,27 +36,38 @@
             </select>
         </div>
 
-        <div class="input-group input-group-sm mb-3">
-            <label class="input-group-text side-label">Employee Name </label>
+        <div class="input-group">
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">Employee Name </span>
+            </div>
+
             <input type="text" class="form-control" placeholder="enter employee name" name="employee_name" id="employee_name"
                          value="{{detail.employee_name}}">
         </div>
 
-        <div class="input-group input-group-sm mb-3">
-            <label class="input-group-text side-label">Employee Designation </label>
+        <div class="input-group">
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">Employee Designation </span>
+            </div>
+
             <input type="text" class="form-control" placeholder="enter employee designation" name="employee_designation" id="employee_designation"
                        value="{{detail.employee_designation}}">
         </div>
 
-        <div class="input-group input-group-sm mb-3">
-            <label class="input-group-text side-label">Date Dispatched </label>
+        <div class="input-group ">
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">Date Dispatched </span>
+            </div>
             <input type="text" class="form-control" name="date_dispatched" id="date_dispatched"
                        value="{{detail.date_dispatched.date|date:'Y-m-d'}}">
         </div>
 
 
-        <div class="input-group input-group-sm mb-3">
-            <label class="input-group-text side-label">Status</label>
+        <div class="input-group">
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">Status</span>
+            </div>
+
                <select class="form-control" name="status" id="status">
                 {% for x,y in status %}
                     <option value="{{x}}" {% if x == detail.status %} selected {% endif %}>{{ x }}</option>

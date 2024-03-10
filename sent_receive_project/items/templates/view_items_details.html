@@ -60,6 +60,13 @@
                       <a class="btn btn-danger" data-bs-toggle="modal"
                          data-bs-target="#delete-modal{{ detail.pk }}" data-bs-toggle="tooltip"
                          data-bs-placement="bottom" title="Delete"><i class="fas fa-trash"></i></a>
+                      {% if detail.pdf_file %}
+                        <a href="{{ detail.pdf_file.url }}" target="_blank" class="btn btn-info" data-bs-toggle="tooltip"
+                        data-bs-placement="bottom" title="View PDF"><i class="far fa-file-pdf"></i></a>
+                      {% else %}
+                            <button class="btn btn-info" onclick="showNoPdfAlert()" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" title="View PDF"><i class="far fa-file-pdf"></i></button>
+                      {% endif %}
                   </div>
               </td>
               <td><input type="checkbox" name="detail_id[]" value="{{detail.id}}" id="bulk_delete_detail"  class="bulk-action-checkbox"></td>
@@ -140,7 +147,11 @@
   // Update the text content of the <h6> element to "View Item Details"
   templateElement.textContent = "View Item Details";
 </script>
-
+<script>
+    function viewPdf(pdfUrl) {
+        window.open(pdfUrl, '_blank');
+    }
+</script>
 
 
 <div class="text-center mt-5" style="display: none;" >

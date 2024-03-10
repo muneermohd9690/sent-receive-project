@@ -23,3 +23,5 @@ class Contracts(models.Model):
     )
     purchased_date = models.DateTimeField(default=timezone.now)
     pdf_file = models.FileField(upload_to='pdfs/', blank=True, null=True, default='')
+
+

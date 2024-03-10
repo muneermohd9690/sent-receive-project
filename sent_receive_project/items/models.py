@@ -24,6 +24,7 @@ class Items(models.Model):
     created = models.DateTimeField(default=timezone.now)
 
 
+
 class ItemDetails(models.Model):
     STATUS = [
         ('In-Stock', 'In-Stock'),
@@ -40,7 +41,10 @@ class ItemDetails(models.Model):
     employee_designation = models.CharField(max_length=500, null=True)
     created = models.DateTimeField(default=timezone.now)
     date_dispatched = models.DateTimeField(default=timezone.now)
+    pdf_file = models.FileField(upload_to='pdfs/itemdetails/', blank=True, null=True, default='')
     cart_item = GenericRelation(CartItem, related_query_name='itemdetails')
+
+
 
     class Meta:
         ordering = ['-date_dispatched']

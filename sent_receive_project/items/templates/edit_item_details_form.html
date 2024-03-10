@@ -8,7 +8,7 @@
             <span class="text-center"><h2>Edit Item Details | Item Details ID :{{ detail.id }} </h2></span>
         </div>
     </div>
-    <form role="form" action="edit_item_details_save" method="post" class="card p-3 border-dark mt-3">
+    <form role="form" action="edit_item_details_save" method="post" enctype="multipart/form-data" class="card p-3 border-dark mt-3">
         {% csrf_token %}
         <input type="hidden" name="detail_id" value="{{detail.id}}">
         <div class="input-group" >
@@ -103,6 +103,26 @@
 
         </div>
 
+        {% if detail.pdf_file %}
+            <!-- Existing PDF contract -->
+            <div class="input-group" >
+                <div class="input-group-prepend" >
+                    <span class="bordered-label side-label">Existing PDF </span>
+                </div>
+                <span class="form-control" style="margin-top:10px;">{{ detail.pdf_file }}</span>
+                <a href="{{ detail.pdf_file.url }}" target="_blank" class="btn btn-info" data-bs-toggle="tooltip"
+                        data-bs-placement="bottom" title="View PDF"><i class="far fa-file-pdf"></i></a>
+            </div>
+        {% endif %}
+
+        <div class="input-group" >
+                <div class="input-group-prepend" >
+                    <!-- Your existing form fields -->
+                    <span class="bordered-label side-label">New PDF </span>
+                </div>
+                <input type="file" name="pdf_file" id="pdf_file">
+        </div>
+
         <button type="submit" name="save" value="save" class="btn btn-success mt-3 btn-action-EIDF" disabled data-bs-toggle="tooltip" data-bs-placement="bottom" title="Save"><i class="fas fa-save"></i></button>
         <a href="{% url 'view_items_details' id=detail.model_no.id %}" class="btn btn-primary mt-3" id="btn-back" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Back"><i class="fas fa-angle-double-left"></i></a>
         <button onclick="getCartData('{{detail.id}}','add')" data-detail="{{detail.id}}" data-action="add" class="btn btn-secondary mt-3 addtodispatch" enabled data-bs-toggle="tooltip" data-bs-placement="bottom" title="Save and Add To Dispatch"><i class="fas fa-box"></i></button>
@@ -177,6 +197,7 @@
     <input id="employee_designation2" value="{{detail.employee_designation}}">
     <input id="date_dispatched2" value="{{detail.date_dispatched.date|date:'Y-m-d'}}">
     <input id="status2" value="{{detail.status}}">
+    <input id="pdf_file2" value="{{detail.pdf_file}}">
 </div>
 <!--- Hidden data --->
 {% endblock %}

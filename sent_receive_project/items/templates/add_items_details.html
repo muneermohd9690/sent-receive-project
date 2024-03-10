@@ -8,7 +8,7 @@
             <p class="text-center">Enter the item details below:</p>
         </div>
     </div>
-    <form role="form" action="add_items_details_save" method="post" class="card p-3 border-dark mt-3">
+    <form role="form" action="add_items_details_save" method="post" enctype="multipart/form-data" class="card p-3 border-dark mt-3">
         {% csrf_token %}
         <div class="input-group" >
             <div class="input-group-prepend" >
@@ -67,6 +67,14 @@
                 <span class="bordered-label side-label">Employee Designation</span>
             </div>
             <input class="form-control" name="employee_designation" placeholder="Enter employee designation" type="text">
+        </div>
+
+        <div class="input-group" >
+            <div class="input-group-prepend" >
+                <!-- Your existing form fields -->
+                <span class="bordered-label side-label">Upload pdf </span>
+            </div>
+                <input type="file" name="pdf_file" id="pdf_file">
         </div>
 
         <div class="input-group" >

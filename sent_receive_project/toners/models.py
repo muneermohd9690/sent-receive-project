@@ -20,7 +20,7 @@ class Toners(models.Model):
     total_qty = models.PositiveIntegerField(default=0,null=True)
     remaining_qty = models.PositiveIntegerField(default=0,null=True)
     created=models.DateTimeField(default=timezone.now)
-    objects = models.Manager()
+    # objects = models.Manager()
     #history = HistoricalRecords()
 
 class TonerDetails(models.Model):
@@ -35,6 +35,8 @@ class TonerDetails(models.Model):
     employee_designation = models.CharField(max_length=300,null=True)
     created=models.DateTimeField(default=timezone.now)
     date_dispatched=models.DateTimeField(default=timezone.now)
+
+
     cart_item = GenericRelation(CartItem, related_query_name='tonerdetails',on_delete=models.CASCADE)
 
     class Meta:

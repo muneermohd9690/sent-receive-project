@@ -21,6 +21,9 @@ from toners.utils import  calc_toner_stock_alert
 from django.http import JsonResponse
 from django.db import transaction
 from django.shortcuts import get_object_or_404
+from django.core.files.base import ContentFile, File
+from django.utils.text import slugify
+from django.utils.timezone import now
 
 
 
@@ -192,6 +195,8 @@ def add_items_details_save(request):
                 messages.error(request, message)
                 return redirect('view_items')
 
+
+
         model_no_id = request.POST.get("model_no").strip()
         model_no = Items.objects.get(id=model_no_id)
 
@@ -204,12 +209,27 @@ def add_items_details_save(request):
         employee_name = request.POST.get("employee_name").strip()
         employee_designation = request.POST.get("employee_designation").strip()
 
+        if 'pdf_file' in request.FILES:
+            new_pdf_file = request.FILES['pdf_file']
+            today_date = now().strftime("%Y-%m-%d")  # Get today's date in YYYY-MM-DD format
+            employee_name_slug = slugify(employee_name, allow_unicode=True)
+            new_filename = f"{employee_name_slug}_signed_{today_date}.pdf"
+            # Save the uploaded file with the constructed filename
+            with open(f'pdfs/itemdetails/{new_filename}', 'wb+') as destination:
+                 for chunk in new_pdf_file.chunks():
+                    destination.write(chunk)
+            # Assign the filename to the pdf_file field
+
+            pdf_file_path = f"pdfs/itemdetails/{new_filename}"
+        else:
+            pdf_file_path = None
+
         status = request.POST.get("status")
 
         # Save item details if serial number does not exist
         ItemDetails_model = ItemDetails(serial_no=serial_no, model_no=model_no, tag_no=tag_no, room_tag=room_tag,
                                         issued_to=issued_to, employee_name=employee_name,
-                                        employee_designation=employee_designation, status=status)
+                                        employee_designation=employee_designation,pdf_file=pdf_file_path, status=status)
         ItemDetails_model.save()
         messages.success(request, "Item Details Added Successfully")
         calc_total_qty()
@@ -217,7 +237,64 @@ def add_items_details_save(request):
         return redirect('view_items')
     else:
         return redirect('view_items')
-
+# @cache_control(no_cache=True, must_revalidate=True,no_store=True)
+# @login_required(login_url="login")
+# def add_items_details_save(request):
+#     if request.method == "POST":
+#         serial_no = request.POST.get("serial_no").strip()
+#         if request.POST.get("na_checkbox"):
+#             serial_no = None
+#
+#         if serial_no is not None and ItemDetails.objects.filter(serial_no=serial_no).exists():
+#             existing_item = ItemDetails.objects.get(serial_no=serial_no)
+#             model_name = existing_item.model_no.model_no
+#             message = f"Serial number {serial_no} already exists. Associated model: {model_name}."
+#             messages.error(request, message)
+#             return redirect('view_items')
+#
+#         model_no_id = request.POST.get("model_no").strip()
+#         model_no = Items.objects.get(id=model_no_id)
+#
+#         tag_no = request.POST.get("tag_no").strip()
+#         room_tag = request.POST.get("room_tag").strip()
+#
+#         name_id = request.POST.get("issued_to").strip()
+#         issued_to = Prosecutions.objects.get(id=name_id)
+#
+#         employee_name = request.POST.get("employee_name").strip()
+#         employee_designation = request.POST.get("employee_designation").strip()
+#
+#         pdf_file_path = None
+#         if 'pdf_file' in request.FILES:
+#             new_pdf_file = request.FILES['pdf_file']
+#             new_filename = f"{slugify(employee_name)}_{new_pdf_file.name}"
+#             with open(f'pdfs/itemdetails/{new_filename}', 'wb+') as destination:
+#                 for chunk in new_pdf_file.chunks():
+#                     destination.write(chunk)
+#
+#             pdf_file_path = f"pdfs/itemdetails/{new_filename}"
+#
+#         status = request.POST.get("status")
+#
+#         item_details_data = {
+#             'serial_no': serial_no,
+#             'model_no': model_no,
+#             'tag_no': tag_no,
+#             'room_tag': room_tag,
+#             'issued_to': issued_to,
+#             'employee_name': employee_name,
+#             'employee_designation': employee_designation,
+#             'pdf_file': pdf_file_path,
+#             'status': status
+#         }
+#
+#         ItemDetails.objects.create(**item_details_data)
+#         messages.success(request, "Item Details Added Successfully")
+#         calc_total_qty()
+#         calc_remaining_qty()
+#         return redirect('view_items')
+#     else:
+#         return redirect('view_items')
 
 
 @cache_control(no_cache=True, must_revalidate=True,no_store=True)
@@ -386,9 +463,60 @@ def edit_item_details_modal(request):
 #         return redirect('view_items')
 
 # @transaction.atomic
+# def edit_item_details_save(request):
+#     if request.method == "POST":
+#         itemdetails_id = request.POST.get("detail_id")
+#         serial_no = request.POST.get("serial_no").strip()
+#         tag_no = request.POST.get("tag_no").strip()
+#         room_tag = request.POST.get("room_tag").strip()
+#         employee_name = request.POST.get("employee_name").strip()
+#         employee_designation = request.POST.get("employee_designation").strip()
+#         status = request.POST.get("status")
+#         date_dispatched = request.POST.get("date_dispatched")
+#
+#         model_no_id = request.POST.get("model_no")
+#         model_no = get_object_or_404(Items, id=model_no_id)
+#
+#         issued_to_id = request.POST.get("issued_to")
+#         issued_to = get_object_or_404(Prosecutions, id=issued_to_id)
+#
+#         item_details_data = {
+#             'serial_no': serial_no,
+#             'model_no': model_no,
+#             'tag_no': tag_no,
+#             'room_tag': room_tag,
+#             'issued_to': issued_to,
+#             'date_dispatched': date_dispatched,
+#             'employee_name': employee_name,
+#             'employee_designation': employee_designation,
+#             'status': status,
+#         }
+#
+#         if request.POST.get('save') == 'save':
+#             # Additional logic for the 'save' case
+#             messages.success(request, "Item Details Edited Successfully")
+#         else:
+#             # Additional logic for the other case
+#             messages.success(request, "Item Details Edited Successfully and added to dispatch")
+#
+#         # Common logic for both cases
+#         item_details_model = ItemDetails(id=itemdetails_id, **item_details_data)
+#         item_details_model.save()
+#
+#         item_model_id = find_item_model_id(itemdetails_id)
+#         calc_total_qty()
+#         calc_remaining_qty()
+#         return redirect('view_items_details', item_model_id)
+#
+#     return redirect('view_items')
+
 def edit_item_details_save(request):
     if request.method == "POST":
         itemdetails_id = request.POST.get("detail_id")
+
+        # Retrieve existing ItemDetails instance
+        item_details_model = get_object_or_404(ItemDetails, id=itemdetails_id)
+
         serial_no = request.POST.get("serial_no").strip()
         tag_no = request.POST.get("tag_no").strip()
         room_tag = request.POST.get("room_tag").strip()
@@ -415,20 +543,30 @@ def edit_item_details_save(request):
             'status': status,
         }
 
-        if request.POST.get('save') == 'save':
-            # Additional logic for the 'save' case
-            messages.success(request, "Item Details Edited Successfully")
-        else:
-            # Additional logic for the other case
-            messages.success(request, "Item Details Edited Successfully and added to dispatch")
+        if 'pdf_file' in request.FILES:
+            # If a new PDF file is uploaded, save it with a new filename
+            new_pdf_file = request.FILES['pdf_file']
+            employee_name_slug = slugify(employee_name, allow_unicode=True)
+            new_filename = f"{employee_name_slug}_signed_{slugify(date_dispatched)}.pdf"
+            item_details_model.pdf_file.save(new_filename, new_pdf_file)
+            item_details_data['pdf_file'] = f"pdfs/itemdetails/{new_filename}"
 
-        # Common logic for both cases
-        item_details_model = ItemDetails(id=itemdetails_id, **item_details_data)
+        # Update the ItemDetails instance with the new data
+        for key, value in item_details_data.items():
+            setattr(item_details_model, key, value)
+
+        # Save the updated ItemDetails instance
         item_details_model.save()
 
         item_model_id = find_item_model_id(itemdetails_id)
         calc_total_qty()
         calc_remaining_qty()
+
+        if request.POST.get('save') == 'save':
+            messages.success(request, "Item Details Edited Successfully")
+        else:
+            messages.success(request, "Item Details Edited Successfully and added to dispatch")
+
         return redirect('view_items_details', item_model_id)
 
     return redirect('view_items')

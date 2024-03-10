@@ -173,6 +173,11 @@ $(document).ready(function(){
 
 /**** modal in edit_item_details_form ****/
 $(document).ready(function(){
+    // Track if a file is chosen
+    var fileChosen = false;
+    $("#pdf_file").change(function(){
+            fileChosen = true;
+    });
     $("#btn-back").click(function(){
         var model_no = $("#model_no").val()
         var serial_no = $("#serial_no").val()
@@ -194,7 +199,7 @@ $(document).ready(function(){
         var date_dispatched2 = $("#date_dispatched2").val()
         var status2 = $("#status2").val()
         if((model_no!=model_no2)||(serial_no!=serial_no2)||(tag_no!=tag_no2)||(room_tag!=room_tag2)||(issued_to!=issued_to2)||(employee_name!=employee_name2)
-            ||(employee_designation!=employee_designation2)||(date_dispatched!=date_dispatched2)||(status!=status2))
+            ||(employee_designation!=employee_designation2)||(date_dispatched!=date_dispatched2)||(status!=status2)||(fileChosen))
             {
                 $("#modal-confirm").trigger('click');
                 return false;
@@ -417,6 +422,19 @@ $(document).ready(function(){
         }
      });
    });
+
+$(document).ready(function(){
+    $(".btn-action-EIDF").prop("disabled", true);
+
+    $("#pdf_file").change(function() {
+      // Check if a new PDF file is selected
+      if ($(this).val()) {
+        $(".btn-action-EIDF").prop("disabled", false);
+      } else {
+        $(".btn-action-EIDF").prop("disabled", true);
+      }
+    });
+});
 
 /*$(document).ready(function(){
     $(".btn-action-EIDF").prop("disabled", true);
