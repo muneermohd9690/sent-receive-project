@@ -4,6 +4,7 @@ from django.apps import apps
 
 from sent_items.models import CartItem
 from prosecutions.models import Prosecutions
+from contracts.models import Contracts
 from datetime import datetime
 from datetime import date
 from django.utils import timezone
@@ -41,6 +42,7 @@ class ItemDetails(models.Model):
     employee_designation = models.CharField(max_length=500, null=True)
     created = models.DateTimeField(default=timezone.now)
     date_dispatched = models.DateTimeField(default=timezone.now)
+    lpo_no = models.ForeignKey(Contracts, on_delete=models.SET_NULL, null=True, blank=True)
     pdf_file = models.FileField(upload_to='pdfs/itemdetails/', blank=True, null=True, default='')
     cart_item = GenericRelation(CartItem, related_query_name='itemdetails')
 

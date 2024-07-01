@@ -1,5 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+
+from contracts.models import Contracts
 from .models import Items, ItemDetails, Prosecutions,CartItem
 from collections import Counter
 from django.db.models import Count
@@ -126,13 +128,15 @@ def add_items_save(request):
 def add_items_details(request):
     prosecutions = Prosecutions.objects.all()
     items = Items.objects.all()
+    contracts=Contracts.objects.all()
     data_calc_cart_total = calc_cart_total(request)
     cart_total = data_calc_cart_total['cart_total']
     data_calc_toner_stock_alert = calc_toner_stock_alert(request)
     toner_stock_alert = data_calc_toner_stock_alert['toner_stock_alert_count']
     toner_under_fifteen = data_calc_toner_stock_alert['tonerstock']
-    context={"prosecutions": prosecutions, "items": items,"total":cart_total,"toner_stock_alert":toner_stock_alert,
-                "toner_under_fifteen":toner_under_fifteen,"status": ItemDetails.STATUS}
+    context={"prosecutions": prosecutions,"contracts":contracts, "items": items,"total":cart_total,
+             "toner_stock_alert":toner_stock_alert,"toner_under_fifteen":toner_under_fifteen,
+             "status": ItemDetails.STATUS}
     return render(request, 'add_items_details.html', context)
 
 
@@ -206,6 +210,9 @@ def add_items_details_save(request):
         name_id = request.POST.get("issued_to").strip()
         issued_to = Prosecutions.objects.get(id=name_id)
 
+        contract_id = request.POST.get("lpo_no").strip()
+        lpo_no = Contracts.objects.get(id=contract_id)
+
         employee_name = request.POST.get("employee_name").strip()
         employee_designation = request.POST.get("employee_designation").strip()
 
@@ -228,7 +235,7 @@ def add_items_details_save(request):
 
         # Save item details if serial number does not exist
         ItemDetails_model = ItemDetails(serial_no=serial_no, model_no=model_no, tag_no=tag_no, room_tag=room_tag,
-                                        issued_to=issued_to, employee_name=employee_name,
+                                        issued_to=issued_to, employee_name=employee_name,lpo_no=lpo_no,
                                         employee_designation=employee_designation,pdf_file=pdf_file_path, status=status)
         ItemDetails_model.save()
         messages.success(request, "Item Details Added Successfully")
@@ -352,13 +359,15 @@ def edit_item_details(request):
     itemdetails = ItemDetails.objects.all()
     items = Items.objects.all()
     prosecutions=Prosecutions.objects.all()
+    contracts=Contracts.objects.all()
     data_calc_cart_total = calc_cart_total(request)
     cart_total = data_calc_cart_total['cart_total']
     data_calc_toner_stock_alert = calc_toner_stock_alert(request)
     toner_stock_alert = data_calc_toner_stock_alert['toner_stock_alert_count']
     toner_under_fifteen = data_calc_toner_stock_alert['tonerstock']
     context = {"total": cart_total,"itemdetails": itemdetails,"toner_stock_alert":toner_stock_alert,"items": items,
-               "toner_under_fifteen":toner_under_fifteen,"prosecutions":prosecutions,"status": ItemDetails.STATUS}
+               "toner_under_fifteen":toner_under_fifteen,"prosecutions":prosecutions
+               ,"contracts":contracts,"status": ItemDetails.STATUS}
     return render(request, 'edit_item_details.html', context)
 
 @cache_control(no_cache=True, must_revalidate=True,no_store=True)
@@ -366,6 +375,7 @@ def edit_item_details(request):
 def edit_item_details_form(request, id):
     prosecutions = Prosecutions.objects.all()
     items = Items.objects.all()
+    contracts = Contracts.objects.all()
     #itemdetails = ItemDetails.objects.get(id=id)
     detail = ItemDetails.objects.get(id=id)
     data_calc_cart_total = calc_cart_total(request)
@@ -378,8 +388,9 @@ def edit_item_details_form(request, id):
     itemdetails_content_type = ContentType.objects.get(app_label='items', model='itemdetails')
     content_type_id = itemdetails_content_type.id
     joined_ids = json.dumps(joined_ids)
-    context = {"total": cart_total, "detail": detail, "items": items,"toner_stock_alert":toner_stock_alert,"joined_ids":joined_ids,
-                        "prosecutions": prosecutions,"content_type_id":content_type_id,"toner_under_fifteen":toner_under_fifteen, "status": ItemDetails.STATUS}
+    context = {"total": cart_total, "detail": detail, "items": items,"toner_stock_alert":toner_stock_alert,
+               "joined_ids":joined_ids,"prosecutions": prosecutions,"content_type_id":content_type_id
+               ,"contracts":contracts,"toner_under_fifteen":toner_under_fifteen, "status": ItemDetails.STATUS}
     return render(request, 'edit_item_details_form.html',context)
 
 
@@ -565,7 +576,7 @@ def edit_item_details_save(request):
         if request.POST.get('save') == 'save':
             messages.success(request, "Item Details Edited Successfully")
         else:
-            messages.success(request, "Item Details Edited Successfully and added to dispatch")
+            messages.success(request, "Item Details Edited Successfully")
 
         return redirect('view_items_details', item_model_id)
 

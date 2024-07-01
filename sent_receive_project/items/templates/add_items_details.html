@@ -71,6 +71,18 @@
 
         <div class="input-group" >
             <div class="input-group-prepend" >
+                <span class="bordered-label side-label">LPO No</span>
+            </div>
+            <select class="form-control selectpicker show-tick"  name="lpo_no" placeholder="" data-live-search="true"  data-dropup-auto="false">
+                {% for contract in contracts %}
+                <option value="{{contract.id}}">{{contract.lpo_no}} </option>
+                {% endfor %}
+            </select>
+        </div>
+
+
+        <div class="input-group" >
+            <div class="input-group-prepend" >
                 <!-- Your existing form fields -->
                 <span class="bordered-label side-label">Upload pdf </span>
             </div>

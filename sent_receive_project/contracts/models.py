@@ -5,13 +5,15 @@ from django.utils import timezone
 # Create your models here.
 class Contracts(models.Model):
     lpo_no = models.CharField(max_length=300, null=True)
-    warranty_range = [(i, str(i)) for i in range(1, 11)]
+    warranty_range = [(i, str(i)) for i in range(0, 11)]
     warranty_years = models.IntegerField(
         choices=warranty_range,
-        default=1,  # Default value (optional)
+        default=0,  # Default value (optional)
+        null=True,
+        blank=True,
     )
-    warranty_start = models.DateTimeField(default=timezone.now)
-    warranty_end = models.DateTimeField(default=timezone.now)
+    warranty_start = models.DateTimeField(default=timezone.now, null=True, blank=True)
+    warranty_end = models.DateTimeField(default=timezone.now, null=True, blank=True)
     purchased_by_choice = [
         ('local', 'Local Finance'),
         ('central', 'Central Finance')
@@ -22,6 +24,6 @@ class Contracts(models.Model):
         default='central',  # Default value (optional)
     )
     purchased_date = models.DateTimeField(default=timezone.now)
-    pdf_file = models.FileField(upload_to='pdfs/', blank=True, null=True, default='')
+    pdf_file = models.FileField(upload_to='pdfs/contracts/', blank=True, null=True, default='')
 
 

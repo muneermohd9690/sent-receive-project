@@ -184,6 +184,7 @@ $(document).ready(function(){
         var tag_no = $("#tag_no").val()
         var room_tag = $("#room_tag").val()
         var issued_to = $("#issued_to").val()
+        var lpo_no = $("#lpo_no").val()
         var employee_name = $("#employee_name").val()
         var employee_designation = $("#employee_designation").val()
         var date_dispatched = $("#date_dispatched").val()
@@ -194,11 +195,13 @@ $(document).ready(function(){
         var tag_no2 = $("#tag_no2").val()
         var room_tag2 = $("#room_tag2").val()
         var issued_to2 = $("#issued_to2").val()
+        var lpo_no2 = $("#lpo_no2").val()
         var employee_name2 = $("#employee_name2").val()
         var employee_designation2 = $("#employee_designation2").val()
         var date_dispatched2 = $("#date_dispatched2").val()
         var status2 = $("#status2").val()
-        if((model_no!=model_no2)||(serial_no!=serial_no2)||(tag_no!=tag_no2)||(room_tag!=room_tag2)||(issued_to!=issued_to2)||(employee_name!=employee_name2)
+        if((model_no!=model_no2)||(serial_no!=serial_no2)||(tag_no!=tag_no2)||(room_tag!=room_tag2)||
+            (issued_to!=issued_to2)||(employee_name!=employee_name2)||(lpo_no!=lpo_no2)
             ||(employee_designation!=employee_designation2)||(date_dispatched!=date_dispatched2)||(status!=status2)||(fileChosen))
             {
                 $("#modal-confirm").trigger('click');
@@ -385,6 +388,18 @@ $(document).ready(function(){
     $(".btn-action-EIDF").prop("disabled", true);
     $("#issued_to, #issued_to2").change(function() {
         if( ($("#issued_to").val()) == ($("#issued_to2").val()) ) {
+            $(".btn-action-EIDF").attr("disabled", "disabled");
+        }
+        else {
+            $(".btn-action-EIDF").removeAttr("disabled");
+        }
+     });
+   });
+
+ $(document).ready(function(){
+    $(".btn-action-EIDF").prop("disabled", true);
+    $("#lpo_no, #lpo_no2").change(function() {
+        if( ($("#lpo_no").val()) == ($("#lpo_no2").val()) ) {
             $(".btn-action-EIDF").attr("disabled", "disabled");
         }
         else {

@@ -48,6 +48,53 @@ def add_contract_details(request):
 
 @cache_control(no_cache=True, must_revalidate=True,no_store=True)
 @login_required(login_url="login")
+# def contract_details_save(request):
+#     if request.method == "POST":
+#         lpo_no = request.POST.get('lpo_no', '').strip()
+#
+#         if lpo_no == "":
+#             messages.error(request, "LPO Number is empty")
+#             return redirect('add_contract_details')
+#
+#         if Contracts.objects.filter(lpo_no=lpo_no).exists():
+#             messages.error(request, "LPO Number already exists")
+#             return redirect('add_contract_details')
+#         else:
+#             contracts = Contracts()
+#             contracts.lpo_no = lpo_no
+#             contracts.purchased_by = request.POST.get("purchased_by")
+#             # contracts.date_purchased = request.POST.get("date_purchased")
+#             contracts.warranty_years = int(request.POST.get("warranty_years", 0))
+#
+#             # Convert date_purchased to a datetime object
+#             # date_purchased = datetime.strptime(contracts.date_purchased,
+#             #                                    "%Y-%m-%d").date() if contracts.date_purchased else None
+#             # Parse date_purchased string to datetime
+#             try:
+#                 contracts.purchased_date = datetime.strptime(request.POST.get("purchased_date"), "%Y-%m-%d").date()
+#             except ValueError:
+#                 messages.error(request, "Invalid date format. Please use YYYY-MM-DD.")
+#                 return redirect('add_contract_details')
+#
+#             contracts.warranty_start = contracts.purchased_date
+#
+#             # Check if the request has a file associated with the key 'pdf_file'
+#             if 'pdf_file' in request.FILES:
+#                 new_pdf_file = request.FILES['pdf_file']
+#                 new_filename = f"{slugify(lpo_no)}_{new_pdf_file.name}"
+#                 contracts.pdf_file.save(new_filename, ContentFile(new_pdf_file.read()))
+#
+#             if contracts.warranty_start:
+#                 # Calculate warranty_end based on warranty_years
+#                 contracts.warranty_end = contracts.warranty_start + timedelta(days=contracts.warranty_years * 365)
+#                 contracts.save()
+#                 messages.success(request, "Contract Added Successfully")
+#                 return redirect('view_contract_details')
+#             else:
+#                 messages.error(request, "Invalid date purchased")
+#                 return redirect('add_contract_details')
+#     else:
+#         return redirect('view_contract_details')
 def contract_details_save(request):
     if request.method == "POST":
         lpo_no = request.POST.get('lpo_no', '').strip()
@@ -63,20 +110,23 @@ def contract_details_save(request):
             contracts = Contracts()
             contracts.lpo_no = lpo_no
             contracts.purchased_by = request.POST.get("purchased_by")
-            # contracts.date_purchased = request.POST.get("date_purchased")
-            contracts.warranty_years = int(request.POST.get("warranty_years", 0))
 
-            # Convert date_purchased to a datetime object
-            # date_purchased = datetime.strptime(contracts.date_purchased,
-            #                                    "%Y-%m-%d").date() if contracts.date_purchased else None
-            # Parse date_purchased string to datetime
+            # Parse purchased_date string to datetime
             try:
                 contracts.purchased_date = datetime.strptime(request.POST.get("purchased_date"), "%Y-%m-%d").date()
             except ValueError:
                 messages.error(request, "Invalid date format. Please use YYYY-MM-DD.")
                 return redirect('add_contract_details')
 
+            # Check if warranty is not applicable
+            warranty_na = request.POST.get("warranty_na")
+            if warranty_na:
+                contracts.warranty_years = 0
+            else:
+                contracts.warranty_years = int(request.POST.get("warranty_years", 0))
+
             contracts.warranty_start = contracts.purchased_date
+            contracts.warranty_end = contracts.warranty_start + timedelta(days=contracts.warranty_years * 365)
 
             # Check if the request has a file associated with the key 'pdf_file'
             if 'pdf_file' in request.FILES:
@@ -84,18 +134,12 @@ def contract_details_save(request):
                 new_filename = f"{slugify(lpo_no)}_{new_pdf_file.name}"
                 contracts.pdf_file.save(new_filename, ContentFile(new_pdf_file.read()))
 
-            if contracts.warranty_start:
-                # Calculate warranty_end based on warranty_years
-                contracts.warranty_end = contracts.warranty_start + timedelta(days=contracts.warranty_years * 365)
-                contracts.save()
-                messages.success(request, "Contract Added Successfully")
-                return redirect('view_contract_details')
-            else:
-                messages.error(request, "Invalid date purchased")
-                return redirect('add_contract_details')
+            contracts.save()
+
+            messages.success(request, "Contract Added Successfully")
+            return redirect('view_contract_details')
     else:
         return redirect('view_contract_details')
-
 
 @cache_control(no_cache=True, must_revalidate=True,no_store=True)
 @login_required(login_url="login")
@@ -194,7 +238,7 @@ def edit_contract_details_save(request):
                         os.rename(old_path, new_path)
 
                         # Update the database value for pdf_file
-                        existing_contract.pdf_file.name = f"pdfs/{new_filename}"
+                        existing_contract.pdf_file.name = f"pdfs/contracts/{new_filename}"
 
                 # Remove the existing file only if a new file is uploaded
                 if new_pdf_file:

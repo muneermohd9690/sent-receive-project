@@ -54,7 +54,7 @@
             <div class="input-group-prepend" >
                 <span class="bordered-label side-label">Issued to</span>
             </div>
-                <select class="form-control " name="issued_to" id="issued_to" data-live-search="true"  data-dropup-auto="false">
+                <select class="form-control selectpicker show-tick" name="issued_to" id="issued_to" data-live-search="true"  data-dropup-auto="false">
                     {% for prosecution in prosecutions %}
                     <option value="{{prosecution.id}}" {% if prosecution.id == detail.issued_to.id %} selected {% endif %}>
                         {{prosecution.name}}</option>
@@ -62,6 +62,8 @@
                 </select>
 
         </div>
+
+
 
         <div class="input-group">
             <div class="input-group-prepend" >
@@ -98,6 +100,19 @@
                 <select class=" form-control " name="status" id="status">
                     {% for x,y in status %}
                     <option value="{{x}}" {% if x == detail.status %} selected {% endif %}>{{ x }}</option>
+                    {% endfor %}
+                </select>
+
+        </div>
+
+         <div class="input-group input-group-sm">
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">LPO No</span>
+            </div>
+                <select class="form-control selectpicker show-tick" name="lpo_no" id="lpo_no" data-live-search="true"  data-dropup-auto="false">
+                    {% for contract in contracts %}
+                    <option value="{{contract.id}}" {% if contract.id == detail.lpo_no.id %} selected {% endif %}>
+                        {{contract.lpo_no}}</option>
                     {% endfor %}
                 </select>
 
@@ -197,6 +212,7 @@
     <input id="employee_designation2" value="{{detail.employee_designation}}">
     <input id="date_dispatched2" value="{{detail.date_dispatched.date|date:'Y-m-d'}}">
     <input id="status2" value="{{detail.status}}">
+    <input id="lpo_no2" value="{{detail.lpo_no.id}}">
     <input id="pdf_file2" value="{{detail.pdf_file}}">
 </div>
 <!--- Hidden data --->

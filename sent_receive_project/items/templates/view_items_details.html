@@ -27,6 +27,7 @@
               <th>Employee Designation</th>
               <th>Date Dispatched</th>
               <th>Status</th>
+              <th>LPO Number</th>
               <th>Actions</th>
               <th></th>
           </tr>
@@ -43,6 +44,12 @@
               <td >{{detail.employee_designation}}</td>
               <td>{{detail.date_dispatched.date}}</td>
               <td>{{detail.status}}</td>
+              <td>
+
+                  <a href="#" data-bs-toggle="modal"
+                         data-bs-target="#contract-modal{{ detail.lpo_no.id }}">{{ detail.lpo_no.lpo_no }}
+                  </a>
+              </td>
               <td>
                   <div class="button-container">
                       <a href="{% url 'print_issue_vouchers' detail.id %}" target="_blank" rel="noopener noreferrer"
@@ -98,6 +105,79 @@
               </div>
           </div>
           <!-- delete confirmation Modal -->
+
+          <!-- contract Details Modal -->
+          <div class="modal fade" id="contract-modal{{ detail.lpo_no.id }}" tabindex="-1" role="dialog"
+               aria-labelledby="contract-modal-label" data-bs-backdrop="static" data-bs-keyboard="false"
+               aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <h5 class="modal-title" id="contract-modal-label">Contract Details</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                          </button>
+                      </div>
+                      <div class="modal-body">
+                          <div class="input-group" >
+                                <div class="input-group-prepend" >
+                                    <span class="bordered-label side-label">LPO Number</span>
+                                </div>
+                                <input type="text" class="form-control " name="lpo_no" id="lpo_no"
+                                       value="{{detail.lpo_no.lpo_no}}" readonly>
+                          </div>
+
+                          <div class="input-group" >
+                                <div class="input-group-prepend" >
+                                    <span class="bordered-label side-label">Purchased By</span>
+                                </div>
+                                <input type="text" class="form-control"  name="purchased_by" id="purchased_by"
+                                       value="{{detail.lpo_no.purchased_by}}" readonly>
+                          </div>
+
+                          <div class="input-group" >
+                                <div class="input-group-prepend" >
+                                    <span class="bordered-label side-label">Warranty in years</span>
+                                </div>
+                                <input type="text" class="form-control"  name="warranty_years" id="warranty_years"
+                                       value="{{detail.lpo_no.warranty_years}}" readonly>
+                          </div>
+
+                          <div class="input-group" >
+                                <div class="input-group-prepend" >
+                                    <span class="bordered-label side-label">Date Purchased</span>
+                                </div>
+                                <input type="text" class="form-control"  name="purchased_date" id="purchased_date"
+                                       value="{{detail.lpo_no.purchased_date.date|date:'Y-m-d'}}" readonly>
+                          </div>
+
+                          <div class="input-group" >
+                                <div class="input-group-prepend" >
+                                    <span class="bordered-label side-label">Warranty Start</span>
+                                </div>
+                                <input type="text" class="form-control"  name="warranty_start" id="warranty_start"
+                                       value="{{detail.lpo_no.warranty_start.date|date:'Y-m-d'}}" readonly>
+                          </div>
+
+                          <div class="input-group" >
+                                <div class="input-group-prepend" >
+                                    <span class="bordered-label side-label">Warranty End</span>
+                                </div>
+                                <input type="text" class="form-control"  name="warranty_end" id="warranty_end"
+                                       value="{{detail.lpo_no.warranty_end.date|date:'Y-m-d'}}" readonly>
+                          </div>
+
+
+
+                      </div>
+                      <div class="modal-footer">
+                          <a href="{% url 'view_items' %}" class="btn btn-secondary">Cancel</a>
+
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <!-- contract Details Modal -->
+
           {% endfor %}
           </tbody>
       </table>

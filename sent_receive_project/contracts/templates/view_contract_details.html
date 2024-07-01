@@ -34,19 +34,20 @@
               <td>{{detail.warranty_end.date}}</td>
               <td>{{detail.purchased_by}}</td>
              <td>
-
-                  <a href="{% url 'edit_contract_details' detail.id %}" class="btn btn-warning " data-bs-toggle="tooltip"
-                     data-bs-placement="bottom" title="Edit"><i class="fas fa-edit"></i></a>
-                  {% if detail.pdf_file %}
-                        <a href="{{ detail.pdf_file.url }}" target="_blank" class="btn btn-info" data-bs-toggle="tooltip"
-                        data-bs-placement="bottom" title="View PDF"><i class="far fa-file-pdf"></i></a>
-                  {% else %}
-                        <button class="btn btn-info" onclick="showNoPdfAlert()" data-bs-toggle="tooltip"
-                        data-bs-placement="bottom" title="View PDF"><i class="far fa-file-pdf"></i></button>
-                  {% endif %}
-                  <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-modal{{ detail.pk }}"
-                     data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"><i class="fas fa-trash"></i>
-                  </a>
+                  <div class="button-container">
+                      <a href="{% url 'edit_contract_details' detail.id %}" class="btn btn-warning " data-bs-toggle="tooltip"
+                         data-bs-placement="bottom" title="Edit"><i class="fas fa-edit"></i></a>
+                      {% if detail.pdf_file %}
+                            <a href="{{ detail.pdf_file.url }}" target="_blank" class="btn btn-info" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" title="View PDF"><i class="far fa-file-pdf"></i></a>
+                      {% else %}
+                            <button class="btn btn-info" onclick="showNoPdfAlert()" data-bs-toggle="tooltip"
+                            data-bs-placement="bottom" title="View PDF"><i class="far fa-file-pdf"></i></button>
+                      {% endif %}
+                      <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete-modal{{ detail.pk }}"
+                         data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"><i class="fas fa-trash"></i>
+                      </a>
+                  </div>
               </td>
           </tr>
           <!-- delete confirmation Modal -->
