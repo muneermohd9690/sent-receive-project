@@ -1,20 +1,27 @@
-
-
 <!-- Edit Modal -->
-
 <input type="hidden" name="detail_id" value="{{detail.id}}">
+
 <div class="input-group" >
             <div class="input-group-prepend" >
                 <span class="bordered-label side-label">Model Number</span>
             </div>
-    <select class="form-control selectpicker show-tick " name="model_no"
-            id="model_no" data-live-search="true"  >
+    <select class="form-control select2" name="model_no" id="{{ detail.pk }}model_no">
         {% for item in items %}
-        <option value="{{item.id}}" {% if item.id == detail.model_no.id %} selected {% endif %}>
-            {{item.model_no}}</option>
+            <option value="{{item.id}}" {% if item.id == detail.model_no.id %} selected {% endif %}>
+                {{item.model_no}}
+            </option>
         {% endfor %}
     </select>
 </div>
+
+<!--<div class="input-group">
+    <div class="input-group-prepend">
+        <span class="bordered-label side-label">Model Number</span>
+    </div>
+    <select class="form-control select2" name="model_no" id="{{ detail.pk }}model_no">
+        <option value="{{ detail.model_no.id }}" selected>{{ detail.model_no.model_no }}</option>
+    </select>
+</div>-->
 
 <div class="input-group" >
             <div class="input-group-prepend" >
@@ -49,9 +56,8 @@
             <div class="input-group-prepend" >
                 <span class="bordered-label side-label">Issued to</span>
             </div>
-    <select class="form-control selectpicker show-tick "
-            name="issued_to" id="{{ detail.pk }}issued_to"
-            data-live-search="true" >
+    <select class="form-control select2"
+            name="issued_to" id="{{ detail.pk }}issued_to">
         {% for prosecution in prosecutions %}
         <option value="{{prosecution.id}}" {% if prosecution.id == detail.issued_to.id %}
                 selected {% endif %}>
@@ -60,6 +66,16 @@
         {% endfor %}
     </select>
 </div>
+<!--<div class="input-group">
+    <div class="input-group-prepend">
+        <span class="bordered-label side-label">Issued to</span>
+    </div>
+    <select class="form-control select2" name="issued_to" id="{{ detail.pk }}issued_to" data-live-search="true">
+        {% for prosecution in prosecutions %}
+        <option value="{{ prosecution.id }}" {% if prosecution.id == detail.issued_to.id %}selected{% endif %}>{{ prosecution.name }}</option>
+        {% endfor %}
+    </select>
+</div>-->
 
 <div class="input-group" >
             <div class="input-group-prepend" >
@@ -83,13 +99,27 @@
            value="{{detail.employee_designation}}">
 </div>
 
-<!--<div class="input-group input-group-sm mb-3">
-    <span class="input-group-text side-label">Date Dispatched </span>
-&lt;!&ndash;    <input type="text" class="form-control"&ndash;&gt;
-    <input class="form-control datepicker"
-           name="date_dispatched"
-           id="{{ detail.pk }}date_dispatched"
-           value="{{detail.date_dispatched.date|date:'Y-m-d'}}">
+<div class="input-group" >
+            <div class="input-group-prepend" >
+                <span class="bordered-label side-label">LPO Number</span>
+            </div>
+    <select class="form-control select2"
+            name="lpo_no" id="{{ detail.pk }}lpo_no">
+        {% for contract in contracts %}
+            <option value="{{contract.id}}" {% if contract.id == detail.lpo_no.id %} selected {% endif %}>
+                        {{contract.lpo_no}}</option>
+        {% endfor %}
+    </select>
+</div>
+<!--<div class="input-group">
+    <div class="input-group-prepend">
+        <span class="bordered-label side-label">LPO Number</span>
+    </div>
+    <select class="form-control select2" name="lpo_no" id="{{ detail.pk }}lpo_no" data-live-search="true">
+        {% for contract in contracts %}
+        <option value="{{ contract.id }}" {% if contract.id == detail.lpo_no.id %}selected{% endif %}>{{ contract.lpo_no }}</option>
+        {% endfor %}
+    </select>
 </div>-->
 
 <div class="input-group" >
@@ -124,11 +154,11 @@
     <input  id="item_id" data-value="{{detail.pk}}">
 </div>
 <!-- Edit Modal -->
-<script>
+<!--<script>
     $(document).ready(function () {
         $('.selectpicker').selectpicker();
     });
-</script>
+</script>-->
 <script>
 $(document).on('shown.bs.modal', '#editItemDetailsModal', function () {
     // Initialize date picker after the modal is shown

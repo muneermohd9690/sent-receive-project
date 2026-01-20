@@ -18,7 +18,7 @@ from django.core.files.base import ContentFile, File
 @cache_control(no_cache=True, must_revalidate=True,no_store=True)
 @login_required(login_url="login")
 def view_contract_details(request):
-    contracts = Contracts.objects.all().order_by('purchased_date')
+    contracts = Contracts.objects.all().order_by('-purchased_date')
     data_calc_cart_total = calc_cart_total(request)
     cart_total = data_calc_cart_total['cart_total']
     data_calc_toner_stock_alert = calc_toner_stock_alert(request)

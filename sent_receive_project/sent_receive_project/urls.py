@@ -36,6 +36,7 @@ urlpatterns = [
     path('contracts/',include('contracts.urls')),
     path('sent_items/',include('sent_items.urls')),
     path('', include('django.contrib.auth.urls')),
+    path('__debug__/', include('debug_toolbar.urls')),
 
     path(r'^media/(?P<path>.*)$', serve,{'document_root':       settings.MEDIA_ROOT}),
     path(r'^static/(?P<path>.*)$', serve,{'document_root': settings.STATIC_ROOT}),

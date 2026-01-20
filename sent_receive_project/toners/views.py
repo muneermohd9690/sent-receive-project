@@ -221,9 +221,9 @@ def generate_bulk_tonerdetails(request):
         messages.success(request, "Toner details added successfully")
         calc_total_qty()
         calc_remaining_qty()
-        return redirect('view_toners')
+        return redirect('add_tonerdetails')
     else:
-        return redirect('view_toners')
+        return redirect('add_tonerdetails')
 
 def generate_bulk_add_toners(request):
     items = Items.objects.all()
@@ -240,9 +240,9 @@ def generate_bulk_add_toners(request):
         messages.success(request, "Toner details added successfully")
         calc_total_qty()
         calc_remaining_qty()
-        return redirect('view_toners')
+        return redirect('add_toners')
     else:
-        return redirect('view_toners')
+        return redirect('add_toners')
 
 
 

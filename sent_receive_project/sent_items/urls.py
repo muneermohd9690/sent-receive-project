@@ -14,4 +14,7 @@ urlpatterns = [
                      name='select_remove_from_cart'),
                 path('view_cart_items/select_dispatch/', views.select_dispatch, name='select_dispatch'),
                 path('view_sent_items/return_to_store/<int:id>', views.return_to_store, name='return_to_store'),
+
+                path('sent_items_ajax/', views.sent_items_ajax, name='sent_items_ajax'),
+                path('sent_items_ajax/return_to_store/<int:id>', views.return_to_store, name='return_to_store'),
                ]

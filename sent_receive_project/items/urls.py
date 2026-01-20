@@ -7,7 +7,7 @@ urlpatterns = [
     path('', views.items),
     path('view_items/', views.view_items, name='view_items'),
     path('view_items_details/<int:id>', views.view_items_details, name='view_items_details'),
-    #path('view_items_details/edit_items_delete/<int:id>', views.edit_items_delete, name='edit_items_delete'),
+
 
     path('add_items/', views.add_items, name='add_items'),
     path('add_items/excel_import_items_db', views.excel_import_items_db, name='excel_import_items_db'),
@@ -26,14 +26,22 @@ urlpatterns = [
     path('edit_item_details/edit_item_details_save', views.edit_item_details_save, name='edit_item_details_save'),
     path('edit_item_details_form/<int:id>', views.edit_item_details_form, name='edit_item_details_form'),
 
-
+    ##### edit_item_details page ####
     #path('edit_item_details_modal', views.edit_item_details_modal, name='edit_item_details_modal'),
-    path('edit_item_details/edit_item_details_modal/', views.edit_item_details_modal, name='edit_item_details_modal'),
-    # path('edit_item_details_modal/edit_item_details_save', views.edit_item_details_save, name='edit_item_details_save'),
-    # path('edit_item_details/edit_item_details_save', views.edit_item_details_save, name='edit_item_details_save'),
+    path('edit_item_details_modal/', views.edit_item_details_modal, name='edit_item_details_modal'),
+    #path('edit_item_details_modal/edit_item_details_save', views.edit_item_details_save, name='edit_item_details_save'),
+    #path('items/item_details_datatable/edit_item_details_save/', views.edit_item_details_save, name='edit_item_details_save'), # repeated
+    path('item_details_datatable/', views.item_details_datatable, name='item_details_datatable'),
+    path('item_details_datatable/edit_item_details_modal/', views.edit_item_details_modal, name='edit_item_details_modal'),
+    path('edit_item_details_modal/search_dropdown_options/', views.search_dropdown_options, name='search_dropdown_options'),
+    ##### edit_item_details page ####
 
-    path('edit_item_details_form/edit_item_details_save', views.edit_item_details_save, name='edit_item_details_save'),
+    ##### edit_item_details_form page ####
+    path('edit_item_details_save/', views.edit_item_details_save, name='edit_item_details_save'),
     path('edit_item_details_form/edit_item_details_delete/<int:id>', views.edit_item_details_delete,
          name='edit_item_details_delete'),
     path('view_items_details/<int:id>/view_itemdetails_bulk_delete', views.view_itemdetails_bulk_delete , name='view_itemdetails_bulk_delete'),
+    path('view_items_details/upload_tags_excel', views.upload_tags_excel , name='upload_tags_excel'),
+    path('confirm_save_tags/', views.confirm_save_tags, name='confirm_save_tags'),
+
 ]

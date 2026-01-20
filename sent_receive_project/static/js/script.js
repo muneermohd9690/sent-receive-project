@@ -579,19 +579,89 @@ $(document ).ready(function (){
             });
         }
     });
-   /* function getCookie(name) {
-        var cookieValue = null;
-        if (document.cookie && document.cookie !== '') {
-            var cookies = document.cookie.split(';');
-            for (var i = 0; i < cookies.length; i++) {
-                var cookie = cookies[i].trim();
-                // Does this cookie string begin with the name we want?
-                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        console.log(cookieValue)
-        return cookieValue;
-    }*/
+
+/**** action buttons dropdown ****/
+document.addEventListener("DOMContentLoaded", function () {
+    const dropdowns = document.querySelectorAll('.dropdown');
+
+    dropdowns.forEach(dropdown => {
+        dropdown.addEventListener('show.bs.dropdown', function (e) {
+            const menu = this.querySelector('.dropdown-menu');
+            if (!menu) return;
+
+            const rect = this.getBoundingClientRect();
+            menu.style.position = 'absolute';
+            menu.style.top = `${rect.bottom + window.scrollY}px`;
+            menu.style.left = `${rect.left + window.scrollX}px`;
+            menu.style.zIndex = 1050;
+            menu.classList.add('dropdown-open');
+
+            document.body.appendChild(menu);
+        });
+
+        dropdown.addEventListener('hide.bs.dropdown', function (e) {
+            const menu = document.querySelector('.dropdown-menu.dropdown-open');
+            if (!menu) return;
+
+            const parentDropdown = document.querySelector(`[aria-labelledby="${menu.getAttribute('aria-labelledby')}"]`).closest('.dropdown');
+            parentDropdown.appendChild(menu);
+            menu.classList.remove('dropdown-open');
+            menu.removeAttribute('style'); // Clean reset
+        });
+    });
+});
+/**** action buttons dropdown ****/
+
+
+/**** view sent items return to store ****/
+document.addEventListener('DOMContentLoaded', function () {
+  const modal = document.getElementById('returnToStoreModal');
+  const modalBody = document.getElementById('modal-body-content');
+  const confirmBtn = document.getElementById('confirmReturnBtn');
+
+  // Use event delegation here
+  document.addEventListener('click', function (event) {
+    const button = event.target.closest('.open-return-modal');
+    if (!button) return;
+
+    const type = button.dataset.type;
+    let html = '';
+
+    if (type === 'toner') {
+      html += `<span>Do you want to return this Toner to store?</span>`;
+      html += `
+        <div class="input-group">
+          <span class="bordered-label side-label">Model Number</span>
+          <input type="text" class="form-control" value="${button.dataset.tonerPrinter}" readonly>
+        </div>
+        <div class="input-group">
+          <span class="bordered-label side-label">Serial No</span>
+          <input type="text" class="form-control" value="${button.dataset.tonerModel}" readonly>
+        </div>`;
+    } else if (type === 'hardware') {
+      html += `<span>Do you want to return this Item to store?</span>`;
+      html += `
+        <div class="input-group">
+          <span class="bordered-label side-label">Product Description</span>
+          <input type="text" class="form-control" value="${button.dataset.description}" readonly>
+        </div>
+        <div class="input-group">
+          <span class="bordered-label side-label">Model No</span>
+          <input type="text" class="form-control" value="${button.dataset.modelno}" readonly>
+        </div>
+        <div class="input-group">
+          <span class="bordered-label side-label">Serial No</span>
+          <input type="text" class="form-control" value="${button.dataset.serial}" readonly>
+        </div>`;
+    }
+
+    html += `
+      <div class="input-group">
+        <span class="bordered-label side-label">Employee name</span>
+        <input type="text" class="form-control" value="${button.dataset.employee}" readonly>
+      </div>`;
+
+    modalBody.innerHTML = html;
+    confirmBtn.href = button.dataset.url;
+  });
+});

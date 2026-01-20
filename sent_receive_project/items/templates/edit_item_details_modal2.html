@@ -1,0 +1,120 @@
+<input type="hidden" name="detail_id" value="{{ detail.id }}">
+
+<div class="input-group">
+    <div class="input-group-prepend">
+        <span class="bordered-label side-label">Model Number</span>
+    </div>
+    <select class="form-control select2" name="model_no" id="model_no">
+        <option value="{{ detail.model_no.id }}" selected>{{ detail.model_no.model_no }}</option>
+    </select>
+</div>
+
+<div class="input-group">
+    <div class="input-group-prepend">
+        <span class="bordered-label side-label">Serial Number</span>
+    </div>
+    <input type="text" class="form-control" placeholder="Enter serial number" name="serial_no" id="{{ detail.pk }}serial_no" value="{{ detail.serial_no }}">
+</div>
+
+<div class="input-group">
+    <div class="input-group-prepend">
+        <span class="bordered-label side-label">Tag Number</span>
+    </div>
+    <input type="text" class="form-control" placeholder="Enter tag number" name="tag_no" id="{{ detail.pk }}tag_no" value="{{ detail.tag_no }}">
+</div>
+
+<div class="input-group">
+    <div class="input-group-prepend">
+        <span class="bordered-label side-label">Room Tag</span>
+    </div>
+    <input type="text" class="form-control" placeholder="Enter room tag number" name="room_tag" id="{{ detail.pk }}room_tag" value="{{ detail.room_tag }}">
+</div>
+
+<div class="input-group">
+    <div class="input-group-prepend">
+        <span class="bordered-label side-label">Issued to</span>
+    </div>
+    <select class="form-control select2" name="issued_to" id="{{ detail.pk }}issued_to">
+        <option value="{{ detail.issued_to.id }}" selected>{{ detail.issued_to.name }}</option>
+    </select>
+</div>
+
+<div class="input-group">
+    <div class="input-group-prepend">
+        <span class="bordered-label side-label">Employee Name</span>
+    </div>
+    <input type="text" class="form-control" placeholder="Enter employee name" name="employee_name" id="{{ detail.pk }}employee_name" value="{{ detail.employee_name }}">
+</div>
+
+<div class="input-group">
+    <div class="input-group-prepend">
+        <span class="bordered-label side-label">Employee Designation</span>
+    </div>
+    <input type="text" class="form-control" placeholder="Enter employee designation" name="employee_designation" id="{{ detail.pk }}employee_designation" value="{{ detail.employee_designation }}">
+</div>
+
+<div class="input-group">
+    <div class="input-group-prepend">
+        <span class="bordered-label side-label">LPO Number</span>
+    </div>
+    <select class="form-control select2" name="lpo_no" id="{{ detail.pk }}lpo_no">
+        <option value="{{ detail.lpo_no.id }}" selected>{{ detail.lpo_no.lpo_no }}</option>
+    </select>
+</div>
+
+<div class="input-group">
+    <div class="input-group-prepend">
+        <span class="bordered-label side-label">Date Dispatched</span>
+    </div>
+    <div class="date-picker-container">
+        <input class="form-control datepicker" name="date_dispatched" id="{{ detail.pk }}date_dispatched" value="{{ detail.date_dispatched.date|date:'Y-m-d' }}">
+    </div>
+</div>
+
+<div class="input-group">
+    <div class="input-group-prepend">
+        <span class="bordered-label side-label">Status</span>
+    </div>
+    <select class="form-control" name="status" id="{{ detail.pk }}status">
+        {% for x, y in status %}
+        <option value="{{ x }}" {% if x == detail.status %}selected{% endif %}>{{ x }}</option>
+        {% endfor %}
+    </select>
+</div>
+
+<div class="text-center mt-5" style="display: none;">
+    <input id="item_id" data-value="{{ detail.pk }}">
+</div>
+
+<script>
+$(document).ready(function () {
+    // Initialize Select2 for dropdowns
+    $('.select2').each(function () {
+        var $select = $(this);
+        var model = $select.attr('name'); // e.g., 'model_no', 'issued_to', 'lpo_no'
+        
+        $select.select2({
+            ajax: {
+                url: '{% url 'search_dropdown_options' %}',
+                dataType: 'json',
+                delay: 250,
+                data: function (params) {
+                    return {
+                        q: params.term || '',
+                        model: model.replace('_no', '') // Map 'model_no' to 'items', 'lpo_no' to 'contracts'
+                    };
+                },
+                processResults: function (data) {
+                    return {
+                        results: data.results
+                    };
+                },
+                cache: true
+            },
+            minimumInputLength: 1,
+            placeholder: 'Search...',
+            allowClear: true
+        });
+    });
+});
+</script>

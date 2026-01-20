@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'django_forms_bootstrap',
     'report.apps.ReportsConfig',
     'contracts.apps.ContractsConfig',
+    'debug_toolbar',
 ]
 
 DBBACKUP_STORAGE = 'django.core.files.storage.FileSystemStorage'
@@ -69,6 +70,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     # 'simple_history.middleware.HistoryRequestMiddleware',
 
 ]

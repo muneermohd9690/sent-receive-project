@@ -1,122 +1,78 @@
 {% extends 'mainpage.html' %}
 {% load static %}
 {% block content %}
-
-    <div class="container">
-      <h2>Item Details</h2>
-       <input type="hidden" name="itemdetails_id" value="{{itemdetails.id}}">
-       <div class="input-group input-group-sm mb-2" id="table-search">
-            <input class="form-control" id="search" type="text" placeholder="Search.." >
-           <a href="{% url 'edit_item_details' %}" class="btn btn-dark btn-lg" title="Reset View"><i class="fas fa-sync-alt"></i></a>
-       </div>
-
-              <div class="table-responsive">
-
-                  <table class="table table-bordered" id="myTable">
-                      <thead class="table-secondary">
-                          <tr>
-                              <th>Model Number</th>
-                              <th>Serial Number</th>
-                              <th>Tag Number</th>
-                              <th>Room Tag</th>
-                              <th>Issued to</th>
-                              <th>Date Dispatched</th>
-                              <th>Employee Name</th>
-                              <th>Employee Designation</th>
-                              <th>Action</th>
-
-                          </tr>
-                      </thead>
-                      <tbody >
-                          {% for detail in itemdetails %}
-                          <tr id="{{detail.pk}}" data-id="{{ detail.pk }}" >
-                              <td>{{detail.model_no.model_no}}</td>
-                              <td>{{detail.serial_no}}</td>
-                              <td>{{detail.tag_no}}</td>
-                              <td>{{detail.room_tag}}</td>
-                              <td>{{detail.issued_to.name}}</td>
-                              <td>{{detail.date_dispatched.date}}</td>
-                              <td>{{detail.employee_name}}</td>
-                              <td>{{detail.employee_designation}}</td>
-                              <td><!--<a href="{% url 'edit_item_details_form' detail.id %}" class="btn btn-warning"
-                                         data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"><i
-                                              class="fas fa-edit"></i>
-                                  </a>-->
-
-
-                                  <button type="button" class="btn btn-warning" onclick="openModal('{{detail.pk}}')">
-                                      <i class="fas fa-edit"></i>
-                                  </button>
-                                  <script>
-                                        var detailPk = "{{detail.pk}}";
-                                  </script>
-
-                              </td>
-                          </tr>
-                          <!-- Edit Modal -->
-
-
-                          <!-- Edit Modal -->
-                          {% endfor %}
-                      </tbody>
-                  </table>
-              </div>
-               <!-- The Modal -->
-                <div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" id="{{detail.pk}}editItemDetailsModal">
-
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="{{detail.pk}}editItemDetailsModalLabel">Edit Item Details</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <form id="editItemDetailsForm" role="form" action="{% url 'edit_item_details_save' %}" method="post">
-                                    {% csrf_token %}
-
-                                    <div class="modal-body" id="{{detail.pk}}modalBody">
-                                        <!-- Modal content will be loaded here dynamically -->
-                                    </div>
-
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                        <button type="submit"  class="btn btn-success">Save Changes</button>
-                                    </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-               <script>
-
-               </script>
-
-                <script>
-                    window.onload = function() {
-                        // Find all elements with the class 'bs-searchbox' containing an input element of type 'search'
-                        var searchboxes = document.querySelectorAll('.bs-searchbox input[type="search"]');
-
-                        // Iterate through the NodeList and set unique IDs
-                        searchboxes.forEach(function(searchInput, index) {
-                            var uniqueId = 'search_input_' + index;  // You can modify this based on your requirements
-                            searchInput.id = uniqueId;
-                            <!---->console.log('Set ID for element:', uniqueId);
-                        });
-
-                        // Your code here
-                    };
-                </script>
-
+<div class="container">
+    <h2>Item Details</h2>
+    <div class="input-group input-group-sm mb-2" id="table-search">
+        <input class="form-control" id="search" type="text" placeholder="Search..">
+        <a href="{% url 'edit_item_details' %}" class="btn btn-dark btn-lg" title="Reset View"><i class="fas fa-sync-alt"></i></a>
     </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered" id="itemDetailsTable" width="100%">
+            <thead class="table-secondary">
+                <tr>
+                    <th>Model Number</th>
+                    <th>Serial Number</th>
+                    <th>Tag Number</th>
+                    <th>Room Tag</th>
+                    <th>Issued to</th>
+                    <th>Date Dispatched</th>
+                    <th>Employee Name</th>
+                    <th>Employee Designation</th>
+                    <th>LPO Number</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="editItemDetailsModal{{ item_id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Item Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <form id="editItemDetailsForm" action="{% url 'edit_item_details_save' %}" method="POST">
+                {% csrf_token %}
+                <div class="modal-body" id="modalBody">
+                    <div class="alert alert-info py-2" style="font-size: 0.85rem;">
+                        <i class="fas fa-info-circle"></i> Updating details for <b>{{ item.serial_no }}</b>
+                    </div>
+
+                    <input type="hidden" name="detail_id" value="{{ item_id }}">
+                    </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn text-white"
+                            style="background-color: #e91e63; border-color: #e91e63; min-width: 120px;">
+                        Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
 <script>
-  // Get the element representing the current page
-  var currentPageElement = document.getElementById('currentPage');
+window.onload = function () {
+    var searchboxes = document.querySelectorAll('.bs-searchbox input[type="search"]');
+    searchboxes.forEach(function (searchInput, index) {
+        var uniqueId = 'search_input_' + index;
+        searchInput.id = uniqueId;
+        console.log('Set ID for element:', uniqueId);
+    });
+};
+</script>
 
-  // Set the breadcrumb text content to "Items / Add Item Details"
-  currentPageElement.textContent = "Items / Edit Item Details";
-
-  // Get the <h6> element representing "TEMPLATE"
-  var templateElement = document.querySelector('h6.font-weight-bolder.mb-0');
-
-  // Update the text content of the <h6> element to "Edit Item Details"
-  templateElement.textContent = "Edit Item Details";
+<script>
+var currentPageElement = document.getElementById('currentPage');
+currentPageElement.textContent = "Items / Edit Item Details";
+var templateElement = document.querySelector('h6.font-weight-bolder.mb-0');
+templateElement.textContent = "Edit Item Details";
 </script>
 {% endblock %}

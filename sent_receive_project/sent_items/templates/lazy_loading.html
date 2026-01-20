@@ -1,0 +1,88 @@
+{% extends 'mainpage.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container" xmlns="">
+    <h2>Sent Items</h2>
+     <div class="input-group input-group-sm mb-2" id="table-search">
+        <input class="form-control" id="search" type="text" placeholder="Search.." >
+        <a href="{% url 'sent_items_ajax' %}" class="btn btn-dark btn-lg" title="Reset View"><i class="fas fa-sync-alt"></i></a>
+     </div>
+    <div class="table-responsive">
+        <table class="table table-bordered auto-width-table" id="LazyLoading">
+            <thead class="table-secondary">
+            <tr>
+                <th class="w1">No</th>
+                <th class="w2">Send Date</th>
+                <th class="w3">Send To</th>
+                <th class="w4">Product Description</th>
+                <th class="w5">Model No.</th>
+                <th class="w6">Serial No.</th>
+                <th class="w7">Received By</th>
+                <th class="w8">Action</th>
+            </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+<!--        <button type="button" class="btn btn-secondary" style="margin-top: -10px;">Close</button>-->
+        <a href="{% url 'sentitems_export_topdf' %}"  rel="noopener noreferrer"  class="btn btn-outline-primary btn-sm mb-0 me-3"
+           id="btn-exporttopdf" data-bs-toggle="tooltip" data-bs-placement="bottom" title="download as pdf"><i class="fas fa-file-pdf"></i></a>
+        <a href="{% url 'sentitems_export_toexcel' %}"  rel="noopener noreferrer"  class="btn btn-outline-primary btn-sm mb-0 me-3"
+           id="btn-exporttocsv" data-bs-toggle="tooltip" data-bs-placement="bottom" title="download as excel"><i class="fas fa-file-pdf"></i></a>
+
+    </div>
+
+
+</div>
+<!-- Reusable Modal -->
+<div class="modal fade" id="returnToStoreModal" tabindex="-1" role="dialog"
+     aria-labelledby="returnToStoreLabel" data-bs-backdrop="static" data-bs-keyboard="false"
+     aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="returnToStoreLabel">Return Item Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+        </button>
+      </div>
+      <div class="modal-body" id="modal-body-content">
+        <!-- Content dynamically filled here -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <a href="#" id="confirmReturnBtn" class="btn btn-danger">Yes</a>
+      </div>
+    </div>
+  </div>
+</div>
+<!--- Messages after CRUD operations --->
+{% if messages %}
+    {% for message in messages %}
+            <script>
+                 var m= "{{ message }}";
+                 swal({
+                       title: "Good job!",
+                       text: m,
+                       icon: "success",
+                      });
+            </script>
+    {% endfor %}
+{% endif %}
+<!--- Messages after CRUD operations --->
+
+<script>
+  // Get the element representing the current page
+  var currentPageElement = document.getElementById('currentPage');
+
+  // Set the breadcrumb text content to "Toners / View Toners"
+  currentPageElement.textContent = "Sent Items / View Sent Items";
+
+  // Get the <h6> element representing "TEMPLATE"
+  var templateElement = document.querySelector('h6.font-weight-bolder.mb-0');
+
+  // Update the text content of the <h6> element to "View Sent Items"
+  templateElement.textContent = "View Sent Items";
+</script>
+
+{% endblock %}

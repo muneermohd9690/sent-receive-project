@@ -33,10 +33,14 @@ class CartItem(models.Model):
     quantity = models.IntegerField(default=0)
     selected = models.BooleanField(default=False)
     dispatched = models.BooleanField(default=False)
-
+    date_dispatched = models.DateTimeField(null=True, blank=True, db_index=True)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE,null=True)
     object_id = models.PositiveIntegerField(null=True)
     content_object = GenericForeignKey('content_type', 'object_id')
+
+    class Meta:
+        # Default ordering so your views are cleaner
+        ordering = ['-date_dispatched', '-date_added']
 
 
 class SentItems(models.Model):

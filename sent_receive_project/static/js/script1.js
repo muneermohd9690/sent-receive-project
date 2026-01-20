@@ -37,119 +37,37 @@ function updateUserOrder(detailId,action){
 /***  for adding to cart ***/
 
 <!---------------------------- disable addtodispatch button --------------------------------->
-$(document).ready(function(){
-    var java_content_type_id = $("#content_type_id").data("value");
-    var java_joined_ids = $("#joined_ids").data("value");
-    var buttons=$(".addtodispatch");
-    var java_detailId=[];
-    var java_detailId_content_type_id=[];
-    for(x=0;x<buttons.length;x++)
-    {
-    $('button.addtodispatch').each(function() {
-        java_detailId[x++]= parseInt($(this).attr("data-detail"));
-    });
 
-    }
-    for(y=0;y<java_detailId.length;y++)
-    {
-        java_detailId_content_type_id[y]=[java_detailId[y],java_content_type_id]
-    }
-    for(let i = 0; i<java_detailId_content_type_id.length; i++)
-    {
-        for(let j = 0; j<java_joined_ids.length; j++)
-        {
-                if(JSON.stringify(java_detailId_content_type_id[i])==JSON.stringify(java_joined_ids[j]))
-                {
-                    $(`button[data-detail="${java_detailId_content_type_id[i][i-i]}"]`).attr("disabled", true)
-                    break;
-                } else
-                    {
-                            $(`button[data-detail="${java_detailId_content_type_id[i][i-i]}"]`).attr("disabled", false)
-                    }
-        }
+
+$(document).ready(function(){
+    var content_type_id = $("#content_type_id")?.data("value");
+    var joined_ids = $("#joined_ids")?.data("value");
+
+    // Debug logs
+    console.log('content_type_id:', content_type_id);
+    console.log('joined_ids:', joined_ids);
+
+    // Only proceed if joined_ids is defined and is an array
+    if (joined_ids && Array.isArray(joined_ids)) {
+        var joinedIdsSet = new Set(joined_ids.map(item => JSON.stringify(item)));
+
+        $('.addtodispatch').each(function() {
+            var detailId = parseInt($(this).attr("data-detail"));
+            var detailContentTypePair = JSON.stringify([detailId, content_type_id]);
+
+            if (joinedIdsSet.has(detailContentTypePair)) {
+                $(this).attr("disabled", true);
+            } else {
+                $(this).attr("disabled", false);
+            }
+        });
+    } else {
+        console.warn('joined_ids is not available or not an array, skipping addtodispatch logic');
     }
 });
 
 <!---------------------------- Ajax bulk delete --------------------------------------------->
 
-//    $(document).ready(function(){
-//            $('.bulk_delete').click(function(){
-//                var id=[];
-//                var item_id=$("#item_id").data("value");
-//                var currentURL = window.location.href;
-//                var csrf=$('input[name=csrfmiddlewaretoken]').val();
-//                $(':checkbox:checked').each(function(i){
-//                        id[i]=$(this).val()
-//                 })
-//                    if(id.length===0){
-//                           swal("Error!", "Please select the toners to Delete", "error");
-//                    }
-//                    else{ swal({
-//                                  title: "Are you sure?",
-//                                  text: "You will not be able to recover this record!",
-//                                  icon: "warning",
-//                                  buttons: [
-//                                    'No, cancel it!',
-//                                    'Yes, I am sure!'
-//                                  ],
-//                                  dangerMode: true,
-//                                }).then(function(isConfirm) {
-//                                  if (isConfirm) {
-//                                    if (currentURL.indexOf("view_tonerdetails") !== -1)
-//                                       {
-//                                            $.ajax({
-//                                            url:'' + item_id +'/view_tonerdetails_bulk_delete' ,
-//                                            method:"POST",
-//                                            data:{
-//                                                id:id,
-//                                                csrfmiddlewaretoken:csrf
-//                                            },
-//
-//                                            success:function(response){
-//                                                for(var i=0;i<id.length;i++){
-//                                                    $('tr#'+id[i]+'').css('background-color','#ccc');
-//                                                    $('tr#'+id[i]+'').fadeOut('slow');
-//
-//                                                }
-//
-//                                            }
-//                                            })
-//                                       }
-//                                    else
-//                                        {
-//
-//                                            $.ajax({
-//                                            url:'' + item_id +'/view_itemdetails_bulk_delete' ,
-//                                            method:"POST",
-//                                            data:{
-//                                                id:id,
-//                                                csrfmiddlewaretoken:csrf
-//                                            },
-//
-//                                            success:function(response){
-//                                                for(var i=0;i<id.length;i++){
-//                                                    $('tr#'+id[i]+'').css('background-color','#ccc');
-//                                                    $('tr#'+id[i]+'').fadeOut('slow');
-//
-//                                                }
-//
-//                                            }
-//                                            })
-//                                        }
-//                                    swal({
-//                                      title: 'Deleted!',
-//                                      text: 'Records are successfully deleted!',
-//                                      icon: 'success'
-//                                    })
-//
-//                                  } else {
-//                                    swal("Cancelled", "Your records are safe", "error");
-//                                  }
-//                                });
-//
-//                    }
-//            })
-//    })
 $(document).ready(function(){
     // Define a global array to store selected bulk delete item IDs
     var selectedBulkDeleteIds = [];
@@ -230,51 +148,7 @@ $(document).ready(function(){
 
 
 <!--------------------------------------- Paginator and keyup Search ----------------------------->
-/*var table;
-$(document).ready(function ()
-    {
-            var currentURL = window.location.href;
-            if (currentURL.indexOf("view_sent_items") !== -1)
-                {
-                    var table = $('#myTable').DataTable
-                        ({
-                                paging: true,
-                                pageLength: 10,
-                                lengthChange: false,
-                                bInfo: false,
-                                bSort: false,
-                                order:[],
-                                dom: 'ltiBfrp',
-                                buttons:[
-                                   {
-                                        extend: 'excel',
-                                        text:   '<i class="fas fa-file-excel"></i>',
-                                        className:  'btn-exporttocsv',
-                                        titleAttr:  'Excel',
 
-                                    },
-                               ]
-                        });
-                }
-            else
-                {
-                     var table = $('#myTable').DataTable
-                        ({
-                                paging: true,
-                                pageLength: 10,
-                                lengthChange: false,
-                                bInfo: false,
-                                bSort: false,
-                                order:[]
-                        });
-
-                }
-            $('#search').on( 'keyup', function ()
-            {
-                table.search( this.value ).draw();
-            });
-    });
-    */
 var table;
 $(document).ready(function ()
     {
@@ -299,29 +173,6 @@ $(document).ready(function ()
 
 <!---------------------------- Ajax bulk add to dispatch --------------------------------------------->
 
-//        $(document).ready(function() {
-//            $("#btn-bulkdispatch").click(function() {
-//                var selectedIds = [];
-//                var csrf=$('input[name=csrfmiddlewaretoken]').val();
-//                $(':checkbox:checked').each(function() {
-//                    selectedIds.push($(this).val());
-//                });
-//
-//                $.ajax({
-//                    type: "POST",
-//                    url:'/sent_items/bulk_update_items/',
-//                    data: { selected_ids: selectedIds,
-//                            csrfmiddlewaretoken:csrf
-//                     },
-//                    success: function(response) {
-//                        window.location.reload();
-//                    },
-//                    error: function(xhr, errmsg, err) {
-//                        console.log(xhr.status + ": " + xhr.responseText);
-//                    }
-//                });
-//            });
-//        });
 // Define a global array to store selected bulk dispatch item IDs
 var selectedBulkDispatchIds = [];
 
@@ -462,75 +313,6 @@ $(document).ready(function(){
 
 <!---------------------------- Ajax remove selected from dispatch --------------------------------------------->
 
-//        $(document).ready(function()
-//        {
-//            $("#btn-selectremove").click(function()
-//            {
-//                var selectedIds = [];
-//                var csrf=$('input[name=csrfmiddlewaretoken]').val();
-//                $(':checkbox:checked').each(function(i){
-//                        selectedIds[i]=$(this).val()
-//                })
-//                if(selectedIds.length==0)
-//                {
-//                           swal("Error!", "Please select the items to Remove", "error");
-//                }
-//                else
-//                {           swal
-//                              ({
-//                                      title: "Are you sure?",
-//                                      text: "You will remove selected items from dispatch!",
-//                                      icon: "warning",
-//                                      buttons: [
-//                                        'No, cancel it!',
-//                                        'Yes, I am sure!'
-//                                      ],
-//                                      dangerMode: true,
-//                              }).then(function(isConfirm)
-//                              {
-//                                  if (isConfirm)
-//                                  {
-//                                                    $.ajax({
-//                                                    type: "POST",
-//                                                    url:'select_remove_from_cart/',
-//                                                    data: { selected_ids: selectedIds,
-//                                                            csrfmiddlewaretoken:csrf
-//                                                     },
-//                                                    success: function(response)
-//                                                    {
-//                                                        for(var i=0;i<selectedIds.length;i++)
-//                                                        {
-//															$('tr#'+selectedIds[i]+'').css('background-color','#ccc');
-//															$('tr#'+selectedIds[i]+'').fadeOut('slow');
-//
-//														}
-//
-//                                                    },
-//                                                    error: function(xhr, errmsg, err)
-//                                                    {
-//                                                        console.log(xhr.status + ": " + xhr.responseText);
-//                                                    }
-//                                                });
-//                                                swal
-//                                                ({
-//                                                      title: 'Removed!',
-//                                                      text: selectedIds.length+' Items are successfully removed!',
-//                                                      icon: 'success'
-//                                                }).then((willReload)=>{
-//                                                    if (willReload){
-//                                                        window.location.reload();
-//                                                    }
-//                                                });
-//
-//                                  }
-//                                  else
-//                                  {
-//                                    swal("Cancelled",selectedIds.length+" Items still in dispatch", "error");
-//                                  }
-//                              });
-//                }
-//            });
-//        });
 // Define a global array to store selected removal item IDs
 var selectedRemoveIds = [];
 
@@ -602,70 +384,6 @@ $(document).ready(function() {
 
 <!---------------------------- Ajax selected dispatch --------------------------------------------->
 
-//        $(document).ready(function() {
-//            $("#btn-selectdispatch").click(function() {
-//                var selectedIds = [];
-//                var csrf=$('input[name=csrfmiddlewaretoken]').val();
-//                $(':checkbox:checked').each(function() {
-//                    selectedIds.push($(this).val());
-//                });
-//                if(selectedIds.length==0)
-//                {
-//                           swal("Error!", "Please select the items to Dispatch", "error");
-//                }
-//                else
-//                {           swal
-//                              ({
-//                                      title: "Are you sure?",
-//                                      text: "You will dispatch the selected items!",
-//                                      icon: "warning",
-//                                      buttons: [
-//                                        'No, cancel it!',
-//                                        'Yes, I am sure!'
-//                                      ],
-//                                      dangerMode: true,
-//                              }).then(function(isConfirm)
-//                              {
-//                                  if (isConfirm)
-//                                  {
-//                                        $.ajax({
-//                                            type: "POST",
-//                                            url:'select_dispatch/',
-//                                            data: { selected_ids: selectedIds,
-//                                                    csrfmiddlewaretoken:csrf
-//                                             },
-//                                            success: function(response)
-//                                            {
-//                                                for(var i=0;i<selectedIds.length;i++)
-//                                                {
-//                                                    $('tr#'+selectedIds[i]+'').css('background-color','#ccc');
-//                                                    $('tr#'+selectedIds[i]+'').fadeOut('slow');
-//
-//                                                }
-//                                            },
-//                                            error: function(xhr, errmsg, err) {
-//                                                console.log(xhr.status + ": " + xhr.responseText);
-//                                            }
-//                                        });
-//                                        swal
-//                                        ({
-//                                            title: 'Dispatched!',
-//                                            text: selectedIds.length+' Items are successfully dispatched!',
-//                                            icon: 'success'
-//                                        }).then((willReload)=>{
-//                                                if (willReload){
-//                                                  window.location.reload();
-//                                                }
-//                                        });
-//                                  }
-//                                  else
-//                                  {
-//                                    swal("Cancelled",selectedIds.length+" Items still in dispatch", "error");
-//                                  }
-//                              });
-//                }
-//            });
-//        });
     // Define a global array to store selected dispatch item IDs
 var selectedDispatchIds = [];
 
@@ -737,42 +455,6 @@ $(document).ready(function() {
 
 <!---------------------------- Ajax print selected items sent invoice --------------------------------------------->
 
-    //        $(document).ready(function() {
-    //            $(".select_print_sent_items_invoice").click(function(e) {
-    //                e.preventDefault();
-    //                var selectedIds = [];
-    //                var csrf=$('input[name=csrfmiddlewaretoken]').val();
-    //                var id=$("#cart_id").data("value");
-    //                $(':checkbox:checked').each(function() {
-    //                    selectedIds.push($(this).val());
-    //                });
-    //                if (selectedIds.length > 0) {
-    //                        var url = '/forms/select_print_sent_items_invoice/';
-    //                        fetch(url, {
-    //                            method: 'POST',
-    //                            headers: {
-    //                                'Content-Type': 'application/json',
-    //                                'X-CSRFToken': csrf,
-    //                            },
-    //                            body: JSON.stringify({
-    //                                'selected_ids': selectedIds,  // Use underscore instead of camelCase
-    //                                'id': id
-    //                            })
-    //                        })
-    //                        .then((response) => response.blob())
-    //                        .then(blob => {
-    //                                var blobUrl = URL.createObjectURL(blob);
-    //                                window.open(blobUrl, '_blank');
-    //                        })
-    //                        .catch(error => {
-    //                                console.error('Error:', error);
-    //                        });
-    //                } else {
-    //                        $("#pdf-generation-status").text("Please select items to generate PDF.");
-    //                }
-    //            });
-    //        });
-    // Define a global array to store selected checkbox IDs
 var selectedIds = [];
 
 $(document).ready(function() {
@@ -858,6 +540,7 @@ function showNoPdfAlert() {
 }
 
 <!---------------------------- Logic to show edit item details modal, swal message, highlight edited row letters ------->
+/*
 var pageIdentifier = 'edit_item_details';
 
 function handleFormSubmission(event) {
@@ -990,6 +673,668 @@ $(document).on('shown.bs.modal', '#editItemDetailsModal', function () {
             cancelLabel: 'Clear'
         }
     });
+});
+*/
+//Edit item details page
+
+//Edit item details page server side processing------------------------------------------------------------------------
+//var pageIdentifier = 'edit_item_details';
+//
+//function handleFormSubmission(event) {
+//    event.preventDefault();
+//    var currentRowId = $("#item_id").data("value");
+//
+//    Swal.fire({
+//        title: 'Confirm Changes',
+//        text: 'Are you sure you want to save changes?',
+//        icon: 'warning',
+//        showCancelButton: true,
+//        confirmButtonColor: '#3085d6',
+//        cancelButtonColor: '#d33',
+//        confirmButtonText: 'Yes, save it!'
+//    }).then((result) => {
+//        if (result.isConfirmed) {
+//            submitForm();
+//            $('#editItemDetailsModal').modal('hide');
+//        } else {
+//            Swal.fire("Cancelled", "No changes were made", "error");
+//            $('#editItemDetailsModal').modal('hide');
+//        }
+//    });
+//}
+//
+//function submitForm() {
+//    var formData = $('#editItemDetailsForm').serialize();
+//    var currentRowId = $("#item_id").data("value");
+//
+//    $.ajax({
+//        type: 'POST',
+////        url: 'edit_item_details_save/',
+//        url: "{% url 'edit_item_details_save' %}",
+//        data: formData,
+//        success: function (data) {
+//            applyVisualEffectAndStore(currentRowId);
+//            Swal.fire({
+//                title: 'Changes Saved',
+//                text: 'Your changes have been successfully saved.',
+//                icon: 'success'
+//            }).then(() => {
+//                $('#itemDetailsTable').DataTable().ajax.reload();
+//            });
+//        },
+//        error: function (error) {
+//            console.error('Error saving data:', error);
+//            Swal.fire('Error', 'Failed to save changes.', 'error');
+//        }
+//    });
+//}
+//
+//function applyVisualEffectAndStore(currentRowId) {
+//    console.log('Applying visual effect to row:', currentRowId);
+//    var $row = $('#itemDetailsTable').find(`tr[data-id="${currentRowId}"]`);
+//    $row.find('td:not(:last-child)').each(function () {
+//        var $cell = $(this);
+//        var originalText = $cell.text();
+//        var highlightedText = '<span class="highlight">' + originalText + '</span>';
+//        $cell.html(highlightedText);
+//    });
+//
+//    sessionStorage.setItem('currentHighlightedRow', currentRowId);
+//    setTimeout(function () {
+//        console.log('Removing visual effect from row:', currentRowId);
+//        $row.find('td:not(:last-child)').each(function () {
+//            var $cell = $(this);
+//            $cell.html($cell.find('.highlight').text());
+//        });
+//    }, 5000);
+//}
+//
+//function checkAndApplyHighlight() {
+//    var currentHighlightedRow = sessionStorage.getItem('currentHighlightedRow');
+//    if (currentHighlightedRow && currentPageUrl.includes(pageIdentifier)) {
+//        applyVisualEffectAndStore(currentHighlightedRow);
+//        sessionStorage.removeItem('currentHighlightedRow');
+//    }
+//}
+//
+//var currentPageUrl = window.location.href;
+//
+//function openModal(detailId) {
+//    var modalId = '#editItemDetailsModal';
+//    $(modalId + 'Label').text('Edit Item Details - ' + detailId);
+//
+//    $.ajax({
+//        url: 'edit_item_details_modal/',
+//        type: 'GET',
+//        data: { detail_id: detailId },
+//        success: function (response) {
+//            $(modalId + ' .modal-body').html(response);
+//            $(modalId).modal('show');
+//            $('.select2').select2({
+//                ajax: {
+//                    url: 'search_dropdown_options/',
+//                    dataType: 'json',
+//                    delay: 250,
+//                    data: function (params) {
+//                        return {
+//                            q: params.term || '',
+//                            model: $(this).attr('name').replace('_no', '')
+//                        };
+//                    },
+//                    processResults: function (data) {
+//                        return {
+//                            results: data.results
+//                        };
+//                    },
+//                    cache: true
+//                },
+//                minimumInputLength: 1,
+//                placeholder: 'Search...',
+//                allowClear: true
+//            });
+//        },
+//        error: function (error) {
+//            console.error('Error fetching data:', error);
+//            Swal.fire('Error', 'Failed to load modal content.', 'error');
+//        }
+//    });
+//}
+//
+//$(document).ready(function () {
+//    checkAndApplyHighlight();
+//    $('body').on('submit', '#editItemDetailsForm', handleFormSubmission);
+//    var csrf = $('input[name=csrfmiddlewaretoken]').val();
+//    // Initialize DataTables with server-side processing
+//    var table =$('#itemDetailsTable').DataTable({
+//        processing: true,
+//        serverSide: true,
+//
+//        ajax: {
+//            url: '/items/item_details_datatable/',  // this is the same view you use now
+//            type: 'POST',
+//            headers: {
+//                    'X-CSRFToken':csrftoken,
+//            },
+//        },
+//        columns: [
+//            { data: 'model_no' },
+//            { data: 'serial_no' },
+//            { data: 'tag_no' },
+//            { data: 'room_tag' },
+//            { data: 'issued_to' },
+//            { data: 'date_dispatched' },
+//            { data: 'employee_name' },
+//            { data: 'employee_designation' },
+//            { data: 'lpo_no' },
+//            { data: 'action'},
+//        ],
+//        pageLength: 10,
+//        responsive: true,
+//        bSort: false,
+//        scrollX: true,
+//        autoWidth: false,
+//          // Default sort by date_dispatched descending
+//    });
+//    // Attach the search box
+//    $('#search').on('keyup', function () {
+//        table.search(this.value).draw();
+//    });
+//});
+//
+//$(document).on('shown.bs.modal', '#editItemDetailsModal', function () {
+//    $(".datepicker").daterangepicker({
+//        singleDatePicker: true,
+//        opens: 'left',
+//        showDropdowns: true,
+//        ranges: {
+//            'Today': [moment(), moment()],
+//        },
+//        autoUpdateInput: true,
+//        minYear: 2022,
+//        locale: {
+//            format: 'YYYY-MM-DD',
+//            cancelLabel: 'Clear'
+//        }
+//    });
+//});
+//var pageIdentifier = 'edit_item_details';
+//var currentPageUrl = window.location.href;
+//
+//// 1. Updated Submission Handler
+//function handleFormSubmission(event) {
+//    event.preventDefault();
+//
+//    // Grab the form and the unique ID for the item being edited
+//    var $form = $(event.target);
+//    var currentRowId = $form.find('input[name="detail_id"]').val(); // Use the hidden input
+//
+//    Swal.fire({
+//        title: 'Confirm Changes',
+//        text: 'Are you sure you want to save changes?',
+//        icon: 'warning',
+//        showCancelButton: true,
+//        confirmButtonColor: '#e91e63', // Your Pink Color
+//        cancelButtonColor: '#d33',
+//        confirmButtonText: 'Yes, save it!'
+//    }).then((result) => {
+//        if (result.isConfirmed) {
+//            submitForm($form, currentRowId); // Pass context to submitForm
+//        } else {
+//            // Optional: Don't hide modal on cancel if user just wants to go back to editing
+//            // $('#editItemDetailsModal').modal('hide');
+//        }
+//    });
+//}
+//
+//// 2. Updated Submit Function (Fixed URL 404 issue)
+//function submitForm($form, currentRowId) {
+//    // FormData handles both text AND files automatically
+//    var formData = new FormData($form[0]);
+//    formData.append("is_ajax", "true");// Manually force the flag
+//    var saveUrl = $form.attr('action');
+//
+//    $.ajax({
+//        type: 'POST',
+//        url: saveUrl,
+//        data: formData,
+//        processData: false, // Tell jQuery not to process the data
+//        contentType: false, // Tell jQuery not to set contentType
+//        success: function (response) {
+//            applyVisualEffectAndStore(currentRowId);
+//            $form.closest('.modal').modal('hide');
+//
+//            Swal.fire({
+//                title: 'Saved!',
+//                text: data.message,
+//                icon: 'success',
+//                confirmButtonColor: '#e91e63'
+//            }).then(() => {
+//                // STEP C: Reload table. drawCallback will handle the highlight automatically
+//                if ($.fn.DataTable.isDataTable('#itemDetailsTable')) {
+//                    $('#itemDetailsTable').DataTable().ajax.reload(null, false);
+//                }
+//            });
+//        },
+//        error: function (xhr) {
+//            Swal.fire('Error', 'Failed to save changes.', 'error');
+//        }
+//    });
+//}
+//
+//// 3. Highlight Effect Logic
+//function applyVisualEffectAndStore(currentRowId) {
+//    // We search for the row by data-id attribute (Ensure your DataTable rows have this)
+//    var $row = $('#itemDetailsTable').find(`tr[data-id="${currentRowId}"]`);
+//
+//    if ($row.length > 0) {
+//        $row.addClass('table-info'); // Use Bootstrap class for immediate feedback
+//        $row.find('td:not(:last-child)').each(function () {
+//            var $cell = $(this);
+//            $cell.wrapInner('<span class="highlight"></span>');
+//        });
+//
+//        sessionStorage.setItem('currentHighlightedRow', currentRowId);
+//
+//        setTimeout(function () {
+//            $row.removeClass('table-info');
+//            $row.find('.highlight').contents().unwrap();
+//        }, 5000);
+//    }
+//}
+//
+//// 4. Modal Open Logic (Added dynamic ID handling)
+//function openModal(detailId) {
+//    var modalSelector = '#editItemDetailsModal'; // Use base modal ID
+//
+//    $.ajax({
+//        url: '/items/edit_item_details_modal/',
+//        type: 'GET',
+//        data: { detail_id: detailId },
+//        success: function (response) {
+//            $(modalSelector + ' .modal-body').html(response);
+//            $(modalSelector).modal('show');
+//
+//            // Re-initialize plugins inside the new content
+//            $('.select2').select2({
+//                dropdownParent: $(modalSelector), // Critical for Select2 inside Modals
+//                ajax: {
+//                    url: 'search_dropdown_options/',
+//                    dataType: 'json',
+//                    delay: 250,
+//                    data: function (params) {
+//                        return {
+//                            q: params.term || '',
+//                            model: $(this).attr('name').replace('_no', '')
+//                        };
+//                    }
+//                }
+//            });
+//        },
+//        error: function (error) {
+//            Swal.fire('Error', 'Failed to load data.', 'error');
+//        }
+//    });
+//}
+//
+//// 5. Document Ready & Global Listeners
+//$(document).ready(function () {
+//    checkAndApplyHighlight();
+//
+//    // Listen for form submission inside ANY modal
+//    $('body').on('submit', '#editItemDetailsForm', handleFormSubmission);
+//
+//    // DataTable definition...
+//    var table = $('#itemDetailsTable').DataTable({
+//        // ... your settings ...
+//        createdRow: function(row, data, dataIndex) {
+//            // CRITICAL: This adds the ID to the row so the highlight knows where to go
+//            $(row).attr('data-id', data.id);
+//        }
+//    });
+//});
+//var currentPageUrl = window.location.href;
+//
+//function openModal(detailId) {
+//    // We use a constant ID for the container, but the form inside can be dynamic
+//    var modalSelector = '#editItemDetailsModal';
+//
+//    // Update label to show which item we are editing
+//    $(modalSelector + 'Label').text('Edit Item Details - ' + detailId);
+//
+//    $.ajax({
+//        // Leading slash ensures it works from any sub-page
+//        url: '/items/edit_item_details_modal/',
+//        type: 'GET',
+//        data: { detail_id: detailId },
+//        success: function (response) {
+//            // Inject the form HTML into the modal body
+//            $(modalSelector + ' .modal-body').html(response);
+//            $(modalSelector).modal('show');
+//
+//            // Initialize Select2 AFTER the HTML is injected
+//            $('.select2').select2({
+//                // CRITICAL: This allows Select2 to work inside a Bootstrap Modal
+//                dropdownParent: $(modalSelector),
+//                ajax: {
+//                    url: '/items/search_dropdown_options/',
+//                    dataType: 'json',
+//                    delay: 250,
+//                    data: function (params) {
+//                        return {
+//                            q: params.term || '',
+//                            // Extracts 'model' or 'room' etc from the field name
+//                            model: $(this).attr('name').replace('_no', '')
+//                        };
+//                    },
+//                    processResults: function (data) {
+//                        return { results: data.results };
+//                    },
+//                    cache: true
+//                },
+//                minimumInputLength: 1,
+//                placeholder: 'Search...',
+//                allowClear: true
+//            });
+//        },
+//        error: function (error) {
+//            console.error('Error fetching data:', error);
+//            Swal.fire({
+//                title: 'Error',
+//                text: 'Failed to load item data.',
+//                icon: 'error',
+//                confirmButtonColor: '#e91e63' // Pink theme
+//            });
+//        }
+//    });
+//}
+//
+//$(document).ready(function () {
+//    // 1. Correctly grab the CSRF token
+//    var csrftoken = $('input[name=csrfmiddlewaretoken]').val();
+//
+//    // 2. Initialize DataTable
+//    var table = $('#itemDetailsTable').DataTable({
+//        processing: true,
+//        serverSide: true,
+//        ajax: {
+//            url: '/items/item_details_datatable/',
+//            type: 'POST',
+//            headers: {
+//                'X-CSRFToken': csrftoken, // Use the variable defined above
+//            },
+//        },
+//        // 3. Add the ID to each row so we can find it for highlighting
+//        createdRow: function(row, data, dataIndex) {
+//            $(row).attr('data-id', data.id);
+//        },
+//        // 4. Re-apply highlight every time the table draws
+//        drawCallback: function(settings) {
+//            var highlightedId = sessionStorage.getItem('currentHighlightedRow');
+//            if (highlightedId) {
+//                applyVisualEffectAndStore(highlightedId);
+//            }
+//        },
+//        columns: [
+//            { data: 'model_no' },
+//            { data: 'serial_no' },
+//            { data: 'tag_no' },
+//            { data: 'room_tag' },
+//            { data: 'issued_to' },
+//            { data: 'date_dispatched' },
+//            { data: 'employee_name' },
+//            { data: 'employee_designation' },
+//            { data: 'lpo_no' },
+//            { data: 'action' },
+//        ],
+//        pageLength: 10,
+//        responsive: true,
+//        bSort: false,
+//        scrollX: true,
+//        autoWidth: false
+//    });
+//
+//    // Handle searching
+//    $('#search').on('keyup', function () {
+//        table.search(this.value).draw();
+//    });
+//
+//    // Check highlight on initial page load
+//    checkAndApplyHighlight();
+//
+//    // Form submission listener
+//    $('body').on('submit', '#editItemDetailsForm', handleFormSubmission);
+//});
+//
+//// Handle Datepicker specifically when modal is fully visible
+//$(document).on('shown.bs.modal', '#editItemDetailsModal', function () {
+//    $(".datepicker").daterangepicker({
+//        singleDatePicker: true,
+//        opens: 'left',
+//        showDropdowns: true,
+//        autoUpdateInput: true,
+//        minYear: 2022,
+//        locale: {
+//            format: 'YYYY-MM-DD',
+//            cancelLabel: 'Clear'
+//        }
+//    });
+//});
+
+var pageIdentifier = 'edit_item_details';
+var currentPageUrl = window.location.href;
+
+// 1. Updated Submission Handler
+function handleFormSubmission(event) {
+    event.preventDefault();
+    event.stopPropagation(); // Stop event bubbling
+
+    var $form = $(event.target);
+    var currentRowId = $form.find('input[name="detail_id"]').val();
+
+    Swal.fire({
+        title: 'Confirm Changes',
+        text: 'Are you sure you want to save changes?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#e91e63',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, save it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            submitForm($form, currentRowId);
+        }
+    });
+}
+
+// 2. Updated Submit Function (Handles redirection & triggers highlight via Draw)
+function submitForm($form, currentRowId) {
+    var formData = new FormData($form[0]);
+    formData.append("is_ajax", "true"); // Explicit flag for your Django View
+
+    var saveUrl = $form.attr('action');
+
+    $.ajax({
+        type: 'POST',
+        url: saveUrl,
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            // STEP A: Store the ID in storage FIRST
+            sessionStorage.setItem('currentHighlightedRow', currentRowId);
+
+            // STEP B: Close Modal
+            $form.closest('.modal').modal('hide');
+
+            Swal.fire({
+                title: 'Saved!',
+                text: response.message, // Uses message from your JsonResponse
+                icon: 'success',
+                confirmButtonColor: '#e91e63'
+            }).then(() => {
+                // STEP C: Reload table. drawCallback will handle the highlight automatically
+                if ($.fn.DataTable.isDataTable('#itemDetailsTable')) {
+                    $('#itemDetailsTable').DataTable().ajax.reload(null, false);
+                }
+            });
+        },
+        error: function (xhr) {
+            Swal.fire('Error', 'Failed to save changes. Ensure all fields are valid.', 'error');
+        }
+    });
+}
+
+// 3. Highlight Effect Logic (Simplified to just apply visuals)
+function applyVisualEffectAndStore(currentRowId) {
+    var $row = $('#itemDetailsTable').find(`tr[data-id="${currentRowId}"]`);
+
+    if ($row.length > 0) {
+        $row.addClass('table-info highlight-fade'); // Custom class for animation
+
+        // Remove highlight after 5 seconds and clear storage
+        setTimeout(function () {
+            $row.removeClass('table-info highlight-fade');
+            sessionStorage.removeItem('currentHighlightedRow');
+        }, 5000);
+    }
+}
+
+// 4. Modal Open Logic
+function openModal(detailId) {
+    var modalSelector = '#editItemDetailsModal';
+    $(modalSelector + 'Label').text('Edit Item Details - ' + detailId);
+
+    $.ajax({
+        url: '/items/edit_item_details_modal/',
+        type: 'GET',
+        data: { detail_id: detailId },
+        success: function (response) {
+            $(modalSelector + ' .modal-body').html(response);
+            $(modalSelector).modal('show');
+
+            $('.select2').select2({
+                dropdownParent: $(modalSelector),
+                ajax: {
+                    url: '/items/search_dropdown_options/',
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                        return {
+                            q: params.term || '',
+                            model: $(this).attr('name').replace('_no', '')
+                        };
+                    },
+                    processResults: function (data) {
+                        return { results: data.results };
+                    }
+                },
+                minimumInputLength: 1,
+                placeholder: 'Search...',
+                allowClear: true
+            });
+        },
+        error: function (error) {
+            Swal.fire('Error', 'Failed to load item data.', 'error');
+        }
+    });
+}
+
+// 5. Document Ready & Global Listeners
+$(document).ready(function () {
+    var csrftoken = $('input[name=csrfmiddlewaretoken]').val();
+
+    var table = $('#itemDetailsTable').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: '/items/item_details_datatable/',
+            type: 'POST',
+            headers: { 'X-CSRFToken': csrftoken },
+        },
+        createdRow: function(row, data, dataIndex) {
+            $(row).attr('data-id', data.id); // Injects ID for highlighting
+        },
+        drawCallback: function(settings) {
+            // This runs every time the table is drawn (search, page, reload)
+            var highlightedId = sessionStorage.getItem('currentHighlightedRow');
+            if (highlightedId) {
+                applyVisualEffectAndStore(highlightedId);
+            }
+        },
+        columns: [
+            { data: 'model_no' },
+            { data: 'serial_no' },
+            { data: 'tag_no' },
+            { data: 'room_tag' },
+            { data: 'issued_to' },
+            { data: 'date_dispatched' },
+            { data: 'employee_name' },
+            { data: 'employee_designation' },
+            { data: 'lpo_no' },
+            { data: 'action' },
+        ],
+        pageLength: 10,
+        responsive: true,
+        bSort: false,
+        scrollX: true
+    });
+
+    $('#search').on('keyup', function () {
+        table.search(this.value).draw();
+    });
+
+    // Use .off().on() to prevent multiple event bindings
+    $('body').off('submit', '#editItemDetailsForm').on('submit', '#editItemDetailsForm', handleFormSubmission);
+});
+
+// Datepicker Initialization
+$(document).on('shown.bs.modal', '#editItemDetailsModal', function () {
+    $(".datepicker").daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        autoUpdateInput: true,
+        locale: { format: 'YYYY-MM-DD' }
+    });
+});
+
+//Edit item details page server side processing------------------------------------------------------------------------
+
+// Sent items views using lazy loading
+$(document).ready(function () {
+    var csrf = $('input[name=csrfmiddlewaretoken]').val();
+    var table = $('#LazyLoading').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: '/sent_items/sent_items_ajax/',  // this is the same view you use now
+            type: 'POST',
+            headers: {
+                    'X-CSRFToken':csrftoken,
+            },
+        },
+        columns: [
+            { data: 'no' },
+            { data: 'send_date' },
+            { data: 'send_to' },
+            { data: 'product_description' },
+            { data: 'model_no' },
+            { data: 'serial_no' },
+            { data: 'received_by' },
+            { data: 'action'},
+        ],
+        lengthChange: false,
+        bSort: false,
+
+        scrollX: true,
+        autoWidth: false,
+
+    });
+
+    // Attach the search box
+    $('#search').on('keyup', function () {
+        table.search(this.value).draw();
+    });
+
 });
 
 

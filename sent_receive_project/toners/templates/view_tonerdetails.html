@@ -37,22 +37,40 @@
                 <td>{{detail.date_dispatched.date}}</td>
                 <td>{{detail.status}}</td>
                 <td>
-                    <div class="button-container">
-                        <a href="{% url 'print_toner_issue_vouchers' detail.id %}" target="_blank"
-                           rel="noopener noreferrer" class="btn btn-info" data-bs-toggle="tooltip"
-                           data-bs-placement="bottom" title="Print Issue Voucher"><i class="fas fa-print"></i></a>
-                        <a href="{% url 'print_toner_sent_invoice' detail.id %}" target="_blank"
-                           rel="noopener noreferrer" class="btn btn-info" data-bs-toggle="tooltip"
-                           data-bs-placement="bottom" title="Print Invoice"><i class="fas fa-receipt"></i></a></a>
-                        <button onclick="getCartData('{{detail.id}}','add')" data-detail="{{detail.id}}"
-                                data-action="add" class="btn btn-secondary addtodispatch" enabled
-                                data-bs-toggle="tooltip" data-bs-placement="bottom" title="Add To Dispatch"><i
-                                class="fas fa-box"></i></button>
-                        <a href="{% url 'edit_tonerdetails_form' detail.id %}" class="btn btn-warning"
-                           data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"><i class="fas fa-edit"></i></a>
-                        <a data-bs-toggle="modal" data-bs-target="#delete-modal{{ detail.pk }}" class="btn btn-danger"
-                           data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"><i
-                                class="fas fa-trash"></i></a></a>
+                    <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton{{ detail.pk }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                Actions
+                            </button>
+
+
+                                <div class="dropdown-menu p-2" aria-labelledby="dropdownMenuButton{{ detail.pk }}" style="min-width: auto;">
+
+
+                                        <a href="{% url 'print_toner_issue_vouchers' detail.id %}" target="_blank"
+                                           rel="noopener noreferrer" class="btn btn-sm btn-info me-1 mb-1" data-bs-toggle="tooltip"
+                                           data-bs-placement="bottom" title="Print Issue Voucher"><i class="fas fa-print"></i>
+                                        </a>
+
+                                        <a href="{% url 'print_toner_sent_invoice' detail.id %}" target="_blank"
+                                           rel="noopener noreferrer" class="btn btn-sm btn-info me-1 mb-1" data-bs-toggle="tooltip"
+                                           data-bs-placement="bottom" title="Print Invoice"><i class="fas fa-receipt"></i></a>
+
+
+                                        <button onclick="getCartData('{{detail.id}}','add')" data-detail="{{detail.id}}"
+                                                data-action="add" class="btn btn-sm btn-secondary addtodispatch me-1 mb-1" enabled
+                                                data-bs-toggle="tooltip" data-bs-placement="bottom" title="Add To Dispatch"><i
+                                                class="fas fa-box"></i></button>
+
+
+                                        <a href="{% url 'edit_tonerdetails_form' detail.id %}" class="btn btn-sm btn-warning me-1 mb-1"
+                                           data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"><i class="fas fa-edit"></i></a>
+
+
+                                        <a data-bs-toggle="modal" data-bs-target="#delete-modal{{ detail.pk }}" class="btn btn-sm btn-danger me-1 mb-1"
+                                           data-bs-toggle="tooltip" data-bs-placement="bottom" title="Delete"><i
+                                                class="fas fa-trash"></i></a>
+                                </div>
+
                     </div>
                 </td>
                 <td><input type="checkbox" name="detail_id[]" value="{{detail.id}}" id="bulk_delete_detail" class="bulk-action-checkbox"></td>

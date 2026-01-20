@@ -10,11 +10,25 @@ from datetime import date
 from django.utils import timezone
 from django.contrib.contenttypes.fields import GenericRelation
 from sent_items.models import CartItem
+import logging
 
+logger = logging.getLogger(__name__)
 
 # from sent_items.models import CartItem
 # import sent_items.models
 # from excel.models import ExcelFile
+def get_default_lpo():
+    try:
+        contract = Contracts.objects.get(lpo_no='00000')
+        logger.info(f"Found default contract: ID={contract.id}, lpo_no={contract.lpo_no}")
+        return contract.id
+    except Contracts.DoesNotExist:
+        logger.warning("No contract found with lpo_no='00000'. Returning None.")
+        return None
+    except Contracts.MultipleObjectsReturned:
+        logger.error("Multiple contracts found with lpo_no='00000'. Returning first.")
+        contract= Contracts.objects.filter(lpo_no='00000').first()
+        return contract.id if contract else None
 
 # Create your models here.
 class Items(models.Model):
@@ -42,7 +56,13 @@ class ItemDetails(models.Model):
     employee_designation = models.CharField(max_length=500, null=True)
     created = models.DateTimeField(default=timezone.now)
     date_dispatched = models.DateTimeField(default=timezone.now)
-    lpo_no = models.ForeignKey(Contracts, on_delete=models.SET_NULL, null=True, blank=True)
+    lpo_no = models.ForeignKey(
+        Contracts,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        default=get_default_lpo
+    )
     pdf_file = models.FileField(upload_to='pdfs/itemdetails/', blank=True, null=True, default='')
     cart_item = GenericRelation(CartItem, related_query_name='itemdetails')
 

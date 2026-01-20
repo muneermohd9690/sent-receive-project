@@ -22,3 +22,8 @@ def _get_file_data(file_path):
     data = base64.b64encode(f.read())
     f.close()
     return data
+
+
+@register.filter
+def is_joined(detail, joined_ids):
+    return (detail.id, detail.content_type.id) in joined_ids

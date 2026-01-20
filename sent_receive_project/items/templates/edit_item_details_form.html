@@ -8,7 +8,7 @@
             <span class="text-center"><h2>Edit Item Details | Item Details ID :{{ detail.id }} </h2></span>
         </div>
     </div>
-    <form role="form" action="edit_item_details_save" method="post" enctype="multipart/form-data" class="card p-3 border-dark mt-3">
+    <form role="form" action="{% url 'edit_item_details_save' %}" method="post" enctype="multipart/form-data" class="card p-3 border-dark mt-3">
         {% csrf_token %}
         <input type="hidden" name="detail_id" value="{{detail.id}}">
         <div class="input-group" >
@@ -105,7 +105,7 @@
 
         </div>
 
-         <div class="input-group input-group-sm">
+         <div class="input-group">
             <div class="input-group-prepend" >
                 <span class="bordered-label side-label">LPO No</span>
             </div>

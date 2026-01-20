@@ -1,5 +1,6 @@
 {% extends 'mainpage.html' %}
 {% load static %}
+{% load sent_receive_project_tags %}
 <div class="main-content position-relative max-height-vh-100 h-100 border-radius-lg" xmlns="">
 {% block content %}
 
@@ -37,8 +38,15 @@
           <tr id="{{detail.id}}" data-id="{{ detail.id }}">
               <td>{{detail.model_no.model_no}}</td>
               <td>{{detail.serial_no}}</td>
-              <td>{{detail.tag_no}}</td>
+              <td>
+                  {% if detail.tag_no %}
+                    {{detail.tag_no}}
+                  {% else %}
+                    No Tag
+                  {% endif %}
+              </td>
               <td>{{detail.room_tag}}</td>
+
               <td class="right-to-left-text">{{detail.issued_to.name}}</td>
               <td class="right-to-left-text">{{detail.employee_name}}</td>
               <td >{{detail.employee_designation}}</td>
@@ -47,36 +55,65 @@
               <td>
 
                   <a href="#" data-bs-toggle="modal"
-                         data-bs-target="#contract-modal{{ detail.lpo_no.id }}">{{ detail.lpo_no.lpo_no }}
+                         data-bs-target="#contract-modal{{ detail.pk }}">{{ detail.lpo_no.lpo_no}}
                   </a>
               </td>
               <td>
-                  <div class="button-container">
-                      <a href="{% url 'print_issue_vouchers' detail.id %}" target="_blank" rel="noopener noreferrer"
-                         class="btn btn-info " data-bs-toggle="tooltip" data-bs-placement="bottom"
-                         title="Print Issue Voucher"><i class="fas fa-print"></i></a>
-                      <a href="{% url 'print_item_sent_invoice' detail.id %}" target="_blank" rel="noopener noreferrer"
-                         class="btn btn-info " data-bs-toggle="tooltip" data-bs-placement="bottom"
-                         title="Print Invoice"><i class="fas fa-receipt"></i></a>
-                      <button onclick="getCartData('{{detail.id}}','add')" data-detail="{{detail.id}}" data-action="add"
-                              class="btn btn-secondary addtodispatch" data-bs-toggle="tooltip"
-                              data-bs-placement="bottom" title="Add To Dispatch"><i class="fas fa-box"></i></button>
-                      <a href="{% url 'edit_item_details_form' detail.id %}" class="btn btn-warning"
-                         data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"><i
-                              class="fas fa-edit"></i></a>
-                      <a class="btn btn-danger" data-bs-toggle="modal"
-                         data-bs-target="#delete-modal{{ detail.pk }}" data-bs-toggle="tooltip"
-                         data-bs-placement="bottom" title="Delete"><i class="fas fa-trash"></i></a>
-                      {% if detail.pdf_file %}
-                        <a href="{{ detail.pdf_file.url }}" target="_blank" class="btn btn-info" data-bs-toggle="tooltip"
-                        data-bs-placement="bottom" title="View PDF"><i class="far fa-file-pdf"></i></a>
-                      {% else %}
-                            <button class="btn btn-info" onclick="showNoPdfAlert()" data-bs-toggle="tooltip"
-                            data-bs-placement="bottom" title="View PDF"><i class="far fa-file-pdf"></i></button>
-                      {% endif %}
+
+                  <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton{{ detail.pk }}" data-bs-toggle="dropdown" aria-expanded="false">
+                                Actions
+                            </button>
+
+
+                                <div class="dropdown-menu p-2" aria-labelledby="dropdownMenuButton{{ detail.pk }}" style="min-width: auto;">
+
+                                        <!-- Dropdown menu items -->
+
+                                            <a class="btn btn-sm btn-danger me-1 mb-1" data-bs-toggle="modal"
+                                             data-bs-target="#delete-modal{{ detail.pk }}" data-bs-toggle="tooltip"
+                                             data-bs-placement="bottom" title="Delete"><i class="fas fa-trash"></i>
+                                            </a>
+
+
+
+                                            <a href="{% url 'edit_item_details_form' detail.id %}" class="btn btn-sm btn-warning me-1 mb-1"
+                                                 data-bs-toggle="tooltip" data-bs-placement="bottom" title="Edit"><i
+                                                      class="fas fa-edit"></i>
+                                            </a>
+
+
+                                            <a href="{% url 'print_item_sent_invoice' detail.id %}" target="_blank" rel="noopener noreferrer"
+                                             class="btn btn-sm btn-info me-1 mb-1 " data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                             title="Print Invoice"><i class="fas fa-receipt"></i>
+                                            </a>
+
+
+                                            <a href="{% url 'print_issue_vouchers' detail.id %}" target="_blank" rel="noopener noreferrer"
+                                                 class="btn btn-sm btn-info me-1 mb-1" data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                 title="Print Issue Voucher"><i class="fas fa-print"></i>
+                                            </a>
+
+
+                                            {% if detail.pdf_file %}
+                                                <a href="{{ detail.pdf_file.url }}" target="_blank" class="btn btn-sm btn-info me-1 mb-1" data-bs-toggle="tooltip"
+                                                data-bs-placement="bottom" title="View PDF"><i class="far fa-file-pdf"></i></a>
+                                              {% else %}
+                                                    <button class="btn btn-sm btn-info me-1 mb-1" onclick="showNoPdfAlert()" data-bs-toggle="tooltip"
+                                                    data-bs-placement="bottom" title="View PDF"><i class="far fa-file-pdf"></i></button>
+                                            {% endif %}
+
+
+                                             <button onclick="getCartData('{{detail.id}}','add')" data-detail="{{detail.id}}" data-action="add"
+                                                class="btn btn-sm btn-secondary addtodispatch me-1 mb-1" data-bs-toggle="tooltip"
+                                                data-bs-placement="bottom" title="Add To Dispatch"><i class="fas fa-box"></i>
+                                             </button>
+                                </div>
+
                   </div>
               </td>
-              <td><input type="checkbox" name="detail_id[]" value="{{detail.id}}" id="bulk_delete_detail"  class="bulk-action-checkbox"></td>
+              <td><input type="checkbox" name="detail_id[]" value="{{detail.id}}" id="bulk_delete_detail{{detail.id}}"  class="bulk-action-checkbox"></td>
+              <label for="bulk_delete_detail{{detail.id}}" class="sr-only">Select for bulk delete</label>
           </tr>
           <!-- delete confirmation Modal -->
           <div class="modal fade" id="delete-modal{{ detail.pk }}" tabindex="-1" role="dialog"
@@ -85,7 +122,7 @@
               <div class="modal-dialog" role="document">
                   <div class="modal-content">
                       <div class="modal-header">
-                          <h5 class="modal-title" id="delete-modal-label">Delete Item Details</h5>
+                          <h5 class="modal-title" id="delete-modal-label{{ detail.pk }}">Delete Item Details</h5>
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                           </button>
                       </div>
@@ -107,13 +144,13 @@
           <!-- delete confirmation Modal -->
 
           <!-- contract Details Modal -->
-          <div class="modal fade" id="contract-modal{{ detail.lpo_no.id }}" tabindex="-1" role="dialog"
+          <div class="modal fade" id="contract-modal{{ detail.pk }}" tabindex="-1" role="dialog"
                aria-labelledby="contract-modal-label" data-bs-backdrop="static" data-bs-keyboard="false"
                aria-hidden="true">
               <div class="modal-dialog" role="document">
                   <div class="modal-content">
                       <div class="modal-header">
-                          <h5 class="modal-title" id="contract-modal-label">Contract Details</h5>
+                          <h5 class="modal-title" id="contract-modal-label{{ detail.pk }}">Contract Details</h5>
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
                           </button>
                       </div>
@@ -122,7 +159,7 @@
                                 <div class="input-group-prepend" >
                                     <span class="bordered-label side-label">LPO Number</span>
                                 </div>
-                                <input type="text" class="form-control " name="lpo_no" id="lpo_no"
+                                <input type="text" class="form-control " name="lpo_no" id="lpo_no{{detail.pk}}"
                                        value="{{detail.lpo_no.lpo_no}}" readonly>
                           </div>
 
@@ -130,7 +167,7 @@
                                 <div class="input-group-prepend" >
                                     <span class="bordered-label side-label">Purchased By</span>
                                 </div>
-                                <input type="text" class="form-control"  name="purchased_by" id="purchased_by"
+                                <input type="text" class="form-control"  name="purchased_by" id="purchased_by{{detail.pk}}"
                                        value="{{detail.lpo_no.purchased_by}}" readonly>
                           </div>
 
@@ -138,7 +175,7 @@
                                 <div class="input-group-prepend" >
                                     <span class="bordered-label side-label">Warranty in years</span>
                                 </div>
-                                <input type="text" class="form-control"  name="warranty_years" id="warranty_years"
+                                <input type="text" class="form-control"  name="warranty_years" id="warranty_years{{detail.pk}}"
                                        value="{{detail.lpo_no.warranty_years}}" readonly>
                           </div>
 
@@ -146,7 +183,7 @@
                                 <div class="input-group-prepend" >
                                     <span class="bordered-label side-label">Date Purchased</span>
                                 </div>
-                                <input type="text" class="form-control"  name="purchased_date" id="purchased_date"
+                                <input type="text" class="form-control"  name="purchased_date" id="purchased_date{{detail.pk}}"
                                        value="{{detail.lpo_no.purchased_date.date|date:'Y-m-d'}}" readonly>
                           </div>
 
@@ -154,7 +191,7 @@
                                 <div class="input-group-prepend" >
                                     <span class="bordered-label side-label">Warranty Start</span>
                                 </div>
-                                <input type="text" class="form-control"  name="warranty_start" id="warranty_start"
+                                <input type="text" class="form-control"  name="warranty_start" id="warranty_start{{detail.pk}}"
                                        value="{{detail.lpo_no.warranty_start.date|date:'Y-m-d'}}" readonly>
                           </div>
 
@@ -162,7 +199,7 @@
                                 <div class="input-group-prepend" >
                                     <span class="bordered-label side-label">Warranty End</span>
                                 </div>
-                                <input type="text" class="form-control"  name="warranty_end" id="warranty_end"
+                                <input type="text" class="form-control"  name="warranty_end" id="warranty_end{{detail.pk}}"
                                        value="{{detail.lpo_no.warranty_end.date|date:'Y-m-d'}}" readonly>
                           </div>
 
@@ -170,7 +207,7 @@
 
                       </div>
                       <div class="modal-footer">
-                          <a href="{% url 'view_items' %}" class="btn btn-secondary">Cancel</a>
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
 
                       </div>
                   </div>
@@ -186,6 +223,62 @@
       <a href="{% url 'itemdetails_export_toexcel' item_id %}" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary btn-sm mb-0 me-3" id="btn-exporttocsv" data-bs-toggle="tooltip" data-bs-placement="bottom" title="export to csv"><i class="fas fa-file-excel"></i></a>
       <button type="submit" class="btn btn-danger bulk_delete btn-sm mb-0 me-3" style="display: none;" id="btn-bulkdelete">Bulk Delete</button>
       <button type="submit" class="btn btn-secondary btn-sm mb-0 me-3" style="display: none;" id="btn-bulkdispatch">Bulk Dispatch</button>
+      <button type="button" class="btn btn-success btn-sm mb-0 me-3" id="btn-assigntags" data-bs-toggle="modal" data-bs-target="#excelUploadModal{{item_id}}" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Assign Tags via Excel">
+        <i class="fas fa-upload"></i> Assign Tags
+      </button>
+
+      <div class="modal fade" id="excelUploadModal{{item_id}}" tabindex="-1" >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <form method="POST" action="{% url 'upload_tags_excel' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="item_id" value="{{ item_id }}"> <div class="modal-header">
+                  <h5 class="modal-title">Assign Tags via Excel</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+
+                   <div class="alert alert-info" style="font-size: 0.85rem;">
+                        <i class="fas fa-info-circle me-2"></i><strong>Instructions:</strong>
+                        <ul class="mb-0 mt-1">
+                            <li>File format must be <b>.xlsx</b> or <b>.xls</b>.</li>
+                            <li>The first column must have a header named <b>Serial number</b>.</li>
+                            <li>Tag sequence starts from the number provided below.</li>
+                        </ul>
+                   </div>
+
+                   <div class="input-group" >
+                        <div class="input-group-prepend" >
+                            <span class="bordered-label side-label">Item Model</span>
+                        </div>
+                            <input type="text" class="form-control "
+                                           value="{{itemdetails.0.model_no.model_no}}" readonly>
+                            <input type="hidden" name="item_model" value="{{ itemdetails.0.model_no.id }}">
+                   </div>
+
+                  <div class="input-group" >
+                    <div class="input-group-prepend" >
+                        <span class="bordered-label side-label">Starting Tag (Numeric Part)</span>
+                    </div>
+
+                        <input type="text" name="start_num" class="form-control" placeholder="0005598" required>
+
+                  </div>
+
+                  <div class="input-group" >
+                      <div class="input-group-prepend" >
+                         <span class="bordered-label side-label">Upload Excel (.xlsx)</span>
+                      </div>
+                        <input type="file" name="excel_file" class="form-control" accept=".xlsx, .xls" required>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-success w-100">Process Excel</button>
+                </div>
+              </form>
+            </div>
+          </div>
+      </div>
 
   </div>
 
@@ -234,9 +327,10 @@
 </script>
 
 
-<div class="text-center mt-5" style="display: none;" >
-    <input  id="content_type_id" data-value="{{content_type_id}}">
-    <input  id="joined_ids" data-value="{{joined_ids}}">
+
+<div class="text-center mt-5" style="display: none;">
+    <input  id="content_type_id" data-value="{{content_type_id}}" readonly>
+    <input  id="joined_ids" data-value="{{joined_ids}}" readonly>
 </div>
 {% endblock %}
 </div>

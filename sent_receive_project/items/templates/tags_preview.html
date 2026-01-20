@@ -1,0 +1,112 @@
+{% extends 'mainpage.html' %}
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">Confirm Tag Assignment</h4>
+            <span class="badge bg-info">Preview Mode</span>
+        </div>
+        <div class="card-body">
+            <p class="text-muted">Review the mapping below. Only rows marked as <b>Ready</b> will be saved.</p>
+        <div class="row mb-3 text-center">
+            <div class="col-md-4">
+                <div class="p-2 border rounded bg-light">
+                    <small class="text-muted d-block">Total Serials in File</small>
+                    <span class="h5 mb-0">{{ total_rows }}</span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-2 border rounded bg-light">
+                    <small class="text-muted d-block">Ready to Assign</small>
+                    <span class="h5 mb-0 text-success">{{ valid_count }}</span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-2 border rounded bg-light">
+                    <small class="text-muted d-block">Errors / Skips</small>
+                    <span class="h5 mb-0 text-danger">
+                        {{ total_rows|add:"-valid_count"|default:0 }}
+                    </span>
+                </div>
+            </div>
+        </div>
+            <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-secondary sticky-top">
+                        <tr>
+                            <th>Serial Number</th>
+                            <th>Current Tag</th>
+                            <th>Proposed MOJ Tag</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entry in preview_list %}
+                            <tr class="{% if entry.error %}table-danger{% endif %}">
+                                <td>{{ entry.serial }}</td>
+                                <td>
+                                    {% if entry.current_tag == "Empty" %}
+                                        <span class="badge bg-light text-dark border">Empty</span>
+                                    {% else %}
+                                        {{ entry.current_tag }}
+                                    {% endif %}
+                                </td>
+                                <td class="fw-bold text-primary">{{ entry.proposed_tag }}</td>
+                                <td>
+                                    {% if entry.error %}
+                                        <div class="d-flex flex-column">
+                                            <span class="badge bg-danger mb-1">
+                                                <i class="fas fa-times-circle"></i> Error
+                                            </span>
+                                            <small class="text-danger fw-bold" style="font-size: 0.75rem;">
+                                                {{ entry.error_msg }}
+                                            </small>
+                                        </div>
+                                    {% else %}
+                                        <span class="badge bg-success">
+                                            <i class="fas fa-check-circle"></i> Ready
+                                        </span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <form method="POST" action="{% url 'confirm_save_tags' %}" class="mt-4">
+                {% csrf_token %}
+                <input type="hidden" name="item_model_id" value="{{ item_model_id }}">
+                <input type="hidden" name="json_data" value='{{ json_data|safe }}'>
+                
+                <div class="d-flex justify-content-between align-items-center border-top pt-3">
+                    <a href="{% url 'view_items_details' item_model_id %}" class="btn btn-outline-secondary">
+                        <i class="fas fa-times"></i> Cancel & Go Back
+                    </a>
+                    
+                    <button type="submit" class="btn text-white px-5" 
+                            style="background-color: #e91e63; border-color: #e91e63; font-weight: bold;">
+                        <i class="fas fa-save me-2"></i> Confirm and Save All Tags
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Ensure the table header stays visible while scrolling long lists */
+    .sticky-top {
+        top: -1px;
+        z-index: 10;
+    }
+    /* Style the table scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #ccc;
+        border-radius: 4px;
+    }
+</style>
+{% endblock %}

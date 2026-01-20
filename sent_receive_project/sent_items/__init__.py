@@ -1,0 +1,1 @@
+default_app_config = 'sent_items.apps.SentItemsConfig'
